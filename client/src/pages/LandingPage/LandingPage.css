@@ -1,0 +1,16 @@
+.landing-main {
+    height: 100%;
+    width: 100%;
+    background: #FFCAB1;
+    background: linear-gradient(157deg,rgba(255, 202, 177, 1) 0%, rgba(181, 234, 255, 1) 100%);
+}
+#top-bar {
+    display: flex;
+    flex-direction: row-reverse;
+    height:fit-content;
+    width: 100%;
+    box-sizing: border-box;
+    padding-inline: 2.5rem;
+    padding-block: 1.5rem;
+    border: 1px solid blue;
+}

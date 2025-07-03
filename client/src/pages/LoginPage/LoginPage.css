@@ -1,0 +1,42 @@
+.login-main {
+    height: 100%;
+    width: 100%;
+    background: #FFCAB1;
+    background: linear-gradient(157deg,rgba(255, 202, 177, 1) 0%, rgba(181, 234, 255, 1) 100%);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding-inline: 0.625rem;
+    padding-block: 8rem;
+    border-radius: 15px;
+    width: 30rem;
+    height: 30rem;
+    gap: 2rem;
+}
+
+#login-form h1 {
+    font-size: 4.5rem;
+    color:rgba(0, 0, 0, 0.65)
+}
+
+#login-fields-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 20rem;
+    height: fit-content;
+}
+
+#login-buttons span {
+    cursor: pointer;
+}

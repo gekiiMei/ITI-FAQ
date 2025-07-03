@@ -1,0 +1,12 @@
+.comp-loginbutton-container {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    height: fit-content;
+    cursor: pointer;
+    gap: 0.75rem;
+}
+
+.comp-loginbutton-container p {
+    color: rgba(0, 0, 0, 0.65);
+}
