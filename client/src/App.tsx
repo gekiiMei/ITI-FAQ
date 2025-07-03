@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom"
-import AuthRoute from "./components/AuthRoute.tsx"
+import AuthRoute from "./utils/AuthRoute.tsx"
 import LandingPage from "./pages/LandingPage/LandingPage.tsx"
 import LoginPage from "./pages/LoginPage/LoginPage.tsx"
 import DashboardPage from "./pages/DashboardPage/DashboardPage.tsx"

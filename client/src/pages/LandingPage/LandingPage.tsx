@@ -1,11 +1,11 @@
 import "./LandingPage.css"
-import LoginButton from "../../components/login-button/LoginButton";
+import AccountButton from "../../components/account-button/AccountButton";
 function LandingPage() {
     return (
         <>
         <div className="landing-main">
             <div id="top-bar">
-                <LoginButton />
+                <AccountButton />
             </div>
             <div id="upper-container">
 

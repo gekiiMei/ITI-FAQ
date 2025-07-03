@@ -1,5 +1,5 @@
-import { DataTypes } from "sequelize";
-import sequelize from "../config/database";
+const sequelize = require("../config/database")
+const { DataTypes } = require('sequelize')
 
 const User = sequelize.define('User', {
     user_id: {
@@ -13,9 +13,11 @@ const User = sequelize.define('User', {
         allowNull: false
     },
     hashed_password: {
-        tyep:DataTypes.TEXT,
+        type:DataTypes.TEXT,
         allowNull: false
     },
+}, {
+    schema:'iti-faq'
 })
 
 module.exports = User;

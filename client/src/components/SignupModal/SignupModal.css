@@ -1,0 +1,41 @@
+.signupmodal-main {
+    width: 100%;
+    height:100%;
+    background-color: hsla(0, 0%, 0%, 0.45);
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#signup-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding-inline: 0.625rem;
+    padding-block: 8rem;
+    border-radius: 15px;
+    width: 30rem;
+    height: 30rem;
+    gap: 2rem;
+}
+
+#signup-form h1 {
+    font-size: 4.5rem;
+    color:rgba(0, 0, 0, 0.65)
+}
+
+#signup-fields-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 20rem;
+    height: fit-content;
+}
+
+#signup-buttons span {
+    cursor: pointer;
+}
