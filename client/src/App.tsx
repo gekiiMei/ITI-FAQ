@@ -7,13 +7,22 @@ import './App.css'
 
 // TEMPORARY IMPORT FOR COMPONENT TESTING! -harley
 import TEMPTESTPAGE from "./pages/TEMPTESTPAGE.tsx"
-import RegisterModal from "./components/RegisterModal/RegisterModal.tsx"
 
 function App() {
 
   return (
     <>
-      <RegisterModal />
+      {/* PLACE ROUTES HERE */}
+      <Routes>
+        <Route path="/" element={ <LandingPage /> } />
+        <Route path="/login" element={ <LoginPage /> } />
+        <Route element={ <AuthRoute /> }>
+          <Route path="/dashboard" element= { <DashboardPage /> } />
+        </Route>
+
+        {/* TEMPORARY!! FOR COMPONENT TESTING!! DELETE AFTER -Harley */}
+        <Route path="/comp-test" element={ <TEMPTESTPAGE /> } />
+      </Routes>
     </>
   )
 }
