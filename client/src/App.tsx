@@ -5,6 +5,9 @@ import LoginPage from "./pages/LoginPage/LoginPage.tsx"
 import DashboardPage from "./pages/DashboardPage/DashboardPage.tsx"
 import './App.css'
 
+// TEMPORARY IMPORT FOR COMPONENT TESTING! -harley
+import TEMPTESTPAGE from "./pages/TEMPTESTPAGE.tsx"
+
 function App() {
 
   return (
@@ -16,6 +19,9 @@ function App() {
         <Route element={ <AuthRoute /> }>
           <Route path="/dashboard" element= { <DashboardPage /> } />
         </Route>
+
+        {/* TEMPORARY!! FOR COMPONENT TESTING!! DELETE AFTER -Harley */}
+        <Route path="/comp-test" element={ <TEMPTESTPAGE /> } />
       </Routes>
     </>
   )
