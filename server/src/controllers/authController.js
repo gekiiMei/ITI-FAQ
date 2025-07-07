@@ -6,10 +6,11 @@ exports.login = async (req, res) => {
     const user_in = req.body.user_in;
     const pass_in = req.body.pass_in;
 
-    if (!(await User.findAll({where:{username:user_in}}))) {
+    if ((await User.findAll({where:{username:user_in}})).length===0) {
+        console.log("not found")
         return res.status(404).json({msg:'User ' + user_in + 'not found.', status:404});
     }
-    
+    console.log("user found")
     user = await User.findOne({
         attributes:['user_id', 'hashed_password'],
         where:{ username:user_in }
@@ -33,7 +34,13 @@ exports.login = async (req, res) => {
             refresh_token = jwt.sign({user_id: queried_user_id, username: user_in}, 
                 process.env.REFRESH_TOKEN_SECRET, 
                 {expiresIn: process.env.REFRESH_TOKEN_LIFESPAN})
-            return res.status(200).json({msg: 'Successful login', access_token:access_token, refresh_token:refresh_token});
+            res.cookie('refresh_token', refresh_token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'Strict',
+                maxAge: process.env.REFRESH_TOKEN_LIFESPAN_INTDAYS /*<- poor implementation, i know -Harley*/  * 24 * 60 * 60 * 1000
+            })
+            return res.status(200).json({msg: 'Successful login', access_token:access_token});
         }
     })
 }
@@ -78,4 +85,13 @@ exports.refresh = async (req, res) => {
 
         return res.status(200).json({msg:'Successfully refreshed token.'})
     })
+}
+
+exports.remove_refresh = async (req, res) => {
+    console.log('attempting to clear cookie')
+    return res.clearCookie('refresh_token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'Strict'
+    }).json({msg:'Logged out'})
 }

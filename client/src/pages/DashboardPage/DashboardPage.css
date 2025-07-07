@@ -1,0 +1,61 @@
+.dash-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#dash-navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-block: 2.5rem;;
+    
+}
+#logout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-right: 10rem;
+}
+#dash-navbar h1 {
+    padding-left: 10rem;
+}
+
+#dash-content, #dash-content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#dash-content {
+    width: 100%;
+}
+
+#dash-content-container {
+    width: 82.5%
+}
+
+#dash-content-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#dash-categbutton-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#dash-content-list {
+    width: 90%;
+    height: 50%;
+    background-color: gray;
+}
+
+#dash-createnew-wrapper {
+    width: 90%;
+    display: flex;
+    justify-content: flex-end;
+}

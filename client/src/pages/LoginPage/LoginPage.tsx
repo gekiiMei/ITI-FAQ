@@ -24,11 +24,12 @@ function LoginPage() {
         })
         .then((resp) => {
             console.log(resp.data)
+            localStorage.setItem("current_user", user_in)
             localStorage.setItem("JWT_accesstoken", resp.data.access_token)
             navigate("/dashboard")
         })
         .catch((err) => {
-            console.log(err.data)
+            console.log(err.response.data)
         })
     }
 

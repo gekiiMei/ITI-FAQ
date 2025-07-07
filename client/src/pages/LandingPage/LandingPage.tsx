@@ -1,5 +1,5 @@
 import "./LandingPage.css"
-import AccountButton from "../../components/account-button/AccountButton";
+import AccountButton from "../../components/AccountButton/AccountButton";
 function LandingPage() {
     return (
         <>
