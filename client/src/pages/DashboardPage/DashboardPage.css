@@ -49,13 +49,42 @@
 }
 
 #dash-content-list {
-    width: 90%;
+    width: 90%; 
     height: 50%;
-    background-color: gray;
+    background-color: #E5E5E5;
 }
 
 #dash-createnew-wrapper {
     width: 90%;
     display: flex;
     justify-content: flex-end;
+}
+
+.dash-topic-thumbnail {
+    height:7.5rem;
+    width:7.5rem;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.dash-topic-item {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.dash-topicitem-left {
+    display: flex;
+}
+
+.dash-topicitem-title-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.dash-topicitem-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }

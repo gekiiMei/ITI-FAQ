@@ -1,14 +1,28 @@
 import { useNavigate } from "react-router-dom";
 import CategoryModal from "../../components/CategoryModal/CategoryModal";
+import CreateTopicModal from "../../components/CreateTopicModal/CreateTopicModal";
 import "./DashboardPage.css"
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+interface Topic {
+    topic_id: number,
+    title: string,
+    parent_category: number,
+    author_id: number,
+    avg_rating: number,
+    rating_count: number,
+    thumbnail_path: string
+}
 
 function DashboardPage() {
     const navigate = useNavigate()
     const base_url = import.meta.env.VITE_backend_base_url;
+    const image_url = import.meta.env.VITE_image_base_path;
     const current_user = localStorage.getItem("current_user")
     const [showCategModal, setShowCategModal] = useState(false);
+    const [showTopicModal, setShowTopicModal] = useState(false);
+    const [topicList, setTopicList] = useState<Topic[]>([])
     const handleLogout = async () => {
         localStorage.removeItem("JWT_accesstoken")
         localStorage.removeItem("current_user")
@@ -19,9 +33,30 @@ function DashboardPage() {
             console.log(e)
         }
     }
+    const getTopics = async () => {
+        await axios.post(base_url+'/api/authorfetch/fetch-topics', {
+            author_id: parseInt(localStorage.getItem("current_user_id")??'')
+        })
+        .then((resp) => {
+            setTopicList(resp.data.topics)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
+    
+    useEffect(() => {
+        console.log("fetching topics")
+        const asyncGetTopics = async () => {
+            await getTopics()
+        }
+        asyncGetTopics()
+    }, [])
+
     return (
         <>
             {showCategModal && <CategoryModal setShowCategModal={setShowCategModal}/>}
+            {showTopicModal && <CreateTopicModal setShowTopicModal={setShowTopicModal} getTopics={getTopics}/>}
             <div className="dash-main">
                 <div id="dash-navbar">
                     <div id="author-label">
@@ -42,10 +77,26 @@ function DashboardPage() {
                             </div>
                         </div>
                         <div id="dash-content-list">
-                            asd
+                            {
+                                topicList.map((topic, i) => {
+                                    return (
+                                        <div className="dash-topic-item" key={i}>
+                                            <div className="dash-topicitem-left">
+                                                <img className="dash-topic-thumbnail" src={image_url+topic.thumbnail_path} alt="thumbnail" />
+                                                <div className="dash-topicitem-title-wrapper">
+                                                    <p>{topic.title}</p>
+                                                </div>
+                                            </div>
+                                            <div className="dash-topicitem-right">
+                                                <p>{topic.avg_rating} ({topic.rating_count})</p>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
                         <div id="dash-createnew-wrapper">
-                            <button id="dash-createnew">
+                            <button id="dash-createnew" onClick={()=>{setShowTopicModal(true)}}>
                                 Create new
                             </button>
                         </div>

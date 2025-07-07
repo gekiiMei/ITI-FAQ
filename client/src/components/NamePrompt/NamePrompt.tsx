@@ -10,6 +10,11 @@ interface props {
 function NamePrompt( {setShowNamePrompt, label, someAction}:props ) {
     const handleNameInput = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        //do nothing on empty input -Harley
+        if (name == '') {
+            setShowNamePrompt(false)
+            return;
+        }
         await someAction(name)
         setShowNamePrompt(false)
     }

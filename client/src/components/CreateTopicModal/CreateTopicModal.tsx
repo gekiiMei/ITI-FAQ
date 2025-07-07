@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import axios from "axios";
-import "./CategoryModal.css"
+import useIsMountedRef from "use-is-mounted-ref";
+import "./CreateTopicModal.css"
 import NamePrompt from "../NamePrompt/NamePrompt";
 
 interface props {
-    setShowCategModal: React.Dispatch<React.SetStateAction<boolean>>
+    setShowTopicModal: React.Dispatch<React.SetStateAction<boolean>>,
+    getTopics: () => Promise<void>
 }
 
 interface Category {
@@ -14,8 +16,10 @@ interface Category {
     is_active: boolean
 }
 
-function CategoryModal( {setShowCategModal}:props ) {
+// almost everything copied from CategoryModal. will try to clean up if there's time -Harley
+function CreateTopicModal( {setShowTopicModal, getTopics}:props ) {
     const base_url = import.meta.env.VITE_backend_base_url;
+    const isMounted = useIsMountedRef(); //for use effect -harley
 
     const [showNameModal, setShowNameModal] = useState(false);
     const [currentCat, setCurrentCat] = useState<number|null>(null);
@@ -23,18 +27,19 @@ function CategoryModal( {setShowCategModal}:props ) {
 
     const [categList, setCategList] = useState<Category[]>([]); //for type safety nyehehe -harley
 
-    const handleCreateCategory = async (name:string) => {
-        await axios.post(base_url+'/api/create/create-category', {
-            category_name: name,
-            category_parent: currentCat
+    const handleCreateTopic = async (name:string) => {
+        await axios.post(base_url+'/api/create/create-topic', {
+            topic_name: name,
+            parent_category: currentCat,
+            author_id: parseInt(localStorage.getItem('current_user_id') ?? '')
         })
         .then(async (resp) => {
-            console.log("succ")
-            console.log(resp.data)
-            await getCategories()
+            console.log("succ");
+            setShowTopicModal(false);
+            await getTopics()
         })
         .catch((err) => {
-            console.log("err")
+            console.log('err') 
             console.log(err)
         })
     }
@@ -72,29 +77,26 @@ function CategoryModal( {setShowCategModal}:props ) {
         // await getCategories()
     }
 
-    const archiveCat = async (id:number) => {
-        await axios.post(base_url+'/api/archive/archive-category', {
-            category_id: id
-        })
-        await getCategories();
-    }
-
     useEffect(() => {
         console.log("fetching categtories..")
-        //tsx workaround thank you tobias lins on stackoverflow -harley
-        const asyncGetCategories = async () => {
-            await getCategories()
+        if (!isMounted) {
+            return
+        } else {
+            //tsx workaround thank you tobias lins on stackoverflow -harley
+            const asyncGetCategories = async () => {
+                await getCategories()
+            }
+            asyncGetCategories();
         }
-        asyncGetCategories();
     }, [currentCat]);
 
     return (
         <>
-        {showNameModal && <NamePrompt setShowNamePrompt={setShowNameModal} label="category" someAction={async (name) => { await handleCreateCategory(name)}}/>}
+        {showNameModal && <NamePrompt setShowNamePrompt={setShowNameModal} label="topic" someAction={async (name) => { await handleCreateTopic(name)}}/>}
         <div className="categorymodal-main">
             <div id="categorymodal-container">
                 <div id="categoryclose-wrapper">
-                    <p onClick={()=>{setShowCategModal(false)}}>x</p>
+                    <p onClick={()=>{setShowTopicModal(false)}}>x</p>
                 </div>
                 <div id="category-createnew-wrapper">
                     <button id="categ-createnew" onClick={()=>{setShowNameModal(true)}}>
@@ -115,9 +117,6 @@ function CategoryModal( {setShowCategModal}:props ) {
                                     <div className="categoryItem-left" onClick={async () => {await openCategory(cat.category_id)}}>
                                         <p>{cat.name}</p>
                                     </div>
-                                    <div className="categoryItem-right">
-                                        <button onClick={async () => {await archiveCat(cat.category_id)}}>delete</button>
-                                    </div>
                                 </div>
                             )
                         })
@@ -129,4 +128,4 @@ function CategoryModal( {setShowCategModal}:props ) {
     )
 }
 
-export default CategoryModal;
+export default CreateTopicModal;

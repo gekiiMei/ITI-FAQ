@@ -25,6 +25,7 @@ function LoginPage() {
         .then((resp) => {
             console.log(resp.data)
             localStorage.setItem("current_user", user_in)
+            localStorage.setItem("current_user_id", resp.data.user_id)
             localStorage.setItem("JWT_accesstoken", resp.data.access_token)
             navigate("/dashboard")
         })

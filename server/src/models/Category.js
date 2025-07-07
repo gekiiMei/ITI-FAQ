@@ -20,13 +20,14 @@ const Category = sequelize.define('Category', {
         type:DataTypes.INTEGER,
         allowNull: true,
         references: {
-            model: 'Categories',
+            model: 'Category',
             key: 'category_id'
         },
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE'
     }
 }, {
+    tableName: 'Category',
     schema:'iti-faq'
 })
 

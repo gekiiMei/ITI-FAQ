@@ -17,6 +17,7 @@ exports.login = async (req, res) => {
     })
     queried_user_id = user.user_id
     hashed_pass = user.hashed_password
+    console.log("(debug) queried user id: " + queried_user_id)
     bcrypt.compare(pass_in, hashed_pass, (e, crypt_response) => {
         if (e) {
             console.log("(debug) pass_in type: " + typeof(pass_in))
@@ -40,7 +41,7 @@ exports.login = async (req, res) => {
                 sameSite: 'Strict',
                 maxAge: process.env.REFRESH_TOKEN_LIFESPAN_INTDAYS /*<- poor implementation, i know -Harley*/  * 24 * 60 * 60 * 1000
             })
-            return res.status(200).json({msg: 'Successful login', access_token:access_token});
+            return res.status(200).json({msg: 'Successful login', access_token:access_token, user_id: queried_user_id});
         }
     })
 }

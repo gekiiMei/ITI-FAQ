@@ -17,6 +17,7 @@ const User = sequelize.define('User', {
         allowNull: false
     },
 }, {
+    tableName: 'User',
     schema:'iti-faq'
 })
 
