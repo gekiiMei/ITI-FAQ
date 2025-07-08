@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
 import "./LoginPage.css"
@@ -33,6 +33,13 @@ function LoginPage() {
             console.log(err.response.data)
         })
     }
+
+    useEffect(() => {
+        const webtoken = localStorage.getItem("JWT_accesstoken")
+        if (webtoken) {
+            navigate("/dashboard")
+        }
+    }, [])
 
     return (
         <>

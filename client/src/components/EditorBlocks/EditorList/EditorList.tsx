@@ -28,25 +28,25 @@ function EditorList({ content, setActivePageContent, blockIndex }:props) {
         <div id="editorparagraph-main">
             <p>Label: </p>
             <input type="text" placeholder="Header text:" value={label} onChange={(e)=>{setLabel(e.target.value)}}/>
-        </div>
-        <select value={listType} onChange={(e)=>{setListType(e.target.value)}}>
-            <option value={"numbered"}>numbered</option>
-            <option value={"bullet"}>bullet</option>
-        </select>
-        <div id="editorlist-entries">
-            {
-                entries.map((entry, index) => {
-                    return(
-                        <div className="entry" key={index}>
-                            <input type="text" value={entry} onChange={(e) => {setEntries(entries.map((entry, i) => i===index ? e.target.value : entry))}} />
-                            <button className="entry-del" onClick={()=>{deleteEntry(index)}}>
-                                del
-                            </button>
-                        </div>
-                    )
-                })
-            }
-            <button id="entry-add" onClick={() => {setEntries(prev => [...prev, ""])}}>add</button>
+            <select value={listType} onChange={(e)=>{setListType(e.target.value)}}>
+                <option value={"numbered"}>numbered</option>
+                <option value={"bullet"}>bullet</option>
+            </select>
+            <div id="editorlist-entries">
+                {
+                    entries.map((entry, index) => {
+                        return(
+                            <div className="entry" key={index}>
+                                <input type="text" value={entry} onChange={(e) => {setEntries(entries.map((entry, i) => i===index ? e.target.value : entry))}} />
+                                <button className="entry-del" onClick={()=>{deleteEntry(index)}}>
+                                    del
+                                </button>
+                            </div>
+                        )
+                    })
+                }
+                <button id="entry-add" onClick={() => {setEntries(prev => [...prev, ""])}}>add</button>
+            </div>
         </div>
         </>
     )

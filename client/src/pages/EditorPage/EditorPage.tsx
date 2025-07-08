@@ -265,7 +265,7 @@ function EditorPage() {
                 <div id="editor-workbench">
                     {
                         searchParams.get("page")==null ? <p>no page loaded</p> : 
-                        <div id="editor-container">
+                        <div id="editorworkbench-container">
                             <div id="editor-header">
                                 <h1>{activePageTitle}</h1>
                             </div>
