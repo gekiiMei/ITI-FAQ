@@ -80,7 +80,7 @@ function DashboardPage() {
                             {
                                 topicList.map((topic, i) => {
                                     return (
-                                        <div className="dash-topic-item" key={i}>
+                                        <div className="dash-topic-item" key={i} onClick={()=>{ navigate("/editor?topic_id=" + topic.topic_id) }}>
                                             <div className="dash-topicitem-left">
                                                 <img className="dash-topic-thumbnail" src={image_url+topic.thumbnail_path} alt="thumbnail" />
                                                 <div className="dash-topicitem-title-wrapper">
@@ -88,7 +88,12 @@ function DashboardPage() {
                                                 </div>
                                             </div>
                                             <div className="dash-topicitem-right">
-                                                <p>{topic.avg_rating} ({topic.rating_count})</p>
+                                                <div className="dash-topicitem-ratings">
+                                                    <p>{topic.avg_rating} ({topic.rating_count})</p>
+                                                </div>
+                                                <div className="dash-topicitem-deletewrapper">
+                                                    
+                                                </div>
                                             </div>
                                         </div>
                                     )

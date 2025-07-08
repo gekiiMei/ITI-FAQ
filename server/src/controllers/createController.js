@@ -1,5 +1,6 @@
 const Category = require('../models/Category')
-const Topic = require('../models/Topic')
+const Subject = require('../models/Subject')
+const Page = require("../models/Page")
 
 exports.create_category = async (req, res) => {
     category_name = req.body.category_name;
@@ -51,6 +52,52 @@ exports.create_topic = async (req,res) => {
         return res.status(409).json({msg:'Topic ' + topic_name + ' already exists!'})
     } else {
         return res.status(200).json({msg:'Topic created!', topic_id:new_topic.topic_id})
-    }
-    
+    }   
+}
+
+exports.create_subject = async (req,res) => {
+    const subject_name = req.body.subject_name
+    const parent_topic = req.body.parent_topic??null
+    const parent_subject = req.body.parent_subject??null
+    const [new_subject, created] = await Subject.findOrCreate({
+        where: {
+            name: subject_name,
+            parent_topic: parent_topic,
+            parent_subject: parent_subject,
+            is_active: true
+        },
+        defaults: {
+            name: subject_name,
+            parent_topic: parent_topic,
+            parent_subject: parent_subject,
+            is_active: true
+        }
+    })
+
+    if (!created) {
+        return res.status(409).json({msg:'Subject ' + subject_name + ' already exists!'})
+    } else {
+        return res.status(200).json({msg:'Subject created!', subject_id:new_subject.subject_id})
+    }  
+}
+
+exports.create_page = async (req, res) => {
+    const page_title = req.body.page_title
+    const parent_topic = req.body.parent_topic??null
+    const parent_subject = req.body.parent_subject??null
+
+    const [new_page, created] = await Subject.findOrCreate({
+        where: {
+            name: subject_name,
+            parent_topic: parent_topic,
+            parent_subject: parent_subject,
+            is_active: true
+        },
+        defaults: {
+            name: subject_name,
+            parent_topic: parent_topic,
+            parent_subject: parent_subject,
+            is_active: true
+        }
+    })
 }

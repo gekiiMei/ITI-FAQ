@@ -1,0 +1,39 @@
+.editorpage-main {
+    background-color: #F4F4F4;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#editor-container {
+    border: 1px solid red;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90%;
+    width: 100%;
+}
+
+#editor-navigator {
+    height: 100%;
+    border: 1px solid blue;
+    width: 25%;
+}
+
+#editornav-label {
+    display: flex;
+    justify-content: space-between;
+}
+
+#editornav-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.subjectItem {
+    display: flex;
+    justify-content: space-between;
+}

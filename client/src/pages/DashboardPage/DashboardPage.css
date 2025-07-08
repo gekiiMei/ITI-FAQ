@@ -83,7 +83,7 @@
     justify-content: center;
 }
 
-.dash-topicitem-right {
+.dash-topicitem-ratings {
     display: flex;
     flex-direction: column;
     justify-content: center;

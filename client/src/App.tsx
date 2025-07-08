@@ -3,6 +3,7 @@ import AuthRoute from "./utils/AuthRoute.tsx"
 import LandingPage from "./pages/LandingPage/LandingPage.tsx"
 import LoginPage from "./pages/LoginPage/LoginPage.tsx"
 import DashboardPage from "./pages/DashboardPage/DashboardPage.tsx"
+import EditorPage from "./pages/EditorPage/EditorPage.tsx"
 import './App.css'
 
 // TEMPORARY IMPORT FOR COMPONENT TESTING! -harley
@@ -18,6 +19,7 @@ function App() {
         <Route path="/login" element={ <LoginPage /> } />
         <Route element={ <AuthRoute /> }>
           <Route path="/dashboard" element= { <DashboardPage /> } />
+          <Route path="/editor" element = { <EditorPage /> } />
         </Route>
 
         {/* TEMPORARY!! FOR COMPONENT TESTING!! DELETE AFTER -Harley */}
