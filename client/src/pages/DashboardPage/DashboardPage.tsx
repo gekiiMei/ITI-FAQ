@@ -44,6 +44,13 @@ function DashboardPage() {
             console.log(err)
         })
     }
+
+    const archiveTopic = async (id:number) => {
+        await axios.post(base_url+'/api/archive/archive-topic', {
+            topic_id: id
+        })
+        .then(async (resp)=>{await getTopics()})
+    }
     
     useEffect(() => {
         console.log("fetching topics")
@@ -80,8 +87,8 @@ function DashboardPage() {
                             {
                                 topicList.map((topic, i) => {
                                     return (
-                                        <div className="dash-topic-item" key={i} onClick={()=>{ navigate("/editor?topic_id=" + topic.topic_id) }}>
-                                            <div className="dash-topicitem-left">
+                                        <div className="dash-topic-item" key={i}>
+                                            <div className="dash-topicitem-left" onClick={()=>{ navigate("/editor?topic_id=" + topic.topic_id) }}>
                                                 <img className="dash-topic-thumbnail" src={image_url+topic.thumbnail_path} alt="thumbnail" />
                                                 <div className="dash-topicitem-title-wrapper">
                                                     <p>{topic.title}</p>
@@ -92,7 +99,9 @@ function DashboardPage() {
                                                     <p>{topic.avg_rating} ({topic.rating_count})</p>
                                                 </div>
                                                 <div className="dash-topicitem-deletewrapper">
-                                                    
+                                                    <button id="dash-topic-delete" onClick={async () => { await archiveTopic(topic.topic_id) }}>
+                                                        delete
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>

@@ -1,9 +1,12 @@
 const Category = require("../models/Category")
 const Subject = require("../models/Subject")
+const Page = require("../models/Page")
+const Topic = require("../models/Topic")
 
 //underscore (_) at the front of the  name == for internal use of the controller -harley
 
-const _archive_category = async (category_id) => {
+exports.archive_category = async (req, res) => {
+    category_id = req.body.category_id;
     const recur_result = await _recursively_archive_cat(category_id);
     if (recur_result == -1) {
         return res.status(500).json({msg:'Unexpected error.'})
@@ -12,14 +15,62 @@ const _archive_category = async (category_id) => {
     }
 }
 
-exports.archive_category = async (req, res) => {
-    category_id = req.body.category_id;
-    const recur_result = await _recursively_archive_cat(category_id);
-    //TODO: archive all child topics
-    if (recur_result == -1) {
-        return res.status(500).json({msg:'Unexpected error.'})
-    } else {
+exports.archive_topic = async (req, res) => {
+    topic_id = req.body.topic_id;
+    try {
+        const children_subs = await Subject.findAll({
+            where: {
+                parent_topic: topic_id
+            }
+        })
+        for (let i=0; i<children_subs.length; ++i) {
+            await _archive_subject(children_subs[i].subject_id)
+        }
+        Page.update(
+            { is_active:false }, {
+                where: {
+                    parent_topic: topic_id,
+                    is_active: true
+                }
+            })
+        Topic.update(
+            { is_active:false }, {
+                where: {
+                    topic_id: topic_id,
+                }
+            })
         return res.status(200).json({msg:'Successfully archived.'})
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json({msg:'Unexpected error.'})
+    }
+}
+
+const _archive_topic = async (topic_id) => {
+    try {
+        const children_subs = await Subject.findAll({
+            where: {
+                parent_topic: topic_id
+            }
+        })
+        for (let i=0; i<children_subs.length; ++i) {
+            await _archive_subject(children_subs[i].subject_id)
+        }
+        Page.update(
+            { is_active:false }, {
+                where: {
+                    parent_topic: topic_id,
+                    is_active: true
+                }
+            })
+        Topic.update(
+            { is_active:false }, {
+                where: {
+                    topic_id: topic_id,
+                }
+            })
+    } catch (e) {
+        console.log(e)
     }
 }
 
@@ -27,12 +78,46 @@ exports.archive_subject = async (req, res) => {
     subject_id = req.body.subject_id;
     console.log('archive sub endpoint reached')
     const recur_result = await _recursively_archive_sub(subject_id);
-    //TODO: archive all child pages
+    // Page.update(
+    //     { is_active:false }, {
+    //         where: {
+    //             parent_subject: subject_id,
+    //             is_active: true
+    //         }
+    //     })
     if (recur_result == -1) {
         return res.status(500).json({msg:'Unexpected error.'})
     } else {
         return res.status(200).json({msg:'Successfully archived.'})
     }
+}
+
+const _archive_subject = async (subject_id) => {
+    await _recursively_archive_sub(subject_id);
+    Page.update(
+        { is_active:false }, {
+            where: {
+                parent_subject: subject_id,
+                is_active: true
+            }
+        })
+}
+
+exports.archive_page = async (req, res) => {
+    page_id = req.body.page_id;
+    try {
+        Page.update(
+            {is_active: false}, {
+                where: {
+                    page_id: page_id
+                }
+            }
+        )
+        return res.status(200).json({msg:'Successfully archived.'})
+    } catch (e) {
+        return res.status(500).json({msg:'Unexpected error.'})
+    }
+    
 }
 
 async function _recursively_archive_cat(id) {
@@ -53,6 +138,12 @@ async function _recursively_archive_cat(id) {
     for (let i=0; i<children_cats.length; ++i) {
         await _recursively_archive_cat(children_cats[i].category_id)
     }
+    const children_topics = await Topic.findAll({
+        where: {parent_category: category_id}
+    })
+    for (let i=0; i<children_topics.length; ++i) {
+        await _archive_topic(children_topics[i].topic_id)
+    }
     
     Category.update(
         { is_active:false, }, {
@@ -61,8 +152,6 @@ async function _recursively_archive_cat(id) {
                 is_active: true
             }
         })
-    //ADD PAGES UPDATE HERE
-
     target_cat.update({ is_active: false })
     
     console.log('id: ' + id)
@@ -72,10 +161,9 @@ async function _recursively_archive_cat(id) {
 
 async function _recursively_archive_sub(id) {
     //id should never be null that'd delete every single subject -Harley
-    try {
-        console.log('attempting to recursively archive subjects')
-        console.log('id: ' + id)
-        if (id == null) {
+    console.log('attempting to recursively archive subjects')
+    console.log('id: ' + id)
+    if (id == null) {
         return -1;
     }
     
@@ -97,18 +185,21 @@ async function _recursively_archive_sub(id) {
     }
     
     Subject.update(
-        { is_active:false, }, {
+        { is_active:false }, {
             where: {
                 parent_subject: id,
                 is_active: true
             }
         })
-    //ADD PAGES UPDATE HERE
+    Page.update(
+        { is_active:false }, {
+            where: {
+                parent_subject: id,
+                is_active: true
+            }
+        })
 
     target_sub.update({ is_active: false })
     
-    
-    } catch (e) {
-        console.log(e)
-    }
+
 }

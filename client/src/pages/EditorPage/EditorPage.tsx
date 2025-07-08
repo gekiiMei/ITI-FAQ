@@ -3,25 +3,40 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import NamePrompt from "../../components/NamePrompt/NamePrompt";
+import EditorHeader from "../../components/EditorBlocks/EditorHeader/EditorHeader";
+import EditorParagraph from "../../components/EditorBlocks/EditorParagraph/EditorParagraph";
+import EditorList from "../../components/EditorBlocks/EditorList/EditorList";
 
 interface Subject {
     subject_id:number,
     name:string,
-    parent_subject:number,
-    parent_topic:number,
+}
+interface Page {
+    page_id: number,
+    title: string
+}
+
+interface BlockObject {
+    [key:string]: any
 }
 
 function EditorPage() {
     const base_url = import.meta.env.VITE_backend_base_url;
-    const [searchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams()
     //it says currParent but really it's the one that we're looking at, will change if i find time -Harley
     const [currParent_top, setCurrParent_top] = useState<number|null>(parseInt(searchParams.get("topic_id")??""));
     const [currParent_sub, setCurrParent_sub] = useState<number|null>(null);
+    // const [activePage, setActivePage] = useState<number|null>(searchParams.get("page")?parseInt(searchParams.get("page")??""):null) //messy i know -Harley
     const [subList, setSubList] = useState<Subject[]>([])
+    const [pageList, setPageList] = useState<Page[]>([])
     const [navStack, setNavStack] = useState<number[]>([]);
-    const [parentTopTemp, setParentTopTemp] = useState<number|null>(null);
 
-    const [promptNameSub, setShowPromptNameSub] = useState(false);
+    const [promptNameSub, setShowPromptNameSub] = useState<boolean>(false);
+    const [promptNamePage, setShowPromptNamePage] = useState<boolean>(false);
+    const [showBlockModal, setShowBlockModal] = useState<boolean>(false);
+
+    const [activePageTitle, setActivePageTitle] = useState<string|null>(null);
+    const [activePageContent, setActivePageContent] = useState<BlockObject[]>([])
     
     const getSubjects = async () => {
         console.log("fetching subjects with: ")
@@ -39,11 +54,24 @@ function EditorPage() {
         })
     }
 
+    const getPages = async() => {
+        await axios.post(base_url+"/api/authorfetch/fetch-pages", {
+            curr_topic: currParent_top,
+            curr_subject: currParent_sub
+        })
+        .then((resp) => {
+            setPageList(resp.data.pages)
+        })
+        .catch((err) => {
+
+        })
+    }
+
     const handleCreateSubject = async (name:string) => {
         await axios.post(base_url+"/api/create/create-subject", {
             subject_name: name,
             parent_topic: currParent_top,
-            parent_subject: currParent_sub,
+            parent_subject: currParent_sub
         })
         .then(async (resp) => {
             await getSubjects()
@@ -54,7 +82,76 @@ function EditorPage() {
     }
 
     const handleCreatePage = async (title:string) => {
-        
+        await axios.post(base_url+"/api/create/create-page", {
+            page_title: title,
+            parent_topic: currParent_top,
+            parent_subject: currParent_sub
+        })
+        .then(async (resp) => {
+            await getPages()
+        })
+        .catch((err) => {
+         
+        })
+    }
+
+    const getPageDetails = async (id:number) => {
+        await axios.post(base_url+"/api/authorfetch/fetch-details", {
+            page_id: id
+        })
+        .then((resp) => {
+            console.log(resp.data.details)
+            setActivePageTitle(resp.data.details.title)
+            setActivePageContent(resp.data.details.content)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
+
+    const openPage = async (id:number) => {
+        console.log("opening page id " + id)
+        const params = new URLSearchParams(searchParams);
+        params.set("page", id.toString());
+        setSearchParams(params);
+
+        await getPageDetails(id)
+    }
+
+    const savePage = async () => {
+        console.log(activePageContent)
+        await axios.post(base_url+"/api/authorupdate/save-page", {
+            page_id: searchParams.get("page"),
+            new_content: activePageContent
+        })
+        .then((resp) => {
+            alert("saved")
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
+
+    const createBlock = (block_type:string) => {
+        setShowBlockModal(false)
+        let newItem: BlockObject = {type: block_type}
+        switch (block_type) {
+            case "header":
+                newItem.text = ""
+                newItem.font = 24
+                break;
+            case "paragraph":
+                newItem.text = ""
+                break;
+            case "list":
+                newItem.listType = "numbered"
+                newItem.label = ""
+                newItem.entries = []
+                break;
+            case "image":
+                newItem.path = ""
+        }
+        setActivePageContent([...activePageContent, newItem])
     }
 
     const openSubject = async (id: number) => {
@@ -84,24 +181,36 @@ function EditorPage() {
         await axios.post(base_url+'/api/archive/archive-subject', {
             subject_id: id
         })
-        await getSubjects();
+        .then(async (resp)=>{await getSubjects()})
+    }
+
+    const archivePage = async (id: number) => {
+        await axios.post(base_url+'/api/archive/archive-page', {
+            page_id: id
+        })
+        .then(async (resp)=>{await getPages()})
     }
 
     useEffect(() => {
-        const asyncLoadSubs = async() => {
+        const asyncLoadSubs = async () => {
             console.log('getting subjects')
             await getSubjects()
+        }
+        const asyncLoadPages = async () => {
+            await getPages()
         }
         if (currParent_sub == null) {
             console.log("backsub: currParent_sub is null" )
             setCurrParent_top(parseInt(searchParams.get("topic_id")??""))
         }
         asyncLoadSubs()
+        asyncLoadPages()
     }, [currParent_sub, currParent_top])
     
     return(
         <>
         {promptNameSub && <NamePrompt setShowNamePrompt={setShowPromptNameSub} label="subject" someAction={async (name) => { await handleCreateSubject(name)}}/>}
+        {promptNamePage && <NamePrompt setShowNamePrompt={setShowPromptNamePage} label="page" someAction={async (name) => { await handleCreatePage(name)}}/>}
         <div className="editorpage-main">
 
             <div id="editor-container">
@@ -112,7 +221,7 @@ function EditorPage() {
                             <button id="sub-createnew" onClick={() => {setShowPromptNameSub(true)}}>
                                 new sub
                             </button>
-                            <button id="page-createnew">
+                            <button id="page-createnew" onClick={() => {setShowPromptNamePage(true)}}>
                                 new page
                             </button>
                         </div>
@@ -137,10 +246,99 @@ function EditorPage() {
                                 )
                             })
                         }
+                        {
+                            pageList.map((page, i) => {
+                                return(
+                                    <div className="pageItem" key={page.page_id}>
+                                        <div className="pageItem-left" onClick={async () => {await openPage(page.page_id)}}>
+                                            <p>{page.title}</p>
+                                        </div>
+                                        <div className="pageItem-right">
+                                            <button onClick={async () => {await archivePage(page.page_id)}}>delete</button>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                 </div>
                 <div id="editor-workbench">
-                    adsad
+                    {
+                        searchParams.get("page")==null ? <p>no page loaded</p> : 
+                        <div id="editor-container">
+                            <div id="editor-header">
+                                <h1>{activePageTitle}</h1>
+                            </div>
+                            <div id="editor-body">
+                                <div id="editor-content">
+                                    {
+                                        activePageContent.map((content, index) => {
+                                            console.log("content here")
+                                            console.log(content)
+                                            const deleteBlockItem = (index:number) => {
+                                                setActivePageContent(prev=>prev.filter((blockitem, i) => {return i!==index}))
+                                            }
+                                            switch(content.type) {
+                                                case "header":
+                                                    return (
+                                                        <div className="block-item">
+                                                            <EditorHeader content={content} blockIndex={index} setActivePageContent={setActivePageContent} />
+                                                            <button id="" className="block-delete" onClick={() => {deleteBlockItem(index)}}>del block</button>
+                                                        </div>
+                                                    )
+                                                    break;
+                                                case "paragraph":
+                                                    return (
+                                                        <div className="block-item">
+                                                            <EditorParagraph content={content} blockIndex={index} setActivePageContent={setActivePageContent} />
+                                                            <button id="" className="block-delete" onClick={() => {deleteBlockItem(index)}}>del block</button>
+                                                        </div>
+                                                    )
+                                                    break;
+                                                case "list":
+                                                    return (
+                                                        <div className="block-item">
+                                                            <EditorList content={content} blockIndex={index} setActivePageContent={setActivePageContent} />
+                                                            <button id="" className="block-delete" onClick={() => {deleteBlockItem(index)}}>del block</button>
+                                                        </div>
+                                                    )
+                                                    break;
+                                            }
+                                        })
+                                    }
+                                </div>
+                                <div id="editor-buttons">
+                                    { showBlockModal &&
+                                    <div id="blockselect-modal">
+                                        {/* i wonder if this could be dynamically rendered intsead in the future? when there are more block options -Harley */}
+                                        <div className="blockselect-item" onClick={() => {createBlock("header")}}>
+                                            Header
+                                        </div>
+                                        <div className="blockselect-item" onClick={() => {createBlock("paragraph")}}>
+                                            Paragraph
+                                        </div>
+                                        <div className="blockselect-item" onClick={() => {createBlock("list")}}>
+                                            List
+                                        </div>
+                                        <div className="blockselect-item" onClick={() => {createBlock("image")}}>
+                                            Image
+                                        </div>
+                                        <div className="blockselect-item" onClick={() => {createBlock("divider")}}>
+                                            Divider
+                                        </div>
+                                    </div>
+                                    }
+                                    <button id="editor-newbutt" onClick={() => {setShowBlockModal(true)}}>
+                                        New block
+                                    </button>
+                                    <button id="editor-savebutt" onClick={() => {savePage()}}>
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    
                 </div>
             </div>
         </div>

@@ -33,7 +33,7 @@
     flex-direction: column;
 }
 
-.subjectItem {
+.subjectItem, .pageItem {
     display: flex;
     justify-content: space-between;
 }

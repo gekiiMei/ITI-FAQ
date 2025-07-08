@@ -62,3 +62,41 @@ exports.get_subjects = async (req, res) => {
         return res.status(500).json({msg:e})
     }
 }
+
+exports.get_pages = async (req, res) => {
+    const curr_topic = req.body.curr_topic??null;
+    const curr_subject = req.body.curr_subject??null;
+    try {
+        const pages = await Page.findAll({
+            where: (curr_subject == null && curr_topic != null) ? {
+                parent_topic: curr_topic,
+                is_active: true
+            } : {
+                parent_subject: curr_subject,
+                is_active: true
+            }
+        })
+        console.log("result: " + pages)
+        return res.status(200).json({msg:'Successfully fetched pages', pages: pages})
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json({msg:e})
+    }
+}
+
+exports.get_page_details = async (req, res) => {
+    const page_id = req.body.page_id
+    console.log('getting the details of page id: ' + page_id)
+    try {
+        const details = await Page.findOne({
+            attributes: ['title', 'content'],
+            where: {page_id: page_id},
+            raw:true
+        })
+        console.log('result: ' + details)
+        return res.status(200).json({msg:'Successfully fetched details', details: details})
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json({msg:e})
+    }
+}

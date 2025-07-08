@@ -1,6 +1,7 @@
 const Category = require('../models/Category')
 const Subject = require('../models/Subject')
 const Page = require("../models/Page")
+const Topic = require("../models/Topic")
 
 exports.create_category = async (req, res) => {
     category_name = req.body.category_name;
@@ -85,19 +86,26 @@ exports.create_page = async (req, res) => {
     const page_title = req.body.page_title
     const parent_topic = req.body.parent_topic??null
     const parent_subject = req.body.parent_subject??null
-
-    const [new_page, created] = await Subject.findOrCreate({
+    const [new_page, created] = await Page.findOrCreate({
         where: {
-            name: subject_name,
+            title: page_title,
             parent_topic: parent_topic,
             parent_subject: parent_subject,
             is_active: true
         },
         defaults: {
-            name: subject_name,
+            title: page_title,
             parent_topic: parent_topic,
             parent_subject: parent_subject,
+            content: [],
             is_active: true
         }
     })
+
+    if (!created) {
+        return res.status(409).json({msg:'Subject ' + page_title + ' already exists!'})
+    } else {
+        return res.status(200).json({msg:'Subject created!', subject_id:new_page.subject_id})
+    }
+
 }
