@@ -1,0 +1,8 @@
+#editorimage-main {
+    border: 1px solid red;
+}
+
+#editorimage-preview {
+    width: auto;
+    height: 20rem;
+}

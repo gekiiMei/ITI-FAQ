@@ -3,6 +3,6 @@ const express = require('express')
 const router = express.Router();
 
 router.post('/save-page', authorUpdateController.updatePage);
-
+router.post('/save-image', authorUpdateController.saveImage)
 
 module.exports = router;

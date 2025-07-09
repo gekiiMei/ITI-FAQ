@@ -21,6 +21,7 @@ app.use('/api/create', createRoutes)
 app.use('/api/authorfetch', authorFetchRoutes)
 app.use('/api/authorupdate', authorUpdateRoutes)
 app.use('/api/archive', archiveRoutes)
+app.use('/uploads', express.static('uploads'))
 
 //uncomment to sync db vvv -harley
 // sequelize.sync() 

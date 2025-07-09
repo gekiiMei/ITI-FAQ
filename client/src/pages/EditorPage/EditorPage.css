@@ -44,6 +44,7 @@
     height: 100%;
     flex-direction: column;
     justify-content: center;
+    overflow-y: scroll
 }
 
 #editorworkbench-container {
@@ -55,4 +56,19 @@
 
 #editor-buttons {
     border: 1px solid blue
+}
+
+.blockItem {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.blockItem-left {
+    width: 70%;
+}
+
+#back-dashboard-wrapper {
+    display: flex;
+    width: 100%;
 }

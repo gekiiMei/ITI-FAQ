@@ -20,7 +20,7 @@ function EditorParagraph({ content, setActivePageContent, blockIndex }:props) {
         <>
         <div id="editorparagraph-main">
             <p>Text: </p>
-            <input type="text" placeholder="Header text:" value={text} onChange={(e)=>{setText(e.target.value)}}/>
+            <textarea placeholder="Paragraph text:" value={text} onChange={(e)=>{setText(e.target.value)}}/>
         </div>
         </>
     )

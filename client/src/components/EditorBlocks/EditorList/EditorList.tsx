@@ -27,7 +27,7 @@ function EditorList({ content, setActivePageContent, blockIndex }:props) {
         <>
         <div id="editorparagraph-main">
             <p>Label: </p>
-            <input type="text" placeholder="Header text:" value={label} onChange={(e)=>{setLabel(e.target.value)}}/>
+            <input type="text" placeholder="Label:" value={label} onChange={(e)=>{setLabel(e.target.value)}}/>
             <select value={listType} onChange={(e)=>{setListType(e.target.value)}}>
                 <option value={"numbered"}>numbered</option>
                 <option value={"bullet"}>bullet</option>
