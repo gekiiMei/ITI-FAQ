@@ -294,8 +294,8 @@ function EditorPage() {
                                 <div id="editor-content">
                                     {
                                         activePageContent.map((content, index) => {
-                                            console.log("content here")
-                                            console.log(content)
+                                            // console.log("content here")
+                                            // console.log(content)
                                             const deleteBlockItem = (index:number) => {
                                                 console.log("deleting index " + index)
                                                 // setActivePageContent(prev=>prev.filter((blockitem, i) => {console.log((i!==index?"keeping":"deleting") + i);return i!==index}))
@@ -304,7 +304,7 @@ function EditorPage() {
                                             switch(content.type) {
                                                 case "header":
                                                     return (
-                                                        <div className="blockItem">
+                                                        <div className="blockItem" key={index}>
                                                             <div className="blockItem-left">
                                                                 <EditorHeader content={content} blockIndex={index} setActivePageContent={setActivePageContent} />
                                                             </div>
@@ -316,7 +316,7 @@ function EditorPage() {
                                                     break;
                                                 case "paragraph":
                                                     return (
-                                                        <div className="blockItem">
+                                                        <div className="blockItem" key={index}>
                                                             <div className="blockItem-left">
                                                                 <EditorParagraph content={content} blockIndex={index} setActivePageContent={setActivePageContent} />
                                                             </div>
@@ -328,7 +328,7 @@ function EditorPage() {
                                                     break;
                                                 case "list":
                                                     return (
-                                                        <div className="blockItem">
+                                                        <div className="blockItem" key={index}>
                                                             <div className="blockItem-left">
                                                                 <EditorList content={content} blockIndex={index} setActivePageContent={setActivePageContent} />
                                                             </div>
@@ -340,7 +340,7 @@ function EditorPage() {
                                                     break;
                                                 case "image":
                                                     return (
-                                                        <div className="blockItem">
+                                                        <div className="blockItem" key={index}>
                                                             <div className="blockItem-left">
                                                                 <EditorImage content={content} blockIndex={index} setActivePageContent={setActivePageContent} />
                                                             </div>
