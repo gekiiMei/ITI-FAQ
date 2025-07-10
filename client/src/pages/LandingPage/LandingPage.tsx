@@ -8,7 +8,15 @@ function LandingPage() {
                 <AccountButton />
             </div>
             <div id="upper-container">
+                <div id="logo">
 
+                </div>
+                <form id="search-form">
+                    <input type="text" placeholder="What would you like to learn today?"/>
+                    <button id="search-butt">
+                        search
+                    </button>
+                </form>
             </div>
             <div id="lower-container">
 

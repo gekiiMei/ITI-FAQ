@@ -182,32 +182,7 @@ function ViewerPage() {
                     </div>
                     <div id="viewer-content">
                         {
-                            activePageContent.map((content, index) => {
-                                // console.log("content here")
-                                // console.log(content)
-                                switch(content.type) {
-                                    case "header":
-                                        return (
-                                            <ViewerHeader text={content.text} fontSize={content.font} key={index} />
-                                        )
-                                        break;
-                                    case "paragraph":
-                                        return (
-                                            <ViewerParagraph text={content.text} key={index} />
-                                        )
-                                        break;
-                                    case "list":
-                                        return (
-                                            <ViewerList label={content.label} listType={content.listType} entries={content.entries} key={index} />
-                                        )
-                                        break;
-                                    case "image":
-                                        return (
-                                            <ViewerImage path={content.path} key={index} />
-                                        )
-                                        break;
-                                }
-                            })
+                            
                         }
                     </div>
                 </div>
