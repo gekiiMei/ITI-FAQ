@@ -1,0 +1,59 @@
+.viewerpage-main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#viewer-body {
+    background-color: #F4F4F4;
+    border: 1px solid red;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90%;
+    width: 100%;
+}
+
+#viewer-nav {
+    height: 100%;
+    border: 1px solid blue;
+    width: 25%;
+}
+
+#viewer-page {
+    height: 100%;
+    width: 75%;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+
+#viewer-content {
+    background: white;
+    height: fit-content;
+    min-height: 80%;
+    padding: 1rem;
+    border-radius: 5px;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+#viewernav-label {
+    display: flex;
+    justify-content: space-between;
+}
+
+#viewernav-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.subjectItem, .pageItem {
+    display: flex;
+    justify-content: space-between;
+}
