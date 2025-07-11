@@ -1,9 +1,11 @@
 const Page = require("../models/Page")
+const Topic = require("../models/Topic")
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
 const sharp = require('sharp')
 const { finalization } = require("process")
+const { where } = require("sequelize")
 
 
 
@@ -30,6 +32,22 @@ exports.updatePage = async (req, res) => {
     }
 }
 
+exports.toggleTopicFeat = async (req, res) => {
+    const topic_id = req.body.curr_topic;
+    const feat = req.body.feat;
+    try {
+        Topic.update({
+            is_featured:feat
+        }, {where: {
+            topic_id:topic_id
+        }})
+        return res.status(200).json({msg:'Successfully toggled'})
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json({msg:'Unexpected error'})
+    }
+}
+
 const storage = multer.memoryStorage()
 const upload = multer({ storage }).single('file')
 
@@ -43,11 +61,11 @@ exports.saveImage = async (req, res) => {
         }
         console.log('dir')
         console.log(__dirname)
-        const uploadPath = path.join(__dirname, '../../uploads',user_id, page_id)
+        const uploadPath = path.posix.join(__dirname, '..','uploads',user_id, page_id)
         console.log(uploadPath)
         fs.mkdirSync(uploadPath, {recursive:true})
         const fileName = user_id + '_' + page_id + '_' + new Date().getTime().toString() + path.extname(req.file.originalname??".jpg")
-        const finalPath = path.join(uploadPath, fileName)
+        const finalPath = path.posix.join(uploadPath, fileName)
         try {
             const image = await sharp(req.file.buffer)
             const meta = await image.metadata()
@@ -64,7 +82,7 @@ exports.saveImage = async (req, res) => {
                 await image.toFile(finalPath)
             }
             console.log("succ. path: "+ finalPath)
-            return res.status(200).json({msg:'Successfully uploaded', path:path.join('/uploads',user_id, page_id, fileName)})
+            return res.status(200).json({msg:'Successfully uploaded', path:path.posix.join('/uploads',user_id, page_id, fileName)})
         } catch (e) {
             console.log(e)
             return res.status(500).json({msg:'Unexpected error'})

@@ -46,6 +46,11 @@ const Topic = sequelize.define('Topic', {
     rating_count: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    is_featured:{
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
     }
 }, {
     tableName: 'Topic',

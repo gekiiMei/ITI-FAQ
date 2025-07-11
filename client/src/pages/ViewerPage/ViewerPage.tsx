@@ -3,10 +3,7 @@ import NavBar from "../../components/NavBar/NavBar";
 import "./ViewerPage.css"
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
-import ViewerHeader from "../../components/ViewerBlocks/ViewerHeader/ViewerHeader";
-import ViewerParagraph from "../../components/ViewerBlocks/ViewerParagraph/ViewerParagraph";
-import ViewerList from "../../components/ViewerBlocks/ViewerList/ViewerList";
-import ViewerImage from "../../components/ViewerBlocks/ViewerImage/ViewerImage";
+import ReactMarkdown from "react-markdown"
 
 interface Subject {
     subject_id:number,
@@ -16,9 +13,7 @@ interface Page {
     page_id: number,
     title: string
 }
-interface BlockObject {
-    [key:string]: any
-}
+
 
 
 function ViewerPage() {
@@ -36,7 +31,9 @@ function ViewerPage() {
     const [navStack, setNavStack] = useState<{i:number, name:string}[]>([]);
 
     const [activePageTitle, setActivePageTitle] = useState<string|null>(null);
-    const [activePageContent, setActivePageContent] = useState<BlockObject[]>([])
+    const [activePageContent, setActivePageContent] = useState<string>("")
+
+    const [topicTitle, setTopicTitle] = useState<string>("")
 
     const getSubjects = async () => {
         console.log("fetching subjects with: ")
@@ -68,7 +65,7 @@ function ViewerPage() {
     }
 
     const getPageDetails = async (id:number) => {
-        setActivePageContent([])
+        setActivePageContent("")
         await axios.post(base_url+"/api/authorfetch/fetch-details", {
             page_id: id
         })
@@ -135,6 +132,25 @@ function ViewerPage() {
         asyncLoadPages()
     }, [currParent_sub, currParent_top])
 
+    const getTopicTitleFeat = async () => {
+        await axios.post(base_url+"/api/authorfetch/fetch-topic-title-feat", {
+            curr_topic: parseInt(searchParams.get("topic_id")??"")
+        })
+        .then((resp) => {
+            setTopicTitle(resp.data.topic_title)
+        })
+        .catch((err) => {
+
+        })
+    }
+
+    useEffect(()=>{
+        const asyncGetTopicTitleFeat = async () => {
+            await getTopicTitleFeat()
+        }
+        asyncGetTopicTitleFeat()
+    }, [])
+
     return (
         <>
         <div className="viewerpage-main">
@@ -142,7 +158,7 @@ function ViewerPage() {
             <div id="viewer-body">
                 <div id="viewer-nav">
                     <div id="viewernav-label">
-                        <p>Content</p>
+                        <p>{topicTitle}</p>
                     </div>
                     <div id="viewernav-body">
                         {currParent_sub != null && 
@@ -181,7 +197,7 @@ function ViewerPage() {
                         </div>
                     </div>
                     <div id="viewer-content">
-                        
+                        <ReactMarkdown>{activePageContent}</ReactMarkdown>
                     </div>
                 </div>
             </div>

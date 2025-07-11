@@ -39,6 +39,24 @@ exports.get_topics = async (req, res) => {
     }
 }
 
+exports.get_topic_title_feat = async (req, res) => {
+    const curr_topic_id = req.body.curr_topic
+    try {
+        const topic = await Topic.findOne({
+            attributes:['title', 'is_featured'],
+            where:{
+                topic_id:curr_topic_id
+            }
+        })
+        console.log("return from query: " + topic)
+        console.log("title: " + topic.title)
+        return res.status(200).json({msg:'Successfully fetched title and feat', topic_title:topic.title, featured:topic.is_featured})
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json({msg:e})
+    }
+}
+
 exports.get_subjects = async (req, res) => {
     console.log('querying subjects')
     const curr_topic = req.body.curr_topic??null;

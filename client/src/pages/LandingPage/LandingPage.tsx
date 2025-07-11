@@ -21,7 +21,6 @@ function LandingPage() {
 
     useEffect(() => {
         if (debouncedQuery != "") {
-             // Selvin: MAKE AXIOS CALL HERE TO /api/userfetch/get-suggestions. Pass debouncedQuery under the label of "current_query"
             axios.get( base_url +'/api/userfetch/get-suggestions', {
                 params: {current_query: debouncedQuery}
             })

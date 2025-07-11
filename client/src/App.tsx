@@ -9,6 +9,7 @@ import './App.css'
 
 // TEMPORARY IMPORT FOR COMPONENT TESTING! -harley
 import TEMPTESTPAGE from "./pages/TEMPTESTPAGE.tsx"
+import SearchResultsPage from "./pages/SearchResultsPage/SearchResultsPage.tsx"
 
 function App() {
 
@@ -22,7 +23,8 @@ function App() {
           <Route path="/dashboard" element= { <DashboardPage /> } />
           <Route path="/editor" element = { <EditorPage /> } />
         </Route>
-        <Route path="/viewer" element = { <ViewerPage /> } />
+        <Route path="/viewer" element = { <ViewerPage /> } /> 
+        <Route path="/search" element = { <SearchResultsPage /> } />
 
         {/* TEMPORARY!! FOR COMPONENT TESTING!! DELETE AFTER -Harley */}
         <Route path="/comp-test" element={ <TEMPTESTPAGE /> } />

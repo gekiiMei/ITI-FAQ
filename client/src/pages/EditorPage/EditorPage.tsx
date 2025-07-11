@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import NamePrompt from "../../components/NamePrompt/NamePrompt";
 
+import { FaRegStar } from "react-icons/fa";
 
 import { BlockTypeSelect, InsertThematicBreak, ListsToggle, MDXEditor, UndoRedo, BoldItalicUnderlineToggles, InsertImage, InsertTable} from "@mdxeditor/editor";
 import '@mdxeditor/editor/style.css'
 import { headingsPlugin, quotePlugin, thematicBreakPlugin, toolbarPlugin, listsPlugin, linkPlugin, imagePlugin, tablePlugin, markdownShortcutPlugin } from "@mdxeditor/editor";
+import { FaZ } from "react-icons/fa6";
 
 interface Subject {
     subject_id:number,
@@ -41,6 +43,9 @@ function EditorPage() {
     const [editingTitle, setEditingTitle] = useState<boolean>(false)
     const [tempTitle, setTempTitle] = useState<string|null>(null)
 
+    const [topicTitle, setTopicTitle] = useState<string>("")
+    const [featured, setFeatured] = useState<boolean>(false);
+
     const navigate = useNavigate()
     
     const getSubjects = async () => {
@@ -66,6 +71,19 @@ function EditorPage() {
         })
         .then((resp) => {
             setPageList(resp.data.pages)
+        })
+        .catch((err) => {
+
+        })
+    }
+
+    const getTopicTitleFeat = async () => {
+        await axios.post(base_url+"/api/authorfetch/fetch-topic-title-feat", {
+            curr_topic: parseInt(searchParams.get("topic_id")??"")
+        })
+        .then((resp) => {
+            setTopicTitle(resp.data.topic_title)
+            setFeatured(resp.data.featured)
         })
         .catch((err) => {
 
@@ -124,6 +142,19 @@ function EditorPage() {
 
         })
     }
+    
+    const handleFeatureClick = async () => {
+        await axios.post(base_url+"/api/authorupdate/toggle-feat", {
+            curr_topic: parseInt(searchParams.get("topic_id")??""),
+            feat: !featured
+        })
+        .then((resp) => {
+            setFeatured(!featured);
+        })
+        .catch((err) => {
+
+        })
+    }
 
     const getPageDetails = async (id:number) => {
         // setActivePageContent([])
@@ -158,6 +189,8 @@ function EditorPage() {
             new_title: tempTitle ? tempTitle : activePageTitle
         })
         .then(async (resp) => {
+            console.log("markdown: ")
+            console.log(currentMarkdown)
             await getPages()
             setActivePageTitle(tempTitle??activePageTitle)
             alert("saved")
@@ -227,6 +260,13 @@ function EditorPage() {
         asyncLoadPages()
     }, [currParent_sub, currParent_top])
 
+    useEffect(()=>{
+        const asyncGetTopicTitleFeat = async () => {
+            await getTopicTitleFeat()
+        }
+        asyncGetTopicTitleFeat()
+    }, [])
+
     // useEffect(()=>{
     //     console.log(currentMarkdown)
     // }, [currentMarkdown])
@@ -244,7 +284,13 @@ function EditorPage() {
             <div id="editor-container">
                 <div id="editor-navigator">
                     <div id="editornav-label">
-                        <p>Content</p>
+                        <div id="title-featurebutt">
+                            <p>{topicTitle}</p>
+                            <div id="feature-button" onClick={async () => {await handleFeatureClick()}}>
+                                <FaRegStar /> 
+                                <input type="checkbox" checked={featured}/>
+                            </div>
+                        </div>
                         <div id="sub-create-wrapper">
                             <button id="sub-createnew" onClick={() => {setShowPromptNameSub(true)}}>
                                 new sub
