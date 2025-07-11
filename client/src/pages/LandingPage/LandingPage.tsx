@@ -1,10 +1,12 @@
 import "./LandingPage.css"
 import { useEffect, useState } from "react";
+import axios from "axios";
 import AccountButton from "../../components/AccountButton/AccountButton";
 function LandingPage() {
     const [searchQuery, setSearchQuery] = useState<string>("")
     const [debouncedQuery, setDebouncedQuery] = useState<string>("")
     const [suggestions, setSuggestions] = useState<string[]>([])
+    const base_url = import.meta.env.VITE_backend_base_url;
     const handleSearchSubmit = async () => {
 
     }
@@ -19,7 +21,12 @@ function LandingPage() {
 
     useEffect(() => {
         if (debouncedQuery != "") {
-            // Selvin: MAKE AXIOS CALL HERE TO /api/userfetch/get-suggestions. Pass debouncedQuery under the label of "current_query"
+             // Selvin: MAKE AXIOS CALL HERE TO /api/userfetch/get-suggestions. Pass debouncedQuery under the label of "current_query"
+            axios.get( base_url +'/api/userfetch/get-suggestions', {
+                params: {current_query: debouncedQuery}
+            })
+        } else {
+            setSuggestions([]);
         }
     }, [debouncedQuery])
     return (
