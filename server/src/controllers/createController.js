@@ -97,7 +97,7 @@ exports.create_page = async (req, res) => {
             title: page_title,
             parent_topic: parent_topic,
             parent_subject: parent_subject,
-            content: [],
+            content: "",
             is_active: true
         }
     })

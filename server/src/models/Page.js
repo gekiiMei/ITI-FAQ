@@ -19,7 +19,7 @@ const Page = sequelize.define('Page', {
         allowNull: false
     },
     content: {
-        type: DataTypes.JSONB,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     parent_topic: {

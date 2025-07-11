@@ -3,10 +3,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import NamePrompt from "../../components/NamePrompt/NamePrompt";
-import EditorHeader from "../../components/EditorBlocks/EditorHeader/EditorHeader";
-import EditorParagraph from "../../components/EditorBlocks/EditorParagraph/EditorParagraph";
-import EditorList from "../../components/EditorBlocks/EditorList/EditorList";
-import EditorImage from "../../components/EditorBlocks/EditorImage/EditorImage";
+
+
+import { BlockTypeSelect, InsertThematicBreak, ListsToggle, MDXEditor, UndoRedo, BoldItalicUnderlineToggles, InsertImage, InsertTable} from "@mdxeditor/editor";
+import '@mdxeditor/editor/style.css'
+import { headingsPlugin, quotePlugin, thematicBreakPlugin, toolbarPlugin, listsPlugin, linkPlugin, imagePlugin, tablePlugin, markdownShortcutPlugin } from "@mdxeditor/editor";
 
 interface Subject {
     subject_id:number,
@@ -15,10 +16,6 @@ interface Subject {
 interface Page {
     page_id: number,
     title: string
-}
-
-interface BlockObject {
-    [key:string]: any
 }
 
 function EditorPage() {
@@ -36,10 +33,13 @@ function EditorPage() {
 
     const [promptNameSub, setShowPromptNameSub] = useState<boolean>(false);
     const [promptNamePage, setShowPromptNamePage] = useState<boolean>(false);
-    const [showBlockModal, setShowBlockModal] = useState<boolean>(false);
+    const [activePageTitle, setActivePageTitle] = useState<string>("");
 
-    const [activePageTitle, setActivePageTitle] = useState<string|null>(null);
-    const [activePageContent, setActivePageContent] = useState<BlockObject[]>([])
+    const [currentMarkdown, setCurrentMarkdown] = useState<string>("")
+    const [initialMarkdown, setInitialMarkdown] = useState<string>("")
+
+    const [editingTitle, setEditingTitle] = useState<boolean>(false)
+    const [tempTitle, setTempTitle] = useState<string|null>(null)
 
     const navigate = useNavigate()
     
@@ -100,15 +100,42 @@ function EditorPage() {
         })
     }
 
+    const handleUpdateTitle = async (newTitle:string) => {
+        if (newTitle == "") {
+            alert("Title cannot be empty")
+        }
+
+        await axios.post(base_url+"/api/authorfetch/check-page-title", {
+            new_title:newTitle,
+            parent_topic: currParent_top,
+            parent_subject: currParent_sub
+        })
+        .then((resp) => {
+            if (resp.data.found) {
+                alert("exists")
+                setTempTitle(null)
+            }
+            console.log("temp is now updated")
+            console.log(tempTitle??"")
+            setEditingTitle(false)
+            setActivePageTitle(tempTitle??activePageTitle)
+        })
+        .catch((err) => {
+
+        })
+    }
+
     const getPageDetails = async (id:number) => {
-        setActivePageContent([])
+        // setActivePageContent([])
+        setCurrentMarkdown("")
         await axios.post(base_url+"/api/authorfetch/fetch-details", {
             page_id: id
         })
         .then((resp) => {
             console.log(resp.data.details)
             setActivePageTitle(resp.data.details.title)
-            setActivePageContent(resp.data.details.content)
+            setCurrentMarkdown(resp.data.details.content)
+            setInitialMarkdown(resp.data.details.content)
         })
         .catch((err) => {
             console.log(err)
@@ -125,43 +152,19 @@ function EditorPage() {
     }
 
     const savePage = async () => {
-        console.log(activePageContent)
         await axios.post(base_url+"/api/authorupdate/save-page", {
             page_id: searchParams.get("page"),
-            new_content: activePageContent
+            new_content: currentMarkdown,
+            new_title: tempTitle ? tempTitle : activePageTitle
         })
-        .then((resp) => {
+        .then(async (resp) => {
+            await getPages()
+            setActivePageTitle(tempTitle??activePageTitle)
             alert("saved")
         })
         .catch((err) => {
             console.log(err)
         })
-    }
-
-    const createBlock = (block_type:string) => {
-        setShowBlockModal(false)
-        let newItem: BlockObject = {type: block_type}
-        switch (block_type) {
-            case "header":
-                newItem.text = ""
-                newItem.font = 24
-                break;
-            case "paragraph":
-                newItem.text = ""
-                break;
-            case "list":
-                newItem.listType = "numbered"
-                newItem.label = ""
-                newItem.entries = []
-                break;
-            case "image":
-                newItem.user_id = localStorage.getItem("current_user_id")
-                newItem.page_id = searchParams.get("topic_id")??""
-                newItem.block_hash = newItem.user_id + '_' + newItem.page_id + '_' + new Date().getTime().toString()
-                newItem.path = image_url+"/topic-thumbnails/placeholder.png"
-                break;
-        }
-        setActivePageContent([...activePageContent, newItem])
     }
 
     const openSubject = async (id: number, name:string) => {
@@ -223,6 +226,10 @@ function EditorPage() {
         asyncLoadSubs()
         asyncLoadPages()
     }, [currParent_sub, currParent_top])
+
+    // useEffect(()=>{
+    //     console.log(currentMarkdown)
+    // }, [currentMarkdown])
     
     return(
         <>
@@ -288,11 +295,92 @@ function EditorPage() {
                         searchParams.get("page")==null ? <p>no page loaded</p> : 
                         <div id="editorworkbench-container">
                             <div id="editor-header">
-                                <h1>{activePageTitle}</h1>
+                                { editingTitle ?
+                                <form id="editortitle-left" onSubmit={async (e) => { e.preventDefault(); await handleUpdateTitle(tempTitle??"")}}>
+                                    <input type="text" value={tempTitle??activePageTitle} onChange={(e) => {setTempTitle(e.target.value)}}/>
+                                    <button id="editortitle-edit">
+                                        ok
+                                    </button>
+                                </form>
+                                :
+                                <div id="editortitle-left">
+                                    <h1>{activePageTitle}</h1>
+                                    <button id="editortitle-edit" onClick={() => {setEditingTitle(true)}}>
+                                        edit title
+                                    </button>
+                                </div>
+                                }
                             </div>
                             <div id="editor-body">
                                 <div id="editor-content">
-                                   
+                                    {
+                                        searchParams.get("page")==null ? <p>no page loaded</p> : 
+                                        <MDXEditor
+                                        key={initialMarkdown}
+                                        placeholder="Write information here!"
+                                        markdown={initialMarkdown}
+                                        onChange={(md:string) => {setCurrentMarkdown(md)}}
+                                        plugins={[
+                                            toolbarPlugin({
+                                            toolbarClassName: 'my-classname',
+                                            toolbarContents: () => (
+                                                <>
+                                                <UndoRedo />
+                                                <BlockTypeSelect />
+                                                <BoldItalicUnderlineToggles />
+                                                <ListsToggle />
+                                                <InsertThematicBreak />
+                                                <InsertImage />
+                                                <InsertTable />
+                                                </>
+                                            )
+                                            }),
+                                            linkPlugin(),
+                                            imagePlugin({
+                                                imageUploadHandler:  async (imageFile) => {
+                                                    console.log(imageFile)
+                                                    const data = new FormData()
+                                                    data.append("user_id", localStorage.getItem("current_user_id")??"")
+                                                    data.append("page_id", searchParams.get("topic_id")??"")
+                                                    data.append("file", imageFile)
+                                                    try {
+                                                        const resp = await axios.post(base_url+"/api/authorupdate/save-image", data, {
+                                                            headers: {
+                                                                "Content-Type":"multipart/form-data"
+                                                            }
+                                                        })
+                                                        const path = await resp.data.path
+                                                        console.log("image path")
+                                                        console.log(base_url +  path)
+                                                        return Promise.resolve(base_url + path)
+                                                    } catch (e) {
+                                                        console.log(e)
+                                                        return Promise.resolve("err")
+                                                    }
+                                                }
+                                            }),
+                                            tablePlugin(),
+                                            headingsPlugin(),
+                                            quotePlugin(),
+                                            listsPlugin(),
+                                            thematicBreakPlugin(),
+                                            markdownShortcutPlugin()
+
+                                        ]}
+                                        />
+                                    }
+                                    {/* IMPORTANT!!! IMAGE DELETION LOGIC FROM SERVER STORAGE WHEN MARKUP IMG IS DELETED IS MISSING!!
+                                        i will try to implement it if i find time, but if i do not then I AM SORRY 
+                                        but the idea i had for the deletion logic is:
+                                            1. on mount of the markdown editor, scan through the loaded markdown and extract all image links into an array using regex
+                                            2. when save is clicked, extract the new links into an array as well
+                                            3. compare the array of old links vs new links
+                                            4. send the list of URLs missing to server
+                                            5. delete the corresponding files in server
+                                            6. profit!!!!!!!!!!
+                                            
+                                        -Harley
+                                    */}
                                     <button id="editor-savebutt" onClick={() => {savePage()}}>
                                         Save
                                     </button>

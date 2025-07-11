@@ -10,9 +10,14 @@ const { finalization } = require("process")
 exports.updatePage = async (req, res) => {
     const page_id = req.body.page_id
     const new_content = req.body.new_content
+    const new_title = req.body.new_title
     try {
         Page.update(
-            {content: new_content}, {
+            {
+                content: new_content,
+                title: new_title
+            }, 
+            {
                 where: {
                     page_id:page_id
                 }
@@ -32,7 +37,6 @@ exports.saveImage = async (req, res) => {
     upload(req, res, async (err) => {
         const user_id = req.body.user_id
         const page_id = req.body.page_id
-        const block_hash = req.body.block_hash
         if (err) {
             console.log(err)
             return res.status(500).json({msg:'Unexpected error'})
@@ -42,13 +46,25 @@ exports.saveImage = async (req, res) => {
         const uploadPath = path.join(__dirname, '../../uploads',user_id, page_id)
         console.log(uploadPath)
         fs.mkdirSync(uploadPath, {recursive:true})
-        const finalPath = path.join(uploadPath, block_hash+'.png')
+        const fileName = user_id + '_' + page_id + '_' + new Date().getTime().toString() + path.extname(req.file.originalname??".jpg")
+        const finalPath = path.join(uploadPath, fileName)
         try {
-            await sharp(req.file.buffer)
-            .png()
-            .toFile(finalPath)
-            console.log("succ")
-            return res.status(200).json({msg:'Successfully uploaded'})
+            const image = await sharp(req.file.buffer)
+            const meta = await image.metadata()
+
+            const tooBig = meta.width > 1080 || meta.height > 1080 //change max measures here -Harley
+
+            if (tooBig) {
+                await image.resize({
+                    width: 1080,
+                    height: 1080,
+                    fit: 'inside'
+                }).toFile(finalPath)
+            } else{
+                await image.toFile(finalPath)
+            }
+            console.log("succ. path: "+ finalPath)
+            return res.status(200).json({msg:'Successfully uploaded', path:path.join('/uploads',user_id, page_id, fileName)})
         } catch (e) {
             console.log(e)
             return res.status(500).json({msg:'Unexpected error'})

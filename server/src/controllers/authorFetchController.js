@@ -100,3 +100,27 @@ exports.get_page_details = async (req, res) => {
         return res.status(500).json({msg:e})
     }
 }
+
+exports.check_page_title = async (req, res) => {
+    const new_title = req.body.new_title;
+    const parent_topic = req.body.parent_topic??null
+    const parent_subject = req.body.parent_subject??null
+    try {
+        const res_page = await Page.findOne({
+            where: {
+                title: new_title,
+                parent_topic: parent_topic,
+                parent_subject: parent_subject,
+                is_active: true
+            }
+        })
+        console.log("looking for " + new_title)
+        console.log("found " + res_page)
+        const status = res_page?true:false
+        return res.status(200).json({msg:'Successfully checked', existing:status})
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json({msg:"Unexpected error"})
+    }
+
+}

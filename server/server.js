@@ -9,6 +9,7 @@ const authRoutes = require('./src/routes/authRoutes');
 const createRoutes = require('./src/routes/createRoutes')
 const authorFetchRoutes = require('./src/routes/authorFetchRoutes')
 const authorUpdateRoutes = require('./src/routes/authorUpdateRoutes')
+const userFetchRoutes = require('./src/routes/userFetchRoutes')
 const archiveRoutes = require('./src/routes/archiveRoutes')
 const cookieParser = require('cookie-parser');
 
@@ -20,6 +21,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/create', createRoutes)
 app.use('/api/authorfetch', authorFetchRoutes)
 app.use('/api/authorupdate', authorUpdateRoutes)
+app.use('/api/userfetch', userFetchRoutes)
 app.use('/api/archive', archiveRoutes)
 app.use('/uploads', express.static('uploads'))
 

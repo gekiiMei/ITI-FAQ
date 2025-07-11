@@ -8,4 +8,6 @@ router.post('/fetch-subjects', authorFetchController.get_subjects)
 router.post('/fetch-pages', authorFetchController.get_pages)
 router.post('/fetch-details', authorFetchController.get_page_details)
 
+router.post('/check-page-title', authorFetchController.check_page_title)
+
 module.exports = router;

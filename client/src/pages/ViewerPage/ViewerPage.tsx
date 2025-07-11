@@ -181,9 +181,7 @@ function ViewerPage() {
                         </div>
                     </div>
                     <div id="viewer-content">
-                        {
-                            
-                        }
+                        
                     </div>
                 </div>
             </div>
