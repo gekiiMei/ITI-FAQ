@@ -27,7 +27,7 @@ app.use('/api/archive', archiveRoutes)
 app.use('/uploads', express.static(path.posix.join(__dirname, 'uploads')))
 
 //uncomment to sync db vvv -harley
-// sequelize.sync() 
+sequelize.sync() 
 console.log(path.posix.join(__dirname, 'uploads'))
 app.listen(express_port, ()=> {
     console.log('Listening on port 8080');

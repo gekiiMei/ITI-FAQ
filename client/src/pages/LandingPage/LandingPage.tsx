@@ -2,10 +2,14 @@ import "./LandingPage.css"
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AccountButton from "../../components/AccountButton/AccountButton";
+
+interface suggestion{
+    title : string
+}
 function LandingPage() {
     const [searchQuery, setSearchQuery] = useState<string>("")
     const [debouncedQuery, setDebouncedQuery] = useState<string>("")
-    const [suggestions, setSuggestions] = useState<string[]>([])
+    const [suggestions, setSuggestions] = useState<suggestion[]>([])
     const base_url = import.meta.env.VITE_backend_base_url;
     const handleSearchSubmit = async () => {
 
@@ -23,6 +27,12 @@ function LandingPage() {
         if (debouncedQuery != "") {
             axios.get( base_url +'/api/userfetch/get-suggestions', {
                 params: {current_query: debouncedQuery}
+            })
+            .then((resp)=>{
+                setSuggestions(resp.data.suggestions)
+            })
+            .catch((err) => {
+                console.error(err)
             })
         } else {
             setSuggestions([]);
@@ -44,6 +54,17 @@ function LandingPage() {
                         search
                     </button>
                 </form>
+                <div id='suggestions-container'>
+                    {
+                        suggestions.map((suggestion, index) => {
+                            return(
+                                <div key={index}>
+                                    {suggestion.title}
+                                </div>
+                            )
+                        })
+                    }
+                </div>
             </div>
             <div id="lower-container">
 

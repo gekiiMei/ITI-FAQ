@@ -1,9 +1,30 @@
 const Topic = require('../models/Topic');
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 
 exports.get_suggestions = async (req, res) => {
-    const currentQuery = req.query['current_query']
+    const currentQuery = req.query['current_query'];
     console.log('Search query:', currentQuery);
+
+    try {
+        const results = await Topic.findAll({
+            where: {
+                title: {
+                    [Sequelize.Op.iLike]: `%${currentQuery}%`/*iLike is Postgres exclusive*/ 
+                },
+                is_active: true
+            }
+        });
+
+        console.log('Matching topics:', results); 
+        return res.status(200).json({msg:'successfully search', suggestions: results})
+    } catch (error) {
+        console.error('Error fetching suggestions:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+
     //Selvin: Query the Topic model using the findAll() function from Sequelize. Example query:
     /*
     const activeTopics = await Topic.findAll({
@@ -33,5 +54,3 @@ exports.get_suggestions = async (req, res) => {
 
     After everything, console.log the variable where you stored the results so we can check.
     */
-    
-};
