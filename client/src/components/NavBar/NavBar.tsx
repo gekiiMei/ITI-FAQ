@@ -4,21 +4,43 @@ import AccountButton from "../AccountButton/AccountButton";
 import "./NavBar.css"
 import axios from "axios";
 
-interface suggestion{
-    title : string
+interface Topic {
+    topic_id: number;
+    title: string;
+}
+
+interface Page {
+    page_id: number;
+    title: string;
+    parent_topic: number;
+}
+
+interface Suggestions {
+    topics: Topic[];
+    pages: Page[];
 }
 
 function NavBar() {
     const navigate = useNavigate()
     const [searchQuery, setSearchQuery] = useState<string>("")
     const [debouncedQuery, setDebouncedQuery] = useState<string>("")
-    const [suggestions, setSuggestions] = useState<suggestion[]>([])
+    const [suggestions, setSuggestions] = useState<Suggestions>({ topics: [], pages: [] })
     const base_url = import.meta.env.VITE_backend_base_url;
 
     const handleSearchSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         console.log(`search?q=${searchQuery}`)
-        navigate(`/search?q=${searchQuery}`)
+        navigate(`/search?q=${searchQuery}&sort=date`)
+    }
+
+    const handleTopicClick = (topicId: number) => {
+        console.log(`Navigating to topic: ${topicId}`)
+        navigate(`/viewer?topic_id=${topicId}`)
+    }
+
+    const handlePageClick = (pageId: number, parentTopicId: number) => {
+        console.log(`Navigating to page: ${pageId} in topic: ${parentTopicId}`)
+        navigate(`/viewer?topic_id=${parentTopicId}&page=${pageId}`)
     }
 
     useEffect(()=>{
@@ -41,7 +63,7 @@ function NavBar() {
                 console.error(err)
             })
         } else {
-            setSuggestions([]);
+            setSuggestions({ topics: [], pages: [] });
         }
 
     }, [debouncedQuery])
@@ -49,10 +71,27 @@ function NavBar() {
         <div className="navbar-main">
             <form id="searchbar" onSubmit={(e) => {handleSearchSubmit(e)}}>
                 <input type="text" placeholder="Search..." value={searchQuery} onChange={(e) => {setSearchQuery(e.target.value)}}/>
-                {suggestions.map((suggestion, i) => {
+                {/* Topics */}
+                {suggestions.topics && suggestions.topics.map((topic, index) => {
                     return(
-                        <div className="suggestion-item">
-                            
+                        <div 
+                            key={`topic-${topic.topic_id}`} 
+                            className="suggestion-item topic-suggestion"
+                            onClick={() => handleTopicClick(topic.topic_id)}
+                        >
+                            <span className="suggestion-icon">📚</span> {topic.title}
+                        </div>
+                    )
+                })}
+                {/* Pages */}
+                {suggestions.pages && suggestions.pages.map((page, index) => {
+                    return(
+                        <div 
+                            key={`page-${page.page_id}`} 
+                            className="suggestion-item page-suggestion"
+                            onClick={() => handlePageClick(page.page_id, page.parent_topic)}
+                        >
+                            <span className="suggestion-icon">📄</span> {page.title}
                         </div>
                     )
                 })}

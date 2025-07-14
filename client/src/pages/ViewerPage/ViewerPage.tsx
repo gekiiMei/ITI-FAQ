@@ -149,7 +149,16 @@ function ViewerPage() {
         const asyncGetTopicTitleFeat = async () => {
             await getTopicTitleFeat()
         }
+        const asyncOpenPage = async () => {
+            console.log("mounted")
+            if (searchParams.get("page")) {
+                console.log("got page from params")
+                await openPage(parseInt(searchParams.get("page")??""))
+            }
+        }
         asyncGetTopicTitleFeat()
+        asyncOpenPage()
+        
     }, [])
 
     return (

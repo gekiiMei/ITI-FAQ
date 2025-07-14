@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, useLocation } from "react-router-dom"
 import AuthRoute from "./utils/AuthRoute.tsx"
 import LandingPage from "./pages/LandingPage/LandingPage.tsx"
 import LoginPage from "./pages/LoginPage/LoginPage.tsx"
@@ -12,6 +12,7 @@ import TEMPTESTPAGE from "./pages/TEMPTESTPAGE.tsx"
 import SearchResultsPage from "./pages/SearchResultsPage/SearchResultsPage.tsx"
 
 function App() {
+  const location = useLocation()
 
   return (
     <>
@@ -24,7 +25,7 @@ function App() {
           <Route path="/editor" element = { <EditorPage /> } />
         </Route>
         <Route path="/viewer" element = { <ViewerPage /> } /> 
-        <Route path="/search" element = { <SearchResultsPage /> } />
+        <Route path="/search" element = { <SearchResultsPage /> } key={location.key}/>
 
         {/* TEMPORARY!! FOR COMPONENT TESTING!! DELETE AFTER -Harley */}
         <Route path="/comp-test" element={ <TEMPTESTPAGE /> } />

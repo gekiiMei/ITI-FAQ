@@ -12,6 +12,9 @@ interface ResultItem {
     total_rating:number
     rating_count:number
     updatedAt:string
+    topic_id: number
+    page_id: number
+    parent_topic: number
 }
 
 function SearchResultsPage() {
@@ -46,12 +49,22 @@ function SearchResultsPage() {
         })
     }
 
+    const handleTopicClick = (topicId: number) => {
+        console.log(`Navigating to topic: ${topicId}`)
+        navigate(`/viewer?topic_id=${topicId}`)
+    }
+
+    const handlePageClick = (pageId: number, parentTopicId: number) => {
+        console.log(`Navigating to page: ${pageId} in topic: ${parentTopicId}`)
+        navigate(`/viewer?topic_id=${parentTopicId}&page=${pageId}`)
+    }
+
     useEffect(() => {
         const asyncGetResults = async () => {
             await getResults()
         }
         asyncGetResults()
-    }, [])
+    }, [searchQuery, sortMethod])
 
     // useEffect(() => {
     //     console.log("query: " + searchParams.get("q"))
@@ -72,17 +85,18 @@ function SearchResultsPage() {
                         <button onClick={() => {setShowSortModal(true)}}>sort</button>
                         {showSortModal && 
                         <div id="sort-modal">
-                            <p onClick={()=>{navigate(`/search?q=${searchQuery}&sort=date`)}}>date updated</p>
+                            <p onClick={()=>{navigate(`/search?q=${searchQuery}&sort=date`); }}>date updated</p>
                             <p onClick={()=>{navigate(`/search?q=${searchQuery}&sort=rating`)}}>rating</p>
                         </div>
                         }
                     </div>
                 </div>
                 <div id="searchres-container">
+                    <h1>Topics</h1>
                     {
                         resultTopics.map((res, i) => {
                             return (
-                                <div className="resultTopic">
+                                <div className="resultTopic" onClick={() => {handleTopicClick(res.topic_id)}}>
                                     <div className="resultTopic-left">
                                         <img className="topic-thumbnail" src={res.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+res.thumbnail_path} alt="" />
                                         <div className="topic-titledate-wrapper">
@@ -98,12 +112,13 @@ function SearchResultsPage() {
                             )
                         })
                     }
+                    <h1>Pages</h1>
                     {
                         resultPages.map((res, i) => {
                             return (
-                                <div className="resultPage">
+                                <div className="resultPage" onClick={() => {handlePageClick(res.page_id, res.parent_topic)}}>
                                     <div className="pagetitle-wrapper">
-                                        <p>{res.parentTopic.title}</p>
+                                        <p>Topic: {res.parentTopic.title}</p>
                                     </div>
                                     <div className="pagetopic-wrapper">
                                         <p>{res.title}</p>

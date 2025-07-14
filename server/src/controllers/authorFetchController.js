@@ -84,10 +84,12 @@ exports.get_subjects = async (req, res) => {
 exports.get_pages = async (req, res) => {
     const curr_topic = req.body.curr_topic??null;
     const curr_subject = req.body.curr_subject??null;
+    console.log("getting pages, current sub: " + curr_subject)
     try {
         const pages = await Page.findAll({
-            where: (curr_subject == null && curr_topic != null) ? {
+            where: (curr_subject == null) ? {
                 parent_topic: curr_topic,
+                parent_subject: null,
                 is_active: true
             } : {
                 parent_subject: curr_subject,

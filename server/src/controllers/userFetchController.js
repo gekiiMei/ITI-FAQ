@@ -1,6 +1,5 @@
 const Page  = require('../models/Page');
 const Topic = require('../models/Topic');
-const Page = require('../models/Page')
 const { Op, Sequelize } = require('sequelize');
 
 exports.get_suggestions = async (req, res) => {
@@ -43,14 +42,24 @@ exports.get_suggestions = async (req, res) => {
 
 exports.search = async (req, res) => {
     const currentQuery = req.query['search_query']
+    const sortMethod = req.query['sort_method']
     console.log('searching for ' + currentQuery)
+    console.log('sorting method: ' + sortMethod)
     try {
         const results_topics = await Topic.findAll({
+            attributes: {
+                include:[
+                    [Sequelize.literal("CASE WHEN rating_count = 0 THEN 0 ELSE CAST(total_rating AS FLOAT) / rating_count END", 'ASC'), 'avg_rating']
+                ]
+            },
             where: {
                 title: {
                     [Sequelize.Op.iLike]: `%${currentQuery}%` //<-- NOTE!!!: iLike is for postgres only. need other case insensitivity solution for other DBs -Harley
                 }
-            }
+            },
+            order: sortMethod=="date"?
+            [['updatedAt', 'DESC'], ['avg_rating', 'DESC']]:
+            [['avg_rating', 'DESC'], ['updatedAt', 'DESC']]
         })
         const results_pages = await Page.findAll({
             include: [
@@ -65,7 +74,8 @@ exports.search = async (req, res) => {
                     [Sequelize.Op.iLike]: `%${currentQuery}%`/*iLike is Postgres exclusive -Selvin*/ 
                 },
                 is_active: true
-            }
+            },
+            order:[['updatedAt', 'DESC']]
         });
         console.log(results_topics)
         console.log(results_pages)

@@ -13,3 +13,33 @@
     object-fit: cover;
     overflow: hidden;
 }
+
+#searchres-container {
+    border: 1px solid red;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.resultTopic {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border: 1px solid blue;
+}
+
+.resultPage {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    border: 1px solid blue;
+}
+
+.resultPage p {
+    padding: 0;
+    margin: 0;
+
+}
