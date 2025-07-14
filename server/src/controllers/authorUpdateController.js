@@ -89,3 +89,51 @@ exports.saveImage = async (req, res) => {
         }
     })
 }
+
+exports.updateThumbnail = async (req, res) => {
+    upload(req, res, async (err) => {
+        const user_id = req.body.user_id
+        const topic_id = req.body.topic_id
+        if (err) {
+            console.log(err)
+            return res.status(500).json({msg:'Unexpected error'})
+        }
+        console.log('dir')
+        console.log(user_id)
+        console.log(topic_id)
+        console.log(__dirname)
+        const uploadPath = path.posix.join(__dirname, '..','uploads', 'thumbnails',user_id, topic_id)
+        console.log(uploadPath)
+        fs.mkdirSync(uploadPath, {recursive:true})
+        const fileName = user_id + '_' + topic_id + '_' + path.extname(req.file.originalname??".jpg")
+        const finalPath = path.posix.join(uploadPath, fileName)
+        try {
+            const image = await sharp(req.file.buffer)
+            const meta = await image.metadata()
+
+            const tooBig = meta.width > 1080 || meta.height > 1080 //change max measures here -Harley
+
+            if (tooBig) {
+                await image.resize({
+                    width: 1080,
+                    height: 1080,
+                    fit: 'inside'
+                }).toFile(finalPath)
+            } else{
+                await image.toFile(finalPath)
+            }
+            console.log("succ. path: "+ finalPath)
+            
+            Topic.update({
+                thumbnail_path: path.posix.join('/uploads', 'thumbnails', user_id, topic_id, fileName)
+            }, {
+                where:{ topic_id:topic_id }
+            })
+
+            return res.status(200).json({msg:'Successfully uploaded', path:path.posix.join('/uploads', 'thumbnails', user_id, topic_id, fileName)})
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({msg:'Unexpected error'})
+        }
+    })
+}

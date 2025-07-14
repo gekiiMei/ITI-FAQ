@@ -4,6 +4,7 @@ import "./ViewerPage.css"
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm";
 
 interface Subject {
     subject_id:number,
@@ -197,7 +198,7 @@ function ViewerPage() {
                         </div>
                     </div>
                     <div id="viewer-content">
-                        <ReactMarkdown>{activePageContent}</ReactMarkdown>
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{activePageContent}</ReactMarkdown>
                     </div>
                 </div>
             </div>

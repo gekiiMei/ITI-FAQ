@@ -6,3 +6,10 @@
     align-items: center;
     background-color: #F4F4F4;
 }
+
+.topic-thumbnail {
+    height:7.5rem;
+    width:7.5rem;
+    object-fit: cover;
+    overflow: hidden;
+}

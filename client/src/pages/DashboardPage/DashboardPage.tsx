@@ -4,6 +4,7 @@ import CreateTopicModal from "../../components/CreateTopicModal/CreateTopicModal
 import "./DashboardPage.css"
 import axios from "axios";
 import { useEffect, useState } from "react";
+import ThumbnailUploadModal from "../../components/ThumbnailUploadModal/ThumbnailUploadModal";
 
 interface Topic {
     topic_id: number,
@@ -23,6 +24,10 @@ function DashboardPage() {
     const [showCategModal, setShowCategModal] = useState(false);
     const [showTopicModal, setShowTopicModal] = useState(false);
     const [topicList, setTopicList] = useState<Topic[]>([])
+    
+    const [showThumbModal, setShowThumbModal] = useState<boolean>(false)
+    const [selectedTopicForThumb, setSelectedTopicForThumb] = useState<number|null>(null)
+    const [selectedTopicPath, setSelectedTopicPath] = useState<string|null>(null)
     const handleLogout = async () => {
         localStorage.removeItem("JWT_accesstoken")
         localStorage.removeItem("current_user")
@@ -51,6 +56,22 @@ function DashboardPage() {
         })
         .then(async (resp)=>{await getTopics()})
     }
+
+    const openThumbModal = (id:number, path:string) => {
+        setSelectedTopicForThumb(id)
+        setSelectedTopicPath(path)
+
+        setShowThumbModal(true)
+    }
+
+    const closeModal = () => {
+        setSelectedTopicForThumb(null)
+        setSelectedTopicPath(null)
+
+        setShowThumbModal(false)
+
+        window.location.reload()
+    }
     
     useEffect(() => {
         console.log("fetching topics")
@@ -61,9 +82,11 @@ function DashboardPage() {
     }, [])
 
     return (
-        <>
+        <>  
+            {showThumbModal && <ThumbnailUploadModal userID={parseInt(localStorage.getItem("current_user_id")??"")} topicID={selectedTopicForThumb??-1} path={selectedTopicPath??"placeholder"} closeModal={closeModal}/>}
             {showCategModal && <CategoryModal setShowCategModal={setShowCategModal}/>}
             {showTopicModal && <CreateTopicModal setShowTopicModal={setShowTopicModal} getTopics={getTopics}/>}
+        
             <div className="dash-main">
                 <div id="dash-navbar">
                     <div id="author-label">
@@ -88,6 +111,7 @@ function DashboardPage() {
                                 topicList.map((topic, i) => {
                                     return (
                                         <div className="dash-topic-item" key={i}>
+                                            <button className="thumbbutton" onClick={() => {openThumbModal(topic.topic_id, topic.thumbnail_path)}}>edit thumbnail</button>
                                             <div className="dash-topicitem-left" onClick={()=>{ navigate("/editor?topic_id=" + topic.topic_id) }}>
                                                 <img className="dash-topic-thumbnail" src={topic.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+topic.thumbnail_path} alt="thumbnail" />
                                                 <div className="dash-topicitem-title-wrapper">

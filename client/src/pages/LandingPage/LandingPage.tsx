@@ -29,8 +29,8 @@ function LandingPage() {
     
     const handleSearchSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(`search?q=${searchQuery}`)
-        navigate(`/search?q=${searchQuery}`)
+        console.log(`search?q=${searchQuery}&sort=date`)
+        navigate(`/search?q=${searchQuery}&sort=date`)
     }
 
     const handleTopicClick = (topicId: number) => {

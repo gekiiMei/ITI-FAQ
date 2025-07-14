@@ -1,5 +1,6 @@
 const Page  = require('../models/Page');
 const Topic = require('../models/Topic');
+const Page = require('../models/Page')
 const { Op, Sequelize } = require('sequelize');
 
 exports.get_suggestions = async (req, res) => {
@@ -44,15 +45,31 @@ exports.search = async (req, res) => {
     const currentQuery = req.query['search_query']
     console.log('searching for ' + currentQuery)
     try {
-        const results = await Topic.findAll({
+        const results_topics = await Topic.findAll({
             where: {
                 title: {
                     [Sequelize.Op.iLike]: `%${currentQuery}%` //<-- NOTE!!!: iLike is for postgres only. need other case insensitivity solution for other DBs -Harley
                 }
             }
         })
-        console.log(results)
-        return res.status(200).json({msg:'Successfully fetched results', results:results})
+        const results_pages = await Page.findAll({
+            include: [
+                {
+                    model: Topic,
+                    as: 'parentTopic',
+                    attributes:['title']
+                }
+            ],
+            where: {
+                title: {
+                    [Sequelize.Op.iLike]: `%${currentQuery}%`/*iLike is Postgres exclusive -Selvin*/ 
+                },
+                is_active: true
+            }
+        });
+        console.log(results_topics)
+        console.log(results_pages)
+        return res.status(200).json({msg:'Successfully fetched results', results_topics:results_topics, results_pages:results_pages})
     } catch (e) {
         console.log(e)
         return res.status(500).json({msg:'Unexpected error.'})
