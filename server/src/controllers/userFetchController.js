@@ -1,3 +1,4 @@
+const Page  = require('../models/Page');
 const Topic = require('../models/Topic');
 const { Op, Sequelize } = require('sequelize');
 

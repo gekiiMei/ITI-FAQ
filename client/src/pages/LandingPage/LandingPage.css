@@ -12,7 +12,7 @@
     box-sizing: border-box;
     padding-inline: 2.5rem;
     padding-block: 1.5rem;
-    /* border: 1px solid blue; */
+
 }
 
 #upper-container {
@@ -35,19 +35,19 @@
     left: 0;
     right: 0;
     background: white;
-    border: 1px solid #ddd;
+    border: 0.0625rem solid #ddd;
     border-top: none;
-    border-radius: 0 0 8px 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 0.5rem 0.5rem;
+    box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    max-height: 200px;
+    max-height: 12.5rem;
     overflow-y: auto;
 }
 
 .suggestion-item {
-    padding: 12px 16px;
+    padding: 0.75rem 1rem;
     cursor: pointer;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 0.0625rem solid #f0f0f0;
     transition: background-color 0.2s ease;
 }
 
@@ -60,5 +60,33 @@
 }
 
 .suggestion-item:first-child {
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.suggestion-item {
+    cursor: pointer;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 0.0625rem solid #eee;
+    transition: background-color 0.2s ease;
+}
+
+.suggestion-item:hover {
+    background-color: #f8f9fa;
+}
+
+.topic-suggestion {
+    font-weight: 500;
+}
+
+.page-suggestion {
+    font-weight: 400;
+}
+
+.suggestion-icon {
+    color: #1a0dab;
+    margin-right: 0.5rem;
+}
+
+.topic-suggestion .suggestion-icon {
+    font-weight: bold;
 }
