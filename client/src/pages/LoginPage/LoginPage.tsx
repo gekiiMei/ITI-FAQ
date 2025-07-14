@@ -13,6 +13,7 @@ function LoginPage() {
     const [showModal, setShowModal] = useState(false)
 
     const navigate = useNavigate()
+    console.log("login page mounted")
 
     const handleLogin = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

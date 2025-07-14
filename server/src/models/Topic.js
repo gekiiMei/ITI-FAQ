@@ -33,13 +33,13 @@ const Topic = sequelize.define('Topic', {
     thumbnail_path: {
         type:DataTypes.TEXT,
         allowNull: false,
-        defaultValue:'/topic-thumbnails/placeholder.png'
+        defaultValue:'placeholder'
     },
     is_active: {
         type:DataTypes.BOOLEAN,
         allowNull:false
     },
-    avg_rating: {
+    total_rating: {
         type: DataTypes.INTEGER,
         allowNull: false
     },

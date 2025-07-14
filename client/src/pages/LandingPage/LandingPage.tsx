@@ -2,19 +2,23 @@ import "./LandingPage.css"
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AccountButton from "../../components/AccountButton/AccountButton";
+import { useNavigate } from "react-router-dom";
 
 interface suggestion{
     title : string
 }
 function LandingPage() {
+    const navigate = useNavigate()
     const [searchQuery, setSearchQuery] = useState<string>("")
     const [debouncedQuery, setDebouncedQuery] = useState<string>("")
     const [suggestions, setSuggestions] = useState<suggestion[]>([])
     const base_url = import.meta.env.VITE_backend_base_url;
-    const handleSearchSubmit = async () => {
-
+    const handleSearchSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        console.log(`search?q=${searchQuery}`)
+        navigate(`/search?q=${searchQuery}`)
     }
-
+    
     useEffect(()=>{
         const handler = setTimeout(() => {
             setDebouncedQuery(searchQuery);
@@ -48,7 +52,7 @@ function LandingPage() {
                 <div id="logo">
 
                 </div>
-                <form id="search-form" onSubmit={(e) => {e.preventDefault; handleSearchSubmit()}}>
+                <form id="search-form" onSubmit={(e) => {handleSearchSubmit(e)}}>
                     <input type="text" placeholder="What would you like to learn today?" value={searchQuery} onChange={(e) => {setSearchQuery(e.target.value)}} />
                     <button id="search-butt">
                         search

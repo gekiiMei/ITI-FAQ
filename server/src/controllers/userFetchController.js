@@ -9,7 +9,7 @@ exports.get_suggestions = async (req, res) => {
         const results = await Topic.findAll({
             where: {
                 title: {
-                    [Sequelize.Op.iLike]: `%${currentQuery}%`/*iLike is Postgres exclusive*/ 
+                    [Sequelize.Op.iLike]: `%${currentQuery}%`/*iLike is Postgres exclusive -Selvin*/ 
                 },
                 is_active: true
             }
@@ -23,34 +23,21 @@ exports.get_suggestions = async (req, res) => {
     }
 };
 
-
-
-    //Selvin: Query the Topic model using the findAll() function from Sequelize. Example query:
-    /*
-    const activeTopics = await Topic.findAll({
-        where: {
-            is_active:true
-        }
-    })
-
-    This queries all topics where the column is_active is set to true, then stores the results in active topics.
-    Now, for searching we're going to use the LIKE clause.
-
-    In SQL, it's written as 
-    SELECT * FROM Table WHERE columnName LIKE '%searchquery%'
-
-    In sequelize, we need to grab it from the Op class. The query above would look like:
-
-    const results = await Table.findAll({
-        where:{
-            columnName: {
-                [Op.like]:`%${searchquery}%`
+exports.search = async (req, res) => {
+    const currentQuery = req.query['search_query']
+    console.log('searching for ' + currentQuery)
+    try {
+        const results = await Topic.findAll({
+            where: {
+                title: {
+                    [Sequelize.Op.iLike]: `%${currentQuery}%` //<-- NOTE!!!: iLike is for postgres only. need other case insensitivity solution for other DBs -Harley
+                }
             }
-        }
-    })
-
-    You need to do the same thing, except you'll be querying from the Topic model. The columnName will be title, since we're searching titles.
-    'searhcquerry' will be currentQuery since that's where we store the query that we got from the frontend axios fetch
-
-    After everything, console.log the variable where you stored the results so we can check.
-    */
+        })
+        console.log(results)
+        return res.status(200).json({msg:'Successfully fetched results', results:results})
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json({msg:'Unexpected error.'})
+    }
+}

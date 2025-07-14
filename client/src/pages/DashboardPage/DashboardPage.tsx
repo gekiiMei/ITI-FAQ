@@ -89,7 +89,7 @@ function DashboardPage() {
                                     return (
                                         <div className="dash-topic-item" key={i}>
                                             <div className="dash-topicitem-left" onClick={()=>{ navigate("/editor?topic_id=" + topic.topic_id) }}>
-                                                <img className="dash-topic-thumbnail" src={image_url+topic.thumbnail_path} alt="thumbnail" />
+                                                <img className="dash-topic-thumbnail" src={topic.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+topic.thumbnail_path} alt="thumbnail" />
                                                 <div className="dash-topicitem-title-wrapper">
                                                     <p>{topic.title}</p>
                                                 </div>
