@@ -6,6 +6,7 @@ const Page = require("../models/Page")
 exports.get_categories = async (req, res) => {
     const curr_parent = req.body.curr_parent;
     try {
+        // children of passed category -harley
         const cats = await Category.findAll({
             where: {
                 parent_category:curr_parent,
@@ -13,25 +14,51 @@ exports.get_categories = async (req, res) => {
             }, 
             raw:true
         })
+        // the passed category -harley
+        const parent = (curr_parent == null)?null: await Category.findOne({
+            where: {
+                category_id: curr_parent,
+                is_active: true
+            },
+            raw: true
+        })
+        console.log("the parent:")
+        console.log(parent)
+        //the parent of the passed category -harley
+        const grandparent = (parent==null)?null:(parent.parent_category==null)?null: await Category.findOne({ // lol (if there's better approach than daisy-chaining ternaries pls change) -harley
+            where: {
+                category_id: parent.parent_category,
+                is_active: true
+            },
+            raw:true
+        })
 
-        return res.status(200).json({msg:'Successfully fetched categories', categories:cats})
+        return res.status(200).json({msg:'Successfully fetched categories', categories:cats, parent: parent, grandparent: grandparent})
     } catch (e) {
+        console.log(e)
         return res.status(500).json({msg:e})
     }
 }
 
 exports.get_topics = async (req, res) => {
     console.log('querying topics')
-    const curr_author = req.body.author_id;
+    const curr_author = req.body.author_id??null;
+    const parent_category = req.body.parent_cat??null;
+    console.log("curr author: " + curr_author +"; parent_category: " + parent_category)
+    console.log("cat from body: " + req.body.parent_cat)
     try {
         const topics = await Topic.findAll({
-            where: {
+            where: (curr_author != null)? {
                 author_id:curr_author,
                 is_active:true
-            },
+            }: {
+                parent_category: parent_category,
+                is_active:true
+            }
+            ,
             raw:true
         })
-
+        console.log("queried topics: " + topics)
         return res.status(200).json({msg:'Successfully fetched topics', topics:topics})
     } catch (e) {
         console.log(e)

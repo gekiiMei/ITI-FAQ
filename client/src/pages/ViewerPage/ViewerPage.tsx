@@ -93,7 +93,7 @@ function ViewerPage() {
         if (currParent_sub != null) {
             setNavStack(prev => [...prev, {i:currParent_sub, name:name}]);
         }
-        setCurrParent_top(null)
+        // setCurrParent_top(null)
         setCurrParent_sub(id)
         setCurrSubName(name)
     }

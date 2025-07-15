@@ -9,7 +9,7 @@ exports.get_suggestions = async (req, res) => {
     try {
         const results_topics = await Topic.findAll({
             where: {
-                title: {
+                title: {    
                     [Sequelize.Op.iLike]: `%${currentQuery}%` // iLike is Postgres exclusive
                 },
                 is_active: true
@@ -36,9 +36,24 @@ exports.get_suggestions = async (req, res) => {
         return res.status(200).json({ msg: 'Successfully searched', suggestions: results });
     } catch (error) {
         console.error('Error fetching suggestions:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+exports.get_featured = async (req, res) => {
+    try {
+        const featured = await Topic.findAll({
+            where: {is_featured: true},
+            raw:true
+        })
+        console.log("featured here")
+        console.log(featured)
+        return res.status(200).json({msg:'Successfully retrieved featured topics.', featured_topics:featured})
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+} 
 
 exports.search = async (req, res) => {
     const currentQuery = req.query['search_query']
