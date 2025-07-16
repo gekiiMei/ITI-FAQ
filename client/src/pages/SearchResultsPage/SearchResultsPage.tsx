@@ -17,6 +17,7 @@ interface ResultItem {
     parent_topic: number
 }
 
+
 function SearchResultsPage() {
     const base_url = import.meta.env.VITE_backend_base_url;
     const image_url = import.meta.env.VITE_image_base_path;
@@ -28,6 +29,7 @@ function SearchResultsPage() {
     const sortMethod = searchParams.get("sort")??""
     const [resultTopics, setResultTopics] = useState<ResultItem[]>([])
     const [resultPages,setResultPages] = useState<ResultItem[]>([])
+    const [featuredTopics, setFeaturedTopics] = useState<ResultItem[]>([])
 
     const [showSortModal, setShowSortModal] = useState<boolean>(false)
 
@@ -64,7 +66,22 @@ function SearchResultsPage() {
             await getResults()
         }
         asyncGetResults()
-    }, [searchQuery, sortMethod])
+    }, [searchParams])
+
+    useEffect(() => {
+        const asyncGetFeatured = async () => {
+            await axios.get(base_url+"/api/userfetch/fetch-featured")
+            .then((resp) => {
+                console.log(resp.data.featured_topics)
+                setFeaturedTopics(resp.data.featured_topics)
+            })
+            .catch((err) => {
+
+            })
+        }
+
+        asyncGetFeatured()
+    },[])
 
     // useEffect(() => {
     //     console.log("query: " + searchParams.get("q"))
@@ -92,41 +109,64 @@ function SearchResultsPage() {
                     </div>
                 </div>
                 <div id="searchres-container">
-                    <h1>Topics</h1>
-                    {
-                        resultTopics.map((res, i) => {
-                            return (
-                                <div className="resultTopic" onClick={() => {handleTopicClick(res.topic_id)}}>
-                                    <div className="resultTopic-left">
-                                        <img className="topic-thumbnail" src={res.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+res.thumbnail_path} alt="" />
-                                        <div className="topic-titledate-wrapper">
-                                            <p>{res.title}</p>
-                                            <p>Last updated: <span>{format(new Date(res.updatedAt), "MM/dd/yyyy")}</span></p>
+                    <div id="leftfeat-container">
+                        <div id="featcont-head">
+                            <p>Featured</p>
+                        </div>
+                        <div id="featcont-feats">
+                            {
+                                featuredTopics.map((res, i) => {
+                                    return (
+                                        <div className="featuredTopic" onClick={() => {handleTopicClick(res.topic_id)}}>
+                                            <div className="featuredTopic-left">
+                                                <div className="topic-titledate-wrapper">
+                                                    <p>{res.title}</p>
+                                                    <p>Last updated: <span>{format(new Date(res.updatedAt), "MM/dd/yyyy")}</span></p>
+                                                </div>
+                                            </div>  
                                         </div>
-                                    </div>  
-                                    <div className="resultTopic-right">
-                                        <p>{((res.total_rating/res.rating_count)==0 || res.rating_count == 0) ? "0.0" : (res.total_rating/res.rating_count).toFixed(1)}</p>
-                                        <p>({res.rating_count})</p>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+                    <div id="rightres-container">
+                        <p>Topics</p>
+                        {
+                            resultTopics.map((res, i) => {
+                                return (
+                                    <div className="resultTopic" onClick={() => {handleTopicClick(res.topic_id)}}>
+                                        <div className="resultTopic-left">
+                                            <img className="topic-thumbnail" src={res.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+res.thumbnail_path} alt="" />
+                                            <div className="topic-titledate-wrapper">
+                                                <p>{res.title}</p>
+                                                <p>Last updated: <span>{format(new Date(res.updatedAt), "MM/dd/yyyy")}</span></p>
+                                            </div>
+                                        </div>  
+                                        <div className="resultTopic-right">
+                                            <p>{((res.total_rating/res.rating_count)==0 || res.rating_count == 0) ? "0.0" : (res.total_rating/res.rating_count).toFixed(1)}</p>
+                                            <p>({res.rating_count})</p>
+                                        </div>
                                     </div>
-                                </div>
-                            )
-                        })
-                    }
-                    <h1>Pages</h1>
-                    {
-                        resultPages.map((res, i) => {
-                            return (
-                                <div className="resultPage" onClick={() => {handlePageClick(res.page_id, res.parent_topic)}}>
-                                    <div className="pagetitle-wrapper">
-                                        <p>Topic: {res.parentTopic.title}</p>
+                                )
+                            })
+                        }
+                        <p>Pages</p>
+                        {
+                            resultPages.map((res, i) => {
+                                return (
+                                    <div className="resultPage" onClick={() => {handlePageClick(res.page_id, res.parent_topic)}}>
+                                        <div className="pagetitle-wrapper">
+                                            <p>{res.title}</p>
+                                        </div>
+                                        <div className="pagetopic-wrapper">
+                                            <p>{res.parentTopic.title}</p>
+                                        </div>  
                                     </div>
-                                    <div className="pagetopic-wrapper">
-                                        <p>{res.title}</p>
-                                    </div>  
-                                </div>
-                            )
-                        })
-                    }
+                                )
+                            })
+                        }
+                    </div>
                 </div>
             </div>
         </div>

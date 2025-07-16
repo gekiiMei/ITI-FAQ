@@ -12,7 +12,6 @@ exports.get_categories = async (req, res) => {
                 parent_category:curr_parent,
                 is_active: true
             }, 
-            raw:true
         })
         // the passed category -harley
         const parent = (curr_parent == null)?null: await Category.findOne({
@@ -30,7 +29,6 @@ exports.get_categories = async (req, res) => {
                 category_id: parent.parent_category,
                 is_active: true
             },
-            raw:true
         })
 
         return res.status(200).json({msg:'Successfully fetched categories', categories:cats, parent: parent, grandparent: grandparent})
@@ -56,7 +54,6 @@ exports.get_topics = async (req, res) => {
                 is_active:true
             }
             ,
-            raw:true
         })
         console.log("queried topics: " + topics)
         return res.status(200).json({msg:'Successfully fetched topics', topics:topics})
@@ -69,15 +66,18 @@ exports.get_topics = async (req, res) => {
 exports.get_topic_title_feat = async (req, res) => {
     const curr_topic_id = req.body.curr_topic
     try {
-        const topic = await Topic.findOne({
-            attributes:['title', 'is_featured'],
-            where:{
-                topic_id:curr_topic_id
-            }
+        const topic = await Topic.findByPk(curr_topic_id, {
+            include: [
+                {
+                    model:Category,
+                    as:'category'
+                }
+            ],
         })
-        console.log("return from query: " + topic)
+        console.log("return from query: ", topic)
         console.log("title: " + topic.title)
-        return res.status(200).json({msg:'Successfully fetched title and feat', topic_title:topic.title, featured:topic.is_featured})
+        console.log("category: ", topic.category)
+        return res.status(200).json({msg:'Successfully fetched title and feat', topic: topic})
     } catch (e) {
         console.log(e)
         return res.status(500).json({msg:e})
@@ -98,10 +98,19 @@ exports.get_subjects = async (req, res) => {
             } : {
                 parent_subject: curr_subject,
                 is_active: true
-            }
+            },
         })
-        console.log("result: " + subjects)
-        return res.status(200).json({msg:'Successfully fetched subjects', subjects: subjects})
+
+        const curr_subject_obj = await Subject.findByPk(curr_subject, {
+            include:[
+                {
+                    model: Subject,
+                    as: 'parentSubject'
+                }
+            ]
+        })
+        console.log("get subject result: ", subjects)
+        return res.status(200).json({msg:'Successfully fetched subjects', subjects: subjects, curr_subject: curr_subject_obj??null})
     } catch (e) {
         console.log(e)
         return res.status(500).json({msg:e})
@@ -135,10 +144,8 @@ exports.get_page_details = async (req, res) => {
     const page_id = req.body.page_id
     console.log('getting the details of page id: ' + page_id)
     try {
-        const details = await Page.findOne({
+        const details = await Page.findByPk(page_id, {
             attributes: ['title', 'content'],
-            where: {page_id: page_id},
-            raw:true
         })
         console.log('result: ' + details)
         return res.status(200).json({msg:'Successfully fetched details', details: details})

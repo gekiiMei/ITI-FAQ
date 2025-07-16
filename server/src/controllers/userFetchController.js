@@ -44,7 +44,6 @@ exports.get_featured = async (req, res) => {
     try {
         const featured = await Topic.findAll({
             where: {is_featured: true},
-            raw:true
         })
         console.log("featured here")
         console.log(featured)

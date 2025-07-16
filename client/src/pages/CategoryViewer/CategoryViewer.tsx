@@ -69,7 +69,10 @@ function CategoryViewer() {
     }
 
     const openCategory = (id:number) => {
-        navigate(`/category?category=${id}`)
+        // navigate(`/category?category=${id}`)
+        const params = new URLSearchParams(searchParams);
+        params.set("category", id.toString());
+        setSearchParams(params);
     }
 
     const openTopic = (id:number) => {
@@ -87,7 +90,7 @@ function CategoryViewer() {
         }
         asyncGetCategories();
         asyncGetTopics()
-    }, [currentCategoryID]);
+    }, [searchParams]);
 
     
     return(

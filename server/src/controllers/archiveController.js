@@ -125,9 +125,7 @@ async function _recursively_archive_cat(id) {
     if (id == null) {
         return -1;
     }
-    const target_cat = await Category.findOne({
-        where: { category_id: id }
-    })
+    const target_cat = await Category.findByPk(id)
     const children_cats = await Category.findAll({
         where: {
             parent_category: id,
@@ -167,9 +165,7 @@ async function _recursively_archive_sub(id) {
         return -1;
     }
     
-    const target_sub = await Subject.findOne({
-        where: { subject_id: id }
-    })
+    const target_sub = await Subject.findByPk(id)
     const children_subs = await Subject.findAll({
         where: {
             parent_subject: id,

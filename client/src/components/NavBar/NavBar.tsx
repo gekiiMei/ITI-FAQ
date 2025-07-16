@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import AccountButton from "../AccountButton/AccountButton";
 import "./NavBar.css"
 import axios from "axios";
+import { IoSearchOutline } from "react-icons/io5";
 
 interface Topic {
     topic_id: number;
@@ -70,7 +71,10 @@ function NavBar() {
     return (
         <div className="navbar-main">
             <form id="searchbar" onSubmit={(e) => {handleSearchSubmit(e)}}>
-                <input type="text" placeholder="Search..." value={searchQuery} onChange={(e) => {setSearchQuery(e.target.value)}}/>
+                <div id="bar-wrapper">
+                    <input type="text" placeholder="Search..." value={searchQuery} onChange={(e) => {setSearchQuery(e.target.value)}}/>
+                    <button><IoSearchOutline size={24} /></button>
+                </div>
                 {/* Topics */}
                 {suggestions.topics && suggestions.topics.map((topic, index) => {
                     return(

@@ -25,13 +25,16 @@ function EditorPage() {
     const image_url = import.meta.env.VITE_image_base_path;
     const [searchParams, setSearchParams] = useSearchParams()
     //it says currParent but really it's the one that we're looking at, will change if i find time -Harley
-    const [currParent_top, setCurrParent_top] = useState<number|null>(parseInt(searchParams.get("topic_id")??""));
-    const [currParent_sub, setCurrParent_sub] = useState<number|null>(null);
-    const [currSubName, setCurrSubName] = useState<string|null>(null);
+    const [currentTopic, setCurrTopic] = useState<number|null>(searchParams.get("topic_id")?parseInt(searchParams.get("topic_id")??""):null);
+    const [currentSub, setCurrSub] = useState<number|null>(searchParams.get("subject")?parseInt(searchParams.get("subject")??""):null);
+    const [currSubName, setCurrSubName] = useState<string>("")
+    const [currPage, setCurrPage] = useState<number|null>(searchParams.get("page")?parseInt(searchParams.get("page")??""):null) 
+
+    const [parentSub, setParentSub] = useState<Subject|null>(null)
     // const [activePage, setActivePage] = useState<number|null>(searchParams.get("page")?parseInt(searchParams.get("page")??""):null) //messy i know -Harley
     const [subList, setSubList] = useState<Subject[]>([])
     const [pageList, setPageList] = useState<Page[]>([])
-    const [navStack, setNavStack] = useState<{i:number, name:string}[]>([]);
+    // const [navStack, setNavStack] = useState<{i:number, name:string}[]>([]);
 
     const [promptNameSub, setShowPromptNameSub] = useState<boolean>(false);
     const [promptNamePage, setShowPromptNamePage] = useState<boolean>(false);
@@ -47,17 +50,32 @@ function EditorPage() {
     const [featured, setFeatured] = useState<boolean>(false);
 
     const navigate = useNavigate()
+
+    const setParam = (key:string, val:string|null) => {
+        const params = new URLSearchParams(searchParams);
+        if (val) {
+            params.set(key, val);
+        } else { 
+            params.delete(key);
+            console.log("Deleted " + key + " from params")
+        }
+        console.log("params: ", params)
+        setSearchParams(params);
+    }
     
     const getSubjects = async () => {
         console.log("fetching subjects with: ")
-        console.log('currParent_topic: ' + currParent_top)
-        console.log('currParent_subject: ' + currParent_sub)
+        console.log('currentTopic: ' + currentTopic)
+        console.log('currentSubject: ' + currentSub)
         await axios.post(base_url+'/api/authorfetch/fetch-subjects', {
-            curr_topic: currParent_top,
-            curr_subject: currParent_sub
+            curr_topic: currentTopic,
+            curr_subject: currentSub
         })
         .then((resp) => {
             setSubList(resp.data.subjects)
+            setParentSub(resp.data.curr_subject.parentSubject?resp.data.curr_subject.parentSubject.name:null)
+            setCurrSubName(resp.data.curr_subject.name)
+            console.log("get subject results: ", resp.data)
         })
         .catch((err) => {
 
@@ -66,8 +84,8 @@ function EditorPage() {
 
     const getPages = async() => {
         await axios.post(base_url+"/api/authorfetch/fetch-pages", {
-            curr_topic: currParent_top,
-            curr_subject: currParent_sub
+            curr_topic: currentTopic,
+            curr_subject: currentSub
         })
         .then((resp) => {
             setPageList(resp.data.pages)
@@ -82,8 +100,9 @@ function EditorPage() {
             curr_topic: parseInt(searchParams.get("topic_id")??"")
         })
         .then((resp) => {
-            setTopicTitle(resp.data.topic_title)
-            setFeatured(resp.data.featured)
+            setTopicTitle(resp.data.topic.title)
+            setFeatured(resp.data.topic.is_featured)
+            console.log("featured: ", resp.data.topic.is_featured)
         })
         .catch((err) => {
 
@@ -93,8 +112,8 @@ function EditorPage() {
     const handleCreateSubject = async (name:string) => {
         await axios.post(base_url+"/api/create/create-subject", {
             subject_name: name,
-            parent_topic: currParent_top,
-            parent_subject: currParent_sub
+            parent_topic: currentTopic,
+            parent_subject: currentSub
         })
         .then(async (resp) => {
             await getSubjects()
@@ -107,8 +126,8 @@ function EditorPage() {
     const handleCreatePage = async (title:string) => {
         await axios.post(base_url+"/api/create/create-page", {
             page_title: title,
-            parent_topic: currParent_top,
-            parent_subject: currParent_sub
+            parent_topic: currentTopic,
+            parent_subject: currentSub
         })
         .then(async (resp) => {
             await getPages()
@@ -125,8 +144,8 @@ function EditorPage() {
 
         await axios.post(base_url+"/api/authorfetch/check-page-title", {
             new_title:newTitle,
-            parent_topic: currParent_top,
-            parent_subject: currParent_sub
+            parent_topic: currentTopic,
+            parent_subject: currentSub
         })
         .then((resp) => {
             if (resp.data.found) {
@@ -156,11 +175,11 @@ function EditorPage() {
         })
     }
 
-    const getPageDetails = async (id:number) => {
+    const getPageDetails = async () => {
         // setActivePageContent([])
         setCurrentMarkdown("")
         await axios.post(base_url+"/api/authorfetch/fetch-details", {
-            page_id: id
+            page_id: currPage
         })
         .then((resp) => {
             console.log(resp.data.details)
@@ -175,12 +194,9 @@ function EditorPage() {
 
     const openPage = async (id:number) => {
         console.log("opening page id " + id)
-        const params = new URLSearchParams(searchParams);
-        params.set("page", id.toString());
-        setSearchParams(params);
-
-        await getPageDetails(id)
+        setParam("page", id.toString())
     }
+
 
     const savePage = async () => {
         await axios.post(base_url+"/api/authorupdate/save-page", {
@@ -200,32 +216,31 @@ function EditorPage() {
         })
     }
 
-    const openSubject = async (id: number, name:string) => {
-        if (currParent_sub != null) {
-            setNavStack(prev => [...prev, {i:currParent_sub, name:name}]);
-        }
-        // setCurrParent_top(null)
-        setCurrParent_sub(id)
-        setCurrSubName(name)
+    const openSubject = async (id: number) => {
+        const params = new URLSearchParams(searchParams);
+        params.set("subject", id.toString());
+        setSearchParams(params);
     }
 
     const backSubject = async () => {
-        setNavStack(prev => {
-            const hist = [...prev]
-            const new_curr = hist.pop() ?? null
-            if (new_curr != null) {
-                setCurrParent_sub(new_curr.i)
-                setCurrSubName(new_curr.name)
-            } else {
-                setCurrParent_sub(null)
-                setCurrSubName(null)
-            }
-            return hist
-        })
-        console.log("back func fired. currParent_sub = " + currParent_sub)
-        // if (currParent_sub == null) {
-        //     console.log("backsub: currParent_sub is null" )
-        //     setCurrParent_top(parseInt(searchParams.get("topic_id")??""))
+        // setNavStack(prev => {
+        //     const hist = [...prev]
+        //     const new_curr = hist.pop() ?? null
+        //     if (new_curr != null) {
+        //         setCurrSub(new_curr.i)
+        //         setCurrSubName(new_curr.name)
+        //     } else {
+        //         setCurrSub(null)
+        //         setCurrSubName(null)
+        //     }
+        //     return hist
+        // })
+        console.log("back func fired. currentSub = " + currentSub + " parentSub = " + parentSub?.subject_id)
+        setParam("subject", parentSub?parentSub.subject_id.toString():null)
+
+        // if (currentSub == null) {
+        //     console.log("backsub: currentSub is null" )
+        //     setCurrTopic(parseInt(searchParams.get("topic_id")??""))
         // }
     }
 
@@ -252,13 +267,25 @@ function EditorPage() {
         const asyncLoadPages = async () => {
             await getPages()
         }
-        if (currParent_sub == null) {
-            console.log("backsub: currParent_sub is null" )
-            setCurrParent_top(parseInt(searchParams.get("topic_id")??""))
-        }
+        
+        
         asyncLoadSubs()
         asyncLoadPages()
-    }, [currParent_sub, currParent_top])
+    }, [currentSub, currentTopic])
+
+    useEffect(() => {
+        const asyncGetPageDetails = async () => {
+            await getPageDetails()
+        }
+
+        asyncGetPageDetails()
+    }, [currPage])
+
+    useEffect(() => {
+        setCurrTopic(searchParams.get("topic_id")?parseInt(searchParams.get("topic_id")??""):null);
+        setCurrSub(searchParams.get("subject")?parseInt(searchParams.get("subject")??""):null);
+        setCurrPage(searchParams.get("page")?parseInt(searchParams.get("page")??""):null) 
+    }, [searchParams])
 
     useEffect(()=>{
         const asyncGetTopicTitleFeat = async () => {
@@ -288,7 +315,7 @@ function EditorPage() {
                             <p>{topicTitle}</p>
                             <div id="feature-button" onClick={async () => {await handleFeatureClick()}}>
                                 <FaRegStar /> 
-                                <input type="checkbox" checked={featured}/>
+                                <input type="checkbox" checked={featured==true}/>
                             </div>
                         </div>
                         <div id="sub-create-wrapper">
@@ -301,16 +328,16 @@ function EditorPage() {
                         </div>
                     </div>
                     <div id="editornav-body">
-                        {currParent_sub != null && 
+                        {currentSub != null && 
                             <div id="cat-back-button" onClick={async () => {await backSubject()}}>
-                                ../{currSubName}
+                                {parentSub?`../${parentSub.name}`:''}../{currSubName}
                             </div>
                         }
                         {
                             subList.map((sub, i) => {
                                 return(
                                     <div className="subjectItem" key={sub.subject_id}>
-                                        <div className="subjectItem-left" onClick={async () => {await openSubject(sub.subject_id, sub.name)}}>
+                                        <div className="subjectItem-left" onClick={async () => {await openSubject(sub.subject_id)}}>
                                             <p>(subject) {sub.name}</p>
                                         </div>
                                         <div className="subjectItem-right">

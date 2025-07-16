@@ -1,10 +1,17 @@
-#searchpage-main {
+.searchpage-main {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 0;
     background-color: #F4F4F4;
+}
+
+#searchpage-body {
+    width: 100%;
+    flex-grow: 1;
+    padding: 1rem;
 }
 
 .topic-thumbnail {
@@ -14,12 +21,23 @@
     overflow: hidden;
 }
 
+#searchres-header {
+    height: 10%;
+    border: 1px solid orange;
+}
+
 #searchres-container {
-    border: 1px solid red;
     width: 100%;
+    height: 90%;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+}
+
+#leftfeat-container {
+    width: 25%;
+}
+
+#rightres-container {
+    width: 75%;
 }
 
 .resultTopic {
@@ -28,6 +46,14 @@
     align-items: center;
     width: 100%;
     border: 1px solid blue;
+}
+
+.resultTopic-left {
+    display: flex;
+}
+
+.resultTopic-right {
+    display: flex;
 }
 
 .resultPage {
