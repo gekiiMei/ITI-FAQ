@@ -4,7 +4,8 @@ import "./CategoryViewer.css"
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { format } from "date-fns"
-import { IoIosArrowForward } from "react-icons/io";
+import { FaSortUp, FaSortDown } from "react-icons/fa6";
+import { BiStar } from "react-icons/bi";
 
 
 interface Category {
@@ -35,6 +36,8 @@ function CategoryViewer() {
     const [currentCat, setCurrentCat] = useState<Category|null>(null)
     const [categList, setCategList] = useState<Category[]>([]); 
     const [topicList, setTopicList] = useState<Topic[]>([])
+    const [showCategories, setShowCategories] = useState(true);
+    const [showTopics, setShowTopics] = useState(true);
 
     const navigate = useNavigate()
 
@@ -97,25 +100,36 @@ function CategoryViewer() {
         <>
         <div className="categoryviewer-main">
             <NavBar />
+            <div id = "categoryviewer-container">
+              <div id="categoryviewer-header">
+                <h1>Category: {parentCat && <div id="parent-label" onClick={()=>{navigate(`/category?category=${parentCat.category_id}`)}}><span>{parentCat.name}
+                    </span></div>}<span>{currentCat?.name}</span></h1>
+              </div>
+            </div>
             <div id="categoryviewer-body">
-                <div id="categoryviewer-header">
-                    <h1>Category: {parentCat && <div id="parent-label" onClick={()=>{navigate(`/category?category=${parentCat.category_id}`)}}><span>{parentCat.name}
-                        </span> <IoIosArrowForward /></div>}<span>{currentCat?.name}</span></h1>
-                </div>
                 <div id="categoryviewer-content">
-                    <h1>Categories</h1>
-                    {
-                        categList.map((cat, index) => {
+                    <h1 onClick={() => setShowCategories(v => !v)} style={{cursor: 'pointer'}}>
+                        {showCategories ? <FaSortUp style={{marginRight: 8}} /> : <FaSortDown style={{marginRight: 8}} />}
+                        Categories ({categList.length})
+                    </h1>
+                    {showCategories && (
+                        <>
+                        {categList.map((cat, index) => {
                             return (
                                 <div className="categoryItem" key={index} onClick={() => {openCategory(cat.category_id)}}>
                                     <p>{cat.name}</p>
                                 </div>
                             )
-                        })
-                    }
-                    <h1>Topics</h1>
-                    {
-                        topicList.map((top, index) => {
+                        })}
+                        </>
+                    )}
+                    <h1 onClick={() => setShowTopics(v => !v)} style={{cursor: 'pointer'}}>
+                        {showTopics ? <FaSortUp style={{marginRight: 8}} /> : <FaSortDown style={{marginRight: 8}} />}
+                        Topics ({topicList.length})
+                    </h1>
+                    {showTopics && (
+                        <>
+                        {topicList.map((top, index) => {
                             return (
                                 <div className="topicItem" key={index} onClick={() => {openTopic(top.topic_id)}}>
                                     <div className="resultTopic-left">
@@ -126,13 +140,14 @@ function CategoryViewer() {
                                         </div>
                                     </div>  
                                     <div className="resultTopic-right">
-                                        <p>{((top.total_rating/top.rating_count)==0 || top.rating_count == 0) ? "0.0" : (top.total_rating/top.rating_count).toFixed(1)}</p>
+                                        <p><BiStar style={{color: '#ffb400', marginRight: '0.2em', fontSize: '1.1em', verticalAlign: 'middle'}} />{((top.total_rating/top.rating_count)==0 || top.rating_count == 0) ? "0.0" : (top.total_rating/top.rating_count).toFixed(1)}</p>
                                         <p>({top.rating_count})</p>
                                     </div>
                                 </div>
                             )
-                        })
-                    }
+                        })}
+                        </>
+                    )}
                 </div>
             </div>
         </div>

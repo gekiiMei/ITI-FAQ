@@ -1,0 +1,199 @@
+/* Main container */
+.categoryviewer-main {
+  min-height: 100vh;
+  background: #F4F4F4;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+#categoryviewer-body {
+  max-width: 68.75rem;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 1.125rem;
+  box-shadow: 0 0.25rem 1.5rem rgba(0,0,0,0.07);
+  padding: 2.5rem 2rem 2rem 2rem;
+}
+
+#categoryviewer-container {
+  max-width: 68.75rem;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 1.125rem;
+  box-shadow: 0 0.25rem 1.5rem rgba(0,0,0,0.07);
+  padding: 2.5rem 2rem 2rem 2rem;
+}
+
+#categoryviewer-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 0.0625rem solid #eaeaea;
+  padding-bottom: 1.2rem;
+}
+
+#categoryviewer-header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #222;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#parent-label {
+  display: inline-flex;
+  align-items: center;
+  color: #888;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  transition: color 0.2s;
+}
+#parent-label:hover {
+  color: #ff914d;
+}
+
+#categoryviewer-content {
+  margin-top: 1.5rem;
+}
+
+/* Section header with sort icons */
+#categoryviewer-content h1 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 2.2rem 0 0.7rem 0;
+  color: #ff914d;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.5rem;
+  width: fit-content;
+}
+#categoryviewer-content h1:hover {
+  background: #fff3eb;
+}
+#categoryviewer-content h1 svg {
+  font-size: 1.3em;
+  vertical-align: middle;
+  transition: color 0.15s;
+}
+
+#categoryviewer-content h1 .item-count {
+  color: #888;
+  font-size: 1.05em;
+  margin-left: 0.3em;
+  font-weight: 500;
+}
+
+/* Category (as Topic) List */
+.categoryItem {
+  background: #f7fafd;
+  border-radius: 0.75rem;
+  padding: 1.1rem 1.5rem;
+  margin-bottom: 0.7rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.18s, box-shadow 0.18s;
+  box-shadow: 0 0.0625rem 0.25rem rgba(181,234,255,0.08);
+  border: 0.0625rem solid #e3f2fd;
+}
+.categoryItem:hover {
+  background: #e3f2fd;
+}
+.categoryItem p {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #2d2d2d;
+  margin: 0;
+}
+
+/* Topic (as FAQ) List */
+.topicItem {
+  background: #f9f9f9;
+  border-radius: 0.75rem;
+  padding: 1.1rem 1.5rem;
+  margin-bottom: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  border: 0.0625rem solid #f0f0f0;
+  box-shadow: 0 0.0625rem 0.25rem rgba(255,202,177,0.07);
+  transition: background 0.18s, box-shadow 0.18s;
+}
+.topicItem:hover {
+  background: #ffe7d6;
+}
+
+.resultTopic-left {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+.topic-thumbnail {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.625rem;
+  object-fit: cover;
+  background: #e3e3e3;
+  border: 0.0625rem solid #eaeaea;
+}
+.topic-titledate-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.topic-titledate-wrapper p:first-child {
+  font-size: 1.08rem;
+  font-weight: 500;
+  color: #222;
+  margin: 0;
+}
+.topic-titledate-wrapper p:last-child {
+  font-size: 0.97rem;
+  color: #888;
+  margin: 0;
+}
+.topic-titledate-wrapper span {
+  color: #ff914d;
+  font-weight: 500;
+}
+
+.resultTopic-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  min-width: 4.375rem;
+}
+.resultTopic-right p {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #222;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.resultTopic-right p:last-child {
+  font-size: 0.95rem;
+  color: #888;
+}
+
+/* for responsive sa anong devices 
+@media (max-width: 43.75rem) {
+  #categoryviewer-body {
+    padding: 1rem 0.2rem;
+  }
+  .categoryItem, .topicItem {
+    padding: 0.7rem 0.7rem;
+  }
+  .topic-thumbnail {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}*/
