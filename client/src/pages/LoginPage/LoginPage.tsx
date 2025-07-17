@@ -50,20 +50,20 @@ function LoginPage() {
                 <h1>Login</h1>
                 <div id="login-fields-buttons">
                     <div id="login-fields">
-                        <div id="login-user-field-wrapper">
+                        {/* <div id="login-user-field-wrapper"> */}
                             <input type="text" id="login-user-field"
                                 placeholder="Username"
                                 value={user_in}
                                 onChange={(e) => {setUser_in(e.target.value)}}
                             />
-                        </div>
-                        <div id="login-pass-field-wrapper">
+                        {/* </div> */}
+                        {/* <div id="login-pass-field-wrapper"> */}
                             <input type={showPass ? "text" : "password"} 
                                 placeholder="Password"
                                 value={pass_in}
                                 onChange={(e)=> {setPass_in(e.target.value)}}
                             />
-                        </div>
+                        {/* </div> */}
                     </div>
                     <div id="login-buttons">
                         <button id="login-button">

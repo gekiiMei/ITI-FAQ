@@ -11,9 +11,10 @@ interface Topic {
     title: string,
     parent_category: number,
     author_id: number,
-    avg_rating: number,
+    total_rating: number,
     rating_count: number,
     thumbnail_path: string
+    updatedAt:string,
 }
 
 function DashboardPage() {
@@ -88,7 +89,7 @@ function DashboardPage() {
             {showTopicModal && <CreateTopicModal setShowTopicModal={setShowTopicModal} getTopics={getTopics}/>}
         
             <div className="dash-main">
-                <div id="dash-navbar">
+                <div id="dash-header">
                     <div id="author-label">
                         <h1>Welcome, {current_user}!</h1>
                     </div>
@@ -120,7 +121,8 @@ function DashboardPage() {
                                             </div>
                                             <div className="dash-topicitem-right">
                                                 <div className="dash-topicitem-ratings">
-                                                    <p>{topic.avg_rating} ({topic.rating_count})</p>
+                                                    <p>{((topic.total_rating/topic.rating_count)==0 || topic.rating_count == 0) ? "0.0" : (topic.total_rating/topic.rating_count).toFixed(1)}</p>
+                                                    <p>({topic.rating_count})</p>
                                                 </div>
                                                 <div className="dash-topicitem-deletewrapper">
                                                     <button id="dash-topic-delete" onClick={async () => { await archiveTopic(topic.topic_id) }}>

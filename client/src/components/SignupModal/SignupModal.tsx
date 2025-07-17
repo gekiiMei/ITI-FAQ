@@ -34,27 +34,29 @@ function SignupModal({ setShowModal }:props) {
             <div className="signupmodal-main">
                 <form onSubmit={ handleSignup } id="signup-form">
                     <h1>Sign up</h1>
-                    <p onClick={()=>{setShowModal(false)}} style={{cursor: "pointer"}}>(temp) close modal </p>
                     <div id="signup-fields-buttons">
                         <div id="signup-fields">
-                            <div id="signup-user-field-wrapper">
+                            {/* <div id="signup-user-field-wrapper"> */}
                                 <input type="text" id="signup-user-field"
                                     placeholder="Username"
                                     value={user_in}
                                     onChange={(e) => {setUser_in(e.target.value)}}
                                 />
-                            </div>
-                            <div id="signup-pass-field-wrapper">
+                            {/* </div> */}
+                            {/* <div id="signup-pass-field-wrapper"> */}
                                 <input type={showPass ? "text" : "password"} 
                                     placeholder="Password"
                                     value={pass_in}
                                     onChange={(e)=> {setPass_in(e.target.value)}}
                                 />
-                            </div>
+                            {/* </div> */}
                         </div>
                         <div id="signup-buttons">
                             <button id="signup-button">
                                 Sign up
+                            </button>
+                            <button id="cancel-button" onClick={() => {setShowModal(false)}}>
+                                Cancel
                             </button>
                         </div>
                     </div>

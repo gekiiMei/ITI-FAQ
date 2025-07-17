@@ -238,9 +238,7 @@ function ViewerPage()  {
                 </div>
                 <div id="viewer-page">
                     <div id="viewer-header">
-                        <div id="editor-header">
-                            <h1>{activePageTitle}</h1>
-                        </div>
+                        <h1>{activePageTitle}</h1>
                     </div>
                     <div id="viewer-content">
                         <ReactMarkdown remarkPlugins={[remarkGfm]}>{activePageContent}</ReactMarkdown>

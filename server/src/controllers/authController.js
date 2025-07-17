@@ -11,8 +11,9 @@ exports.login = async (req, res) => {
         return res.status(404).json({msg:'User ' + user_in + 'not found.', status:404});
     }
     console.log("user found")
-    user = await User.findByPk(user_in, {
-        attributes:['user_id', 'hashed_password']
+    user = await User.findOne({
+        attributes:['user_id', 'hashed_password'],
+        where: {username:user_in}
     })
     queried_user_id = user.user_id
     hashed_pass = user.hashed_password

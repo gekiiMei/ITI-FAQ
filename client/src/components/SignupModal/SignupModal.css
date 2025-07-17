@@ -18,8 +18,8 @@
     padding-block: 8rem;
     border-radius: 15px;
     width: 30rem;
-    height: 30rem;
-    gap: 2rem;
+    height: 40rem;
+    gap: 0.5rem;
 }
 
 #signup-form h1 {
@@ -34,6 +34,54 @@
     align-items: center;
     width: 20rem;
     height: fit-content;
+    gap: 0.25rem;
+}
+
+#signup-fields {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 75%;
+    gap: 1rem;
+}
+
+#signup-fields-buttons input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 0;
+    background-color: #F7F7F7;
+    border-radius: 10px;
+}
+
+#signup-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    gap: 0.5rem;
+}
+
+#signup-buttons span {
+    color: rgb(0, 102, 255);
+    text-decoration: solid underline;
+}
+
+#signup-button {
+    width: 80%;
+    padding: 0.5rem;
+    border-radius: 50px;
+    border: none;
+    background-color: #FFCEA1;
+}
+
+#cancel-button {
+    width: 80%;
+    padding: 0.5rem;
+    border-radius: 50px;
+    border: none;
+    background-color: #eeeeee;
 }
 
 #signup-buttons span {

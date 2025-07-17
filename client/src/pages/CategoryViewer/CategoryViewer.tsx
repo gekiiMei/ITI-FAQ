@@ -131,15 +131,15 @@ function CategoryViewer() {
                         <>
                         {topicList.map((top, index) => {
                             return (
-                                <div className="topicItem" key={index} onClick={() => {openTopic(top.topic_id)}}>
-                                    <div className="resultTopic-left">
-                                        <img className="topic-thumbnail" src={top.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+top.thumbnail_path} alt="" />
-                                        <div className="topic-titledate-wrapper">
+                                <div className="cat-topicItem" key={index} onClick={() => {openTopic(top.topic_id)}}>
+                                    <div className="cat-topicItem-left">
+                                        <img className="cat-topic-thumbnail" src={top.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+top.thumbnail_path} alt="" />
+                                        <div className="cat-topic-titledate-wrapper">
                                             <p>{top.title}</p>
                                             <p>Last updated: <span>{format(new Date(top.updatedAt), "MM/dd/yyyy")}</span></p>
                                         </div>
                                     </div>  
-                                    <div className="resultTopic-right">
+                                    <div className="cat-topicItem-right">
                                         <p><BiStar style={{color: '#ffb400', marginRight: '0.2em', fontSize: '1.1em', verticalAlign: 'middle'}} />{((top.total_rating/top.rating_count)==0 || top.rating_count == 0) ? "0.0" : (top.total_rating/top.rating_count).toFixed(1)}</p>
                                         <p>({top.rating_count})</p>
                                     </div>

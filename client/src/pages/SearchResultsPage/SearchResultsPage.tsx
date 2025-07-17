@@ -94,22 +94,9 @@ function SearchResultsPage() {
         <div className="searchpage-main">
             <NavBar />
             <div id="searchpage-body">
-                <div id="searchres-header">
-                    <div id="searchquery">
-                        <p>Search Results: "{searchQuery}"</p>
-                    </div>
-                    <div id="sort-cont">
-                        <button onClick={() => {setShowSortModal(true)}}>sort</button>
-                        {showSortModal && 
-                        <div id="sort-modal">
-                            <p onClick={()=>{navigate(`/search?q=${searchQuery}&sort=date`); }}>date updated</p>
-                            <p onClick={()=>{navigate(`/search?q=${searchQuery}&sort=rating`)}}>rating</p>
-                        </div>
-                        }
-                    </div>
-                </div>
-                <div id="searchres-container">
-                    <div id="leftfeat-container">
+                <div id="leftfeat-container">
+                    {/* this is so stupid but i dont know how else to get the padding right with the bg aghgh im sorry -harley */}
+                    <div id="leftfeat-wrapper">
                         <div id="featcont-head">
                             <p>Featured</p>
                         </div>
@@ -127,6 +114,22 @@ function SearchResultsPage() {
                                         </div>
                                     )
                                 })
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div id="searchres-container">
+                    <div id="searchres-header">
+                        <div id="searchquery">
+                            <p>Search Results: "{searchQuery}"</p>
+                        </div>
+                        <div id="sort-cont">
+                            <button onClick={() => {setShowSortModal(!showSortModal)}}>sort</button>
+                            {showSortModal && 
+                            <div id="sort-modal">
+                                <p onClick={()=>{navigate(`/search?q=${searchQuery}&sort=date`); setShowSortModal(false)}}>date updated</p>
+                                <p onClick={()=>{navigate(`/search?q=${searchQuery}&sort=rating`); setShowSortModal(false)}}>rating</p>
+                            </div>
                             }
                         </div>
                     </div>
