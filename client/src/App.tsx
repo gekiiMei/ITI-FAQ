@@ -7,6 +7,7 @@ import EditorPage from "./pages/EditorPage/EditorPage.tsx"
 import ViewerPage from "./pages/ViewerPage/ViewerPage.tsx"
 import SearchResultsPage from "./pages/SearchResultsPage/SearchResultsPage.tsx"
 import CategoryViewer from "./pages/CategoryViewer/CategoryViewer.tsx"
+import SupportFormPage from "./pages/SupportFormPage/SupportFormPage.tsx"
 import './App.css'
 
 // TEMPORARY IMPORT FOR COMPONENT TESTING! -harley
@@ -26,6 +27,7 @@ function App() {
         <Route path="/viewer" element = { <ViewerPage /> } /> 
         <Route path="/search" element = { <SearchResultsPage /> } />
         <Route path="/category" element = { <CategoryViewer /> } />
+        <Route path="/support" element= { <SupportFormPage /> } />
 
         {/* TEMPORARY!! FOR COMPONENT TESTING!! DELETE AFTER -Harley */}
         <Route path="/comp-test" element={ <TEMPTESTPAGE /> } />
@@ -34,4 +36,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

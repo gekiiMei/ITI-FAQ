@@ -65,6 +65,12 @@
     gap: 0;
 }
 
+#viewer-content hr {
+    height: 10px;
+    width: 100%;
+    color: gray;
+}
+
 #viewernav-label {
     display: flex;
     justify-content: space-between;

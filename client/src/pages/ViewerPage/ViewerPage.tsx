@@ -5,7 +5,20 @@ import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm";
-
+import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
+import { defaultSchema } from 'hast-util-sanitize';
+const extendedSchema = {
+  ...defaultSchema,
+  tagNames: [
+    ...(defaultSchema.tagNames || []),
+    'u',
+  ],
+  attributes: {
+    ...defaultSchema.attributes,
+    u: [],
+  },
+};
 
 interface Category {
     category_id: number
@@ -241,7 +254,7 @@ function ViewerPage()  {
                         <h1>{activePageTitle}</h1>
                     </div>
                     <div id="viewer-content">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{activePageContent}</ReactMarkdown>
+                        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, [rehypeSanitize, extendedSchema]]}>{activePageContent}</ReactMarkdown>
                     </div>
                 </div>
             </div>

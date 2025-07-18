@@ -112,7 +112,7 @@
 }
 
 /* Topic (as FAQ) List */
-.topicItem {
+.cat-topicItem {
   background: #f9f9f9;
   border-radius: 0.75rem;
   padding: 1.1rem 1.5rem;
@@ -124,53 +124,55 @@
   border: 0.0625rem solid #f0f0f0;
   box-shadow: 0 0.0625rem 0.25rem rgba(255,202,177,0.07);
   transition: background 0.18s, box-shadow 0.18s;
+  height: 7.5rem;
 }
-.topicItem:hover {
+.cat-topicItem:hover {
   background: #ffe7d6;
 }
 
-.resultTopic-left {
+.cat-topicItem-left {
   display: flex;
   align-items: center;
   gap: 1.1rem;
+  height: 100%;
 }
-.topic-thumbnail {
-  width: 3rem;
-  height: 3rem;
+.cat-topic-thumbnail {
+  height: 100%;
+  aspect-ratio: 1/1;
   border-radius: 0.625rem;
   object-fit: cover;
   background: #e3e3e3;
   border: 0.0625rem solid #eaeaea;
 }
-.topic-titledate-wrapper {
+.cat-topic-titledate-wrapper {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
 }
-.topic-titledate-wrapper p:first-child {
+.cat-topic-titledate-wrapper p:first-child {
   font-size: 1.08rem;
   font-weight: 500;
   color: #222;
   margin: 0;
 }
-.topic-titledate-wrapper p:last-child {
+.cat-topic-titledate-wrapper p:last-child {
   font-size: 0.97rem;
   color: #888;
   margin: 0;
 }
-.topic-titledate-wrapper span {
+.cat-topic-titledate-wrapper span {
   color: #ff914d;
   font-weight: 500;
 }
 
-.resultTopic-right {
+.cat-topicItem-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 0.3rem;
   min-width: 4.375rem;
 }
-.resultTopic-right p {
+.cat-topicItem-right p {
   margin: 0;
   font-size: 1.05rem;
   color: #222;
@@ -179,7 +181,7 @@
   gap: 0.3rem;
 }
 
-.resultTopic-right p:last-child {
+.cat-topicItem-right p:last-child {
   font-size: 0.95rem;
   color: #888;
 }

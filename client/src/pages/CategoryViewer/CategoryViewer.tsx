@@ -110,7 +110,7 @@ function CategoryViewer() {
                 <div id="categoryviewer-content">
                     <h1 onClick={() => setShowCategories(v => !v)} style={{cursor: 'pointer'}}>
                         {showCategories ? <FaSortUp style={{marginRight: 8}} /> : <FaSortDown style={{marginRight: 8}} />}
-                        Categories ({categList.length})
+                        Sub-Categories ({categList.length})
                     </h1>
                     {showCategories && (
                         <>
