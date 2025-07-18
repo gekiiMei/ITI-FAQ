@@ -51,19 +51,20 @@ function EditorPage() {
 
     const navigate = useNavigate()
 
-    const setParam = (key:string, val:string|null) => {
-        const params = new URLSearchParams(searchParams);
-        if (val) {
-            params.set(key, val);
-        } else { 
-            params.delete(key);
-            console.log("Deleted " + key + " from params")
-        }
-        console.log("params: ", params)
-        setSearchParams(params);
-    }
+    // const setParam = (key:string, val:string|null) => {
+    //     const params = new URLSearchParams(searchParams);
+    //     if (val) {
+    //         params.set(key, val);
+    //     } else { 
+    //         params.delete(key);
+    //         console.log("Deleted " + key + " from params")
+    //     }
+    //     console.log("params: ", params)
+    //     setSearchParams(params);
+    // }
     
     const getSubjects = async () => {
+        console.log("getSubjects called")
         console.log("fetching subjects with: ")
         console.log('currentTopic: ' + currentTopic)
         console.log('currentSubject: ' + currentSub)
@@ -83,6 +84,7 @@ function EditorPage() {
     }
 
     const getPages = async() => {
+        console.log("getPages called")
         await axios.post(base_url+"/api/authorfetch/fetch-pages", {
             curr_topic: currentTopic,
             curr_subject: currentSub
@@ -116,7 +118,12 @@ function EditorPage() {
             parent_subject: currentSub
         })
         .then(async (resp) => {
+            // const params = new URLSearchParams(searchParams)
+            // params.set("subject", resp.data.subject_id.toString())
+            // params.delete("page");
+            // setSearchParams(params)
             await getSubjects()
+            await openSubject(resp.data.subject.id)
         })
         .catch((err) => {
 
@@ -124,13 +131,19 @@ function EditorPage() {
     }
 
     const handleCreatePage = async (title:string) => {
+        console.log("handlecreate called")
         await axios.post(base_url+"/api/create/create-page", {
             page_title: title,
             parent_topic: currentTopic,
             parent_subject: currentSub
         })
         .then(async (resp) => {
+            // setParam("page", resp.data.page_id.toString())
+            // const params = new URLSearchParams(searchParams)
+            // params.set("page", resp.data.page_id.toString())
+            // setSearchParams(params)
             await getPages()
+            await openPage(resp.data.page_id)
         })
         .catch((err) => {
          
@@ -177,7 +190,10 @@ function EditorPage() {
 
     const getPageDetails = async () => {
         // setActivePageContent([])
+        console.log("getPageDetails called")
+        console.log("loading new page")
         setCurrentMarkdown("")
+        setInitialMarkdown("")
         await axios.post(base_url+"/api/authorfetch/fetch-details", {
             page_id: currPage
         })
@@ -193,8 +209,13 @@ function EditorPage() {
     }
 
     const openPage = async (id:number) => {
+        console.log("openPage called")
         console.log("opening page id " + id)
-        setParam("page", id.toString())
+        // setParam("page", id.toString())
+        const params = new URLSearchParams(searchParams)
+        params.set("page", id.toString())
+        setSearchParams(params)
+
     }
 
 
@@ -208,6 +229,7 @@ function EditorPage() {
             console.log("markdown: ")
             console.log(currentMarkdown)
             await getPages()
+            await getPageDetails()
             setActivePageTitle(tempTitle??activePageTitle)
             alert("saved")
         })
@@ -219,7 +241,9 @@ function EditorPage() {
     const openSubject = async (id: number) => {
         const params = new URLSearchParams(searchParams);
         params.set("subject", id.toString());
+        params.delete("page")
         setSearchParams(params);
+        
     }
 
     const backSubject = async () => {
@@ -236,7 +260,15 @@ function EditorPage() {
         //     return hist
         // })
         console.log("back func fired. currentSub = " + currentSub + " parentSub = " + parentSub?.subject_id)
-        setParam("subject", parentSub?parentSub.subject_id.toString():null)
+        // setParam("subject", parentSub?parentSub.subject_id.toString():null)
+        const params = new URLSearchParams(searchParams)
+        params.delete("page")
+        if (parentSub) {
+            params.set("subject", parentSub.subject_id.toString())
+        } else {
+            params.delete("subject")
+        }
+        setSearchParams(params)
 
         // if (currentSub == null) {
         //     console.log("backsub: currentSub is null" )
@@ -260,6 +292,9 @@ function EditorPage() {
     }
 
     useEffect(() => {
+        console.log("currentSub or currentTopic changed")
+        console.log("sub: " + currentSub)
+        console.log("topic: " + currentTopic)
         const asyncLoadSubs = async () => {
             console.log('getting subjects')
             await getSubjects()
@@ -274,6 +309,7 @@ function EditorPage() {
     }, [currentSub, currentTopic])
 
     useEffect(() => {
+        console.log("currPage changed: " + currPage)
         const asyncGetPageDetails = async () => {
             await getPageDetails()
         }
@@ -282,6 +318,8 @@ function EditorPage() {
     }, [currPage])
 
     useEffect(() => {
+        console.log("search params changed: ")
+        console.log(searchParams)
         setCurrTopic(searchParams.get("topic_id")?parseInt(searchParams.get("topic_id")??""):null);
         setCurrSub(searchParams.get("subject")?parseInt(searchParams.get("subject")??""):null);
         setCurrPage(searchParams.get("page")?parseInt(searchParams.get("page")??""):null) 

@@ -103,9 +103,10 @@ exports.create_page = async (req, res) => {
     })
 
     if (!created) {
-        return res.status(409).json({msg:'Subject ' + page_title + ' already exists!'})
+        console.log("err")
+        return res.status(409).json({msg:'Page ' + page_title + ' already exists!'})
     } else {
-        return res.status(200).json({msg:'Subject created!', subject_id:new_page.subject_id})
+        return res.status(200).json({msg:'Page created!', page_id:new_page.page_id})
     }
 
 }
