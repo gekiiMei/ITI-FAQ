@@ -4,6 +4,7 @@ import AccountButton from "../AccountButton/AccountButton";
 import "./NavBar.css"
 import axios from "axios";
 import { IoSearchOutline } from "react-icons/io5";
+import HRDotNetLogo from "../../../public/HRDOTNET Logo.png"
 
 interface Topic {
     topic_id: number;
@@ -36,12 +37,24 @@ function NavBar() {
 
     const handleTopicClick = (topicId: number) => {
         console.log(`Navigating to topic: ${topicId}`)
+         console.log(`Navigating to topic: ${topicId}`)
         navigate(`/viewer?topic_id=${topicId}`)
     }
 
     const handlePageClick = (pageId: number, parentTopicId: number) => {
         console.log(`Navigating to page: ${pageId} in topic: ${parentTopicId}`)
+         console.log(`Navigating to page: ${pageId} in topic: ${parentTopicId}`)
         navigate(`/viewer?topic_id=${parentTopicId}&page=${pageId}`)
+    }
+
+    const handleFAQClick = () => {
+        window.open('/faq', '_blank');
+    }
+    const handleSupportClick = () => {
+        window.open('/support', '_blank');
+    }
+    const handleLogoClick = () => {
+        navigate('/')
     }
 
     useEffect(()=>{
@@ -70,12 +83,17 @@ function NavBar() {
     }, [debouncedQuery])
     return (
         <div className="navbar-main">
-            <form id="searchbar" onSubmit={(e) => {handleSearchSubmit(e)}}>
-                <div id="bar-wrapper">
-                    <input type="text" placeholder="Search..." value={searchQuery} onChange={(e) => {setSearchQuery(e.target.value)}}/>
-                    <button><IoSearchOutline size={24} /></button>
+            <div className="navbar-left">
+                <div id="navbarlogo" onClick={handleLogoClick} style={{cursor: 'pointer'}}>
+                    <img src={HRDotNetLogo} alt="" style={{width:'13.438rem', height:'4.375rem'}}/>
                 </div>
-                {/* Topics */}
+            </div>
+            <form id="searchbar" onSubmit={handleSearchSubmit}>
+                <div id="bar-wrapper">
+                    <input type="text" placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+                    <button type="submit"><IoSearchOutline size={24} /></button>
+                </div>
+
                 {suggestions.topics && suggestions.topics.map((topic, index) => {
                     return(
                         <div 
@@ -87,7 +105,7 @@ function NavBar() {
                         </div>
                     )
                 })}
-                {/* Pages */}
+
                 {suggestions.pages && suggestions.pages.map((page, index) => {
                     return(
                         <div 
@@ -100,6 +118,10 @@ function NavBar() {
                     )
                 })}
             </form>
+            <div className="navbar-links">
+                <span className="navbar-link" onClick={handleFAQClick}>FAQ</span>
+                <span className="navbar-link" onClick={handleSupportClick}>SUPPORT LINK</span>
+            </div>
             <div id="accountbutt-wrapper">
                 <AccountButton />
             </div>
