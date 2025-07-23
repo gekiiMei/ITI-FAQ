@@ -25,6 +25,18 @@
     align-items: center;
     padding-right: 5rem;
 }
+
+#logout button{
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 10%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
 #dash-header h1 {
     padding-left: 5rem;
 }

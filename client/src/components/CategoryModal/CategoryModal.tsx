@@ -3,6 +3,9 @@ import axios from "axios";
 import "./CategoryModal.css"
 import NamePrompt from "../NamePrompt/NamePrompt";
 
+import { RiArrowGoBackFill, RiCloseCircleLine } from "react-icons/ri";
+import { MdDelete } from "react-icons/md";
+
 interface props {
     setShowCategModal: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -94,7 +97,7 @@ function CategoryModal( {setShowCategModal}:props ) {
         <div className="categorymodal-main">
             <div id="categorymodal-container">
                 <div id="categoryclose-wrapper">
-                    <p onClick={()=>{setShowCategModal(false)}}>x</p>
+                    <p onClick={()=>{setShowCategModal(false)}}> <RiCloseCircleLine size={25}/> </p>
                 </div>
                 <div id="category-createnew-wrapper">
                     <button id="categ-createnew" onClick={()=>{setShowNameModal(true)}}>
@@ -103,21 +106,23 @@ function CategoryModal( {setShowCategModal}:props ) {
                 </div>
                 <div id="category-list">
                     {currentCat != null && 
-                    <div id="cat-back-button" onClick={async () => {await backCategory()}}>
-                        back
+                    <div id="cat-back-button-wrapper"> 
+                        <div id="cat-back-button" onClick={async () => {await backCategory()}}>
+                         <RiArrowGoBackFill/> back
+                        </div>
                     </div>
                     }
                     
                     {
                         categList.map((cat) => {
                             return (
-                                <div className="categoryItem" key={cat.category_id}>
-                                    <div className="categoryItem-left" onClick={async () => {await openCategory(cat.category_id)}}>
+                                <div className="categoryItem" key={cat.category_id} onClick={async () => {await openCategory(cat.category_id)}}>
+                                    <div className="categoryItem-left" >
                                         <p>{cat.name}</p>
                                     </div>
-                                    <div className="categoryItem-right">
-                                        <button onClick={async () => {await archiveCat(cat.category_id)}}>delete</button>
-                                    </div>
+                                        <div className="categoryItem-right">
+                                            <button onClick={async () => {await archiveCat(cat.category_id)}}> <MdDelete /> Delete</button>
+                                        </div>
                                 </div>
                             )
                         })

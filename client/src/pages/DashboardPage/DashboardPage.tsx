@@ -5,14 +5,15 @@ import "./DashboardPage.css"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ThumbnailUploadModal from "../../components/ThumbnailUploadModal/ThumbnailUploadModal";
+import { CiLogout } from "react-icons/ci";
 
 interface Topic {
     topic_id: number,
     title: string,
     parent_category: number,
     author_id: number,
-    // total_rating: number,
-    // rating_count: number,
+    total_rating: number,
+    rating_count: number,
     thumbnail_path: string
     updatedAt:string,
 }
@@ -95,7 +96,7 @@ function DashboardPage() {
                     </div>
                     <div id="logout">
                         <button id="logout-button" onClick={() => { handleLogout() }}>
-                            logout
+                            <CiLogout /> Logout
                         </button>
                     </div>
                 </div>
@@ -111,7 +112,7 @@ function DashboardPage() {
                             {
                                 topicList.map((topic, i) => {
                                     return (
-                                        <div className="dash-topic-item" onClick={()=>{ navigate("/editor?topic_id=" + topic.topic_id) }}>
+                                        <div className="dash-topic-item" key={i} onClick={()=>{ navigate("/editor?topic_id=" + topic.topic_id) }}>
                                             <button className="thumbbutton" onClick={() => {openThumbModal(topic.topic_id, topic.thumbnail_path)}}>edit thumbnail</button>
                                             <div className="dash-topicitem-left" >
                                                 <img className="dash-topic-thumbnail" src={topic.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+topic.thumbnail_path} alt="thumbnail" />
@@ -121,8 +122,8 @@ function DashboardPage() {
                                             </div>
                                             <div className="dash-topicitem-right">
                                                 <div className="dash-topicitem-ratings">
-                                                    {/* <p>{((topic.total_rating/topic.rating_count)==0 || topic.rating_count == 0) ? "0.0" : (topic.total_rating/topic.rating_count).toFixed(1)}</p>
-                                                    <p>({topic.rating_count})</p> */}
+                                                    <p>{((topic.total_rating/topic.rating_count)==0 || topic.rating_count == 0) ? "0.0" : (topic.total_rating/topic.rating_count).toFixed(1)}</p>
+                                                    <p>({topic.rating_count})</p>
                                                 </div>
                                                 <div className="dash-topicitem-deletewrapper">
                                                     <button id="dash-topic-delete" onClick={async () => { await archiveTopic(topic.topic_id) }}>
@@ -137,7 +138,7 @@ function DashboardPage() {
                         </div>
                         <div id="dash-createnew-wrapper">
                             <button id="dash-createnew" onClick={()=>{setShowTopicModal(true)}}>
-                                New Topic
+                                Create new
                             </button>
                         </div>
                     </div>

@@ -31,15 +31,15 @@
 }
 
 #categoryclose-wrapper p {
-    cursor: pointer;
+    cursor: pointer; 
 }
+
 
 #category-createnew-wrapper {
     display: flex;
     justify-content: flex-end;
     width: 100%;
     padding-right: 2rem;
-
     padding-top: 2rem;
 }
 
@@ -57,13 +57,28 @@
     justify-content: space-between;
 }
 
-.categoryItem-left {
+#cat-back-button-wrapper{
+    display: flex;
+    width: 100%;
+    padding-left: 0.5rem;
 
 }
+
 
 .categoryItem-right {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+}
+
+.categoryItem-right button {
+    border: none;
+    border-radius: 0.25rem;
+    padding: 8%;
+    cursor: pointer;
+    background-color: red;
+    color: white;
+    display: flex;
     align-items: center;
 }
