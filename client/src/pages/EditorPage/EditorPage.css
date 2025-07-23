@@ -46,13 +46,23 @@
 
 
 #title-featurebutt p {
-
+    font-weight: bold;
 }
 
 #feature-button {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+#feature-button p {
+    color: gray;
+}
+
+#feature-button:hover p {
+    color: orange;
 }
 
 #editornav-body {
@@ -72,6 +82,20 @@
 .subjectItem-left, .pageItem-left {
     width: 100%;
 }
+
+.subjectItem-right button {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    background-color: #ED5353;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 5px;
+    color: white
+}
+
+
 
 #editor-workbench {
     display: flex;
@@ -119,4 +143,25 @@
     gap: 1rem;
     align-items: center;
     cursor: pointer;
+}
+
+#sub-create-wrapper {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#sub-createnew, #page-createnew { 
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding-block: 0.25rem;
+    padding-inline: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #FFC583;
+    cursor: pointer;
+}
+
+#sub-createnew:hover, #page-createnew:hover {
+    background-color:#c19564
 }

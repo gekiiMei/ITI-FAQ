@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import NamePrompt from "../../components/NamePrompt/NamePrompt";
 
-import { FaRegStar } from "react-icons/fa";
+
 
 import { BlockTypeSelect, InsertThematicBreak, ListsToggle, MDXEditor, UndoRedo, BoldItalicUnderlineToggles, InsertImage, InsertTable} from "@mdxeditor/editor";
 import '@mdxeditor/editor/style.css'
@@ -13,6 +13,10 @@ import { headingsPlugin, quotePlugin, thematicBreakPlugin, toolbarPlugin, listsP
 import { IoArrowBackCircleSharp } from "react-icons/io5";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { IoMdFolderOpen } from "react-icons/io";
+
+import { FaP, FaR, FaStar } from "react-icons/fa6";
+import { FaPlusCircle, FaRegStar } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 interface Subject {
     subject_id:number,
@@ -355,16 +359,17 @@ function EditorPage() {
                         <div id="title-featurebutt">
                             <p>{topicTitle}</p>
                             <div id="feature-button" onClick={async () => {await handleFeatureClick()}}>
-                                <FaRegStar /> 
-                                <input type="checkbox" checked={featured==true}/>
+                                {featured?<FaStar color="gold"/> : <FaRegStar />}
+                                <p>Featured</p>
+                                {/* <input type="checkbox" checked={featured==true}/> */}
                             </div>
                         </div>
                         <div id="sub-create-wrapper">
                             <button id="sub-createnew" onClick={() => {setShowPromptNameSub(true)}}>
-                                new sub
+                                <FaPlusCircle /> Subject
                             </button>
                             <button id="page-createnew" onClick={() => {setShowPromptNamePage(true)}}>
-                                new page
+                                <FaPlusCircle /> Page
                             </button>
                         </div>
                     </div>
@@ -382,7 +387,7 @@ function EditorPage() {
                                             <p><IoMdFolderOpen /> {sub.name}</p>
                                         </div>
                                         <div className="subjectItem-right">
-                                            <button onClick={async () => {await archiveSub(sub.subject_id)}}>delete</button>
+                                            <button onClick={async () => {await archiveSub(sub.subject_id)}}><MdDelete /> Delete</button>
                                         </div>
                                     </div>
                                 )
@@ -406,7 +411,17 @@ function EditorPage() {
                 </div>
                 <div id="editor-workbench">
                     {
-                        searchParams.get("page")==null ? <p>no page loaded</p> : 
+                        searchParams.get("page")==null ? 
+                        <div id="editorworkbench-container">
+                            <div id="no-page-loaded">
+                                <p id="no-page-loaded-header">
+                                    No page loaded.
+                                </p>
+                                <p id="no-page-loaded-desc">
+                                    Select a page to edit its content.
+                                </p>
+                            </div>
+                        </div> : 
                         <div id="editorworkbench-container">
                             <div id="editor-header">
                                 { editingTitle ?
