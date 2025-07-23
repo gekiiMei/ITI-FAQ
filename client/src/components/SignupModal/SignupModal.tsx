@@ -16,7 +16,7 @@ function SignupModal({ setShowModal }:props) {
 
     const handleSignup = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (user_in == null || pass_in == null) {
+        if (user_in == "" || pass_in == "") {
             // err!!
             return;
         }

@@ -21,7 +21,7 @@ function LoginPage() {
         e.preventDefault();
         console.log("submitting form")
         console.log(user_in + pass_in)
-        if (user_in == null || pass_in == null) {
+        if (user_in == "" || pass_in == "") {
             // err!!
             return;
         }
