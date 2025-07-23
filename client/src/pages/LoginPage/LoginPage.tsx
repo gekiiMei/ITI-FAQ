@@ -21,6 +21,10 @@ function LoginPage() {
         e.preventDefault();
         console.log("submitting form")
         console.log(user_in + pass_in)
+        if (user_in == null || pass_in == null) {
+            // err!!
+            return;
+        }
         axios.post(base_url+'/api/auth/login', {
             user_in: user_in,
             pass_in: pass_in

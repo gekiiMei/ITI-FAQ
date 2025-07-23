@@ -16,6 +16,10 @@ function SignupModal({ setShowModal }:props) {
 
     const handleSignup = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (user_in == null || pass_in == null) {
+            // err!!
+            return;
+        }
         console.log("submitting form")
         console.log(user_in + pass_in)
         axios.post(base_url+'/api/auth/signup', {
