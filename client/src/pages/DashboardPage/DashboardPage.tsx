@@ -141,7 +141,7 @@ function DashboardPage() {
                                             
                                             <div className="dash-topicitem-left" >
                                                 <div id="images-button-wrapper"> 
-                                                    <button className="thumbbutton" onClick={() => {openThumbModal(topic.topic_id, topic.thumbnail_path)}}> <MdModeEditOutline />Edit</button>
+                                                    <button className="thumbbutton" onClick={(e) => {e.stopPropagation();openThumbModal(topic.topic_id, topic.thumbnail_path)}}> <MdModeEditOutline />Edit</button>
                                                     <img className="dash-topic-thumbnail" src={topic.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+topic.thumbnail_path} alt="thumbnail" />
                                                 </div>
                                                 <div className="dash-topicitem-title-wrapper">

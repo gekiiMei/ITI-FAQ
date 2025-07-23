@@ -121,7 +121,7 @@ function CategoryModal( {setShowCategModal}:props ) {
                                         <p>{cat.name}</p>
                                     </div>
                                         <div className="categoryItem-right">
-                                            <button onClick={async () => {await archiveCat(cat.category_id)}}> <MdDelete /> Delete</button>
+                                            <button onClick={async (e) => {e.stopPropagation(); await archiveCat(cat.category_id)}}> <MdDelete /> Delete</button>
                                         </div>
                                 </div>
                             )

@@ -34,13 +34,14 @@
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid black;
+    gap: 2rem;
 }
 
 #title-featurebutt {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
 }
 
 
@@ -83,7 +84,7 @@
     width: 100%;
 }
 
-.subjectItem-right button {
+.subjectItem-right button, .pageItem-right button {
     display: flex;
     align-items: center;
     gap: 0.2rem;
@@ -95,7 +96,9 @@
     color: white
 }
 
-
+.subjectItem-right button:hover, .pageItem-right button:hover {
+    background-color: #bb4242;
+}
 
 #editor-workbench {
     display: flex;
@@ -112,6 +115,9 @@
     width: 100%;
     height: 100%;
     flex-direction: column;
+    padding: 1rem;
+    border-radius: 5px;
+    gap: 2rem;
 }
 
 #editor-buttons {
@@ -164,4 +170,50 @@
 
 #sub-createnew:hover, #page-createnew:hover {
     background-color:#c19564
+}
+
+#editor-header {
+    border-bottom: 1px solid black;
+}
+
+#editortitle-left {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+#editortitle-left button {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    height: 2rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    color: gray;
+}
+
+#editortitle-left button:hover {
+    color: orange;
+}
+
+#editortitle-left input {
+    height: 4rem;
+    width: 100%;
+    font-size: 2rem;
+}
+
+.prose {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    border-left: 1px solid rgba(0, 0, 0, 0.25);
+    border-right: 1px solid rgba(0, 0, 0, 0.25);
+    cursor: auto;
+
+}
+
+#editor-savebutt {
+    background-color: #459201;
+    padding: 0.2rem;
+    
 }

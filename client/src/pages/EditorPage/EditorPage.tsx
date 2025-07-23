@@ -14,9 +14,10 @@ import { IoArrowBackCircleSharp } from "react-icons/io5";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { IoMdFolderOpen } from "react-icons/io";
 
-import { FaP, FaR, FaStar } from "react-icons/fa6";
-import { FaPlusCircle, FaRegStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa6";
+import { FaPlusCircle, FaRegStar, FaSave } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { BiSolidEdit } from "react-icons/bi";
 
 interface Subject {
     subject_id:number,
@@ -359,9 +360,9 @@ function EditorPage() {
                         <div id="title-featurebutt">
                             <p>{topicTitle}</p>
                             <div id="feature-button" onClick={async () => {await handleFeatureClick()}}>
-                                {featured?<FaStar color="gold"/> : <FaRegStar />}
+                                {/* {featured?<FaStar color="gold"/> : <FaRegStar />} */}
+                                <input type="checkbox" checked={featured==true}/>
                                 <p>Featured</p>
-                                {/* <input type="checkbox" checked={featured==true}/> */}
                             </div>
                         </div>
                         <div id="sub-create-wrapper">
@@ -383,7 +384,7 @@ function EditorPage() {
                             subList.map((sub, i) => {
                                 return(
                                     <div className="subjectItem" key={sub.subject_id}>
-                                        <div className="subjectItem-left" onClick={async () => {await openSubject(sub.subject_id)}}>
+                                        <div className="subjectItem-left" onClick={async (e) => {e.stopPropagation(); await openSubject(sub.subject_id)}}>
                                             <p><IoMdFolderOpen /> {sub.name}</p>
                                         </div>
                                         <div className="subjectItem-right">
@@ -401,7 +402,7 @@ function EditorPage() {
                                             <p><span><IoDocumentTextOutline /></span> {page.title}</p>
                                         </div>
                                         <div className="pageItem-right">
-                                            <button onClick={async () => {await archivePage(page.page_id)}}>delete</button>
+                                            <button onClick={async (e) => {e.stopPropagation();await archivePage(page.page_id)}}><MdDelete /> Delete</button>
                                         </div>
                                     </div>
                                 )
@@ -428,17 +429,25 @@ function EditorPage() {
                                 <form id="editortitle-left" onSubmit={async (e) => { e.preventDefault(); await handleUpdateTitle(tempTitle??"")}}>
                                     <input type="text" value={tempTitle??activePageTitle} onChange={(e) => {setTempTitle(e.target.value)}}/>
                                     <button id="editortitle-edit">
-                                        ok
+                                        Ok
                                     </button>
                                 </form>
                                 :
                                 <div id="editortitle-left">
                                     <h1>{activePageTitle}</h1>
                                     <button id="editortitle-edit" onClick={() => {setEditingTitle(true)}}>
-                                        edit title
+                                        <BiSolidEdit /> Rename
                                     </button>
                                 </div>
                                 }
+                                {/* rating count here -harley */}
+                                {/* {
+                                    !editingTitle &&
+                                    <div id="editortitle-right">
+                                        <FaStar color="gold" /> 
+                                    </div>
+                                }
+                                 */}
                             </div>
                             <div id="editor-body">
                                 <div id="editor-content">
@@ -446,6 +455,7 @@ function EditorPage() {
                                         searchParams.get("page")==null ? <p>no page loaded</p> : 
                                         <MDXEditor
                                         key={initialMarkdown}
+                                        contentEditableClassName="prose"
                                         placeholder="Write information here!"
                                         markdown={initialMarkdown}
                                         onChange={(md:string) => {setCurrentMarkdown(md)}}
@@ -511,7 +521,7 @@ function EditorPage() {
                                         -Harley
                                     */}
                                     <button id="editor-savebutt" onClick={() => {savePage()}}>
-                                        Save
+                                       <FaSave /> Save
                                     </button>
                                 </div>
                             </div>
