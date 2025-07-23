@@ -20,6 +20,7 @@ interface Topic {
     rating_count: number,
     thumbnail_path: string
     updatedAt:string,
+    category: {name:string}
 }
 
 function DashboardPage() {
@@ -55,6 +56,7 @@ function DashboardPage() {
         })
         .then((resp) => {
             setTopicList(resp.data.topics)
+            console.log(resp.data.topics[0])
         })
         .catch((err) => {
             console.log(err)
@@ -146,6 +148,7 @@ function DashboardPage() {
                                                 </div>
                                                 <div className="dash-topicitem-title-wrapper">
                                                     <p>{topic.title}</p>
+                                                    <p className="dash-cat">Category: <span>{topic.category.name}</span></p>
                                                 </div>
                                             </div>
                                             <div className="dash-topicitem-right">

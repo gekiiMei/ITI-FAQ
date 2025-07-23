@@ -167,6 +167,19 @@ background-color: #f2f2f2;
     flex-direction: column;
     justify-content: center;
 }
+.dash-topicitem-title-wrapper p {
+    margin: 0;
+}
+
+.dash-cat {
+    font-size: 0.7rem;
+    color: gray;
+}
+
+.dash-cat span {
+    font-size: 0.9rem;
+    color: orange;
+}
 
 .thumbbutton {
     background: rgb(234, 234, 234);

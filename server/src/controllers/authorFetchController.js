@@ -46,6 +46,12 @@ exports.get_topics = async (req, res) => {
     console.log("cat from body: " + req.body.parent_cat)
     try {
         const topics = await Topic.findAll({
+            include: [
+                {
+                    model:Category,
+                    as:'category'
+                }
+            ],
             where: (curr_author != null)? {
                 author_id:curr_author,
                 is_active:true
@@ -56,6 +62,7 @@ exports.get_topics = async (req, res) => {
             ,
         })
         console.log("queried topics: " + topics)
+        // console.log("first el: ", topics[0])
         return res.status(200).json({msg:'Successfully fetched topics', topics:topics})
     } catch (e) {
         console.log(e)
