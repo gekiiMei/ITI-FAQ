@@ -84,3 +84,17 @@
 #login-buttons span {
     cursor: pointer;
 }
+
+#login-pass-field-wrapper {
+    width: 100%;
+    position: relative;
+}
+
+#login-pass-field-wrapper button {
+    position: absolute;
+    height: 100%;
+    right: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import "./SignupModal.css"
+import { FaEye } from "react-icons/fa6";
+import { IoEyeOff } from "react-icons/io5";
 
 interface props {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
@@ -43,13 +45,19 @@ function SignupModal({ setShowModal }:props) {
                                     onChange={(e) => {setUser_in(e.target.value)}}
                                 />
                             {/* </div> */}
-                            {/* <div id="signup-pass-field-wrapper"> */}
+                            <div id="signup-pass-field-wrapper">
                                 <input type={showPass ? "text" : "password"} 
                                     placeholder="Password"
                                     value={pass_in}
                                     onChange={(e)=> {setPass_in(e.target.value)}}
                                 />
-                            {/* </div> */}
+                                {
+                                    showPass ?
+                                        <button type="button" onClick={() => {setShowPass(false)}}><FaEye size={24}/></button>
+                                    :
+                                        <button type="button" onClick={() => {setShowPass(true)}}><IoEyeOff size={24}/></button>
+                                }
+                            </div>
                         </div>
                         <div id="signup-buttons">
                             <button id="signup-button">

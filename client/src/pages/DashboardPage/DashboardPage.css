@@ -162,7 +162,7 @@ background-color: #f2f2f2;
     gap: 0.2rem;
 }
 
-.dash-topicitem-title-wrapper {
+.dash-topicitem-title-wrapper { 
     display: flex;
     flex-direction: column;
     justify-content: center;

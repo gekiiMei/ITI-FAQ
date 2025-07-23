@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios"
 import "./LoginPage.css"
 import SignupModal from "../../components/SignupModal/SignupModal";
+import { FaEye } from "react-icons/fa6";
+import { IoEyeOff } from "react-icons/io5";
 
 function LoginPage() {
     const base_url = import.meta.env.VITE_backend_base_url;
@@ -57,13 +59,19 @@ function LoginPage() {
                                 onChange={(e) => {setUser_in(e.target.value)}}
                             />
                         {/* </div> */}
-                        {/* <div id="login-pass-field-wrapper"> */}
+                        <div id="login-pass-field-wrapper">
                             <input type={showPass ? "text" : "password"} 
                                 placeholder="Password"
                                 value={pass_in}
                                 onChange={(e)=> {setPass_in(e.target.value)}}
                             />
-                        {/* </div> */}
+                            {
+                                showPass ?
+                                    <button type="button" onClick={() => {setShowPass(false)}}><FaEye size={24}/></button>
+                                :
+                                    <button type="button" onClick={() => {setShowPass(true)}}><IoEyeOff size={24}/></button>
+                            }
+                        </div>
                     </div>
                     <div id="login-buttons">
                         <button id="login-button">
