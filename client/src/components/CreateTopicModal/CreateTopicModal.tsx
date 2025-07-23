@@ -3,6 +3,7 @@ import axios from "axios";
 import useIsMountedRef from "use-is-mounted-ref";
 import "./CreateTopicModal.css"
 import NamePrompt from "../NamePrompt/NamePrompt";
+import { RiArrowGoBackFill, RiCloseCircleLine } from "react-icons/ri";
 
 interface props {
     setShowTopicModal: React.Dispatch<React.SetStateAction<boolean>>,
@@ -96,26 +97,28 @@ function CreateTopicModal( {setShowTopicModal, getTopics}:props ) {
         <div className="categorymodal-main">
             <div id="categorymodal-container">
                 <div id="categoryclose-wrapper">
-                    <p onClick={()=>{setShowTopicModal(false)}}>x</p>
+                    <p onClick={()=>{setShowTopicModal(false)}}> <RiCloseCircleLine size={25}/> </p>
                 </div>
                 <div id="category-createnew-wrapper">
                     Choose Category:
                     <button id="categ-createnew" onClick={()=>{setShowNameModal(true)}}>
-                        Create
+                        New Topic
                     </button>
                 </div>
                 <div id="category-list">
                     {currentCat != null && 
-                    <div id="cat-back-button" onClick={async () => {await backCategory()}}>
-                        back
+                     <div id="cat-back-button-wrapper"> 
+                        <div id="cat-back-button" onClick={async () => {await backCategory()}}>
+                         <RiArrowGoBackFill/> back
+                        </div>
                     </div>
                     }
-                    
+
                     {
                         categList.map((cat) => {
                             return (
-                                <div className="categoryItem" key={cat.category_id}>
-                                    <div className="categoryItem-left" onClick={async () => {await openCategory(cat.category_id)}}>
+                                <div className="categoryItem" key={cat.category_id} onClick={async () => {await openCategory(cat.category_id)}}>
+                                    <div className="categoryItem-left">
                                         <p>{cat.name}</p>
                                     </div>
                                 </div>

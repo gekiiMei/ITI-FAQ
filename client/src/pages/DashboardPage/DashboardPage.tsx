@@ -5,8 +5,10 @@ import "./DashboardPage.css"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ThumbnailUploadModal from "../../components/ThumbnailUploadModal/ThumbnailUploadModal";
-import { CiLogout } from "react-icons/ci";
 import RenamePrompt from "../../components/RenamePrompt/RenamePrompt";
+import { MdDelete, MdOutlineAddCircle } from "react-icons/md";
+import { BiSolidEdit } from "react-icons/bi";
+import { CiLogout } from "react-icons/ci";
 
 interface Topic {
     topic_id: number,
@@ -135,7 +137,7 @@ function DashboardPage() {
                                 topicList.map((topic, i) => {
                                     return (
                                         <div className="dash-topic-item" key={i} onClick={()=>{ navigate("/editor?topic_id=" + topic.topic_id) }}>
-                                            <button className="thumbbutton" onClick={() => {openThumbModal(topic.topic_id, topic.thumbnail_path)}}>edit thumbnail</button>
+                                            <button className="thumbbutton" onClick={() => {openThumbModal(topic.topic_id, topic.thumbnail_path)}}> Edit Thumbnail</button>
                                             <div className="dash-topicitem-left" >
                                                 <img className="dash-topic-thumbnail" src={topic.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+topic.thumbnail_path} alt="thumbnail" />
                                                 <div className="dash-topicitem-title-wrapper">
@@ -149,10 +151,10 @@ function DashboardPage() {
                                                 </div>
                                                 <div className="dash-topicitem-deletewrapper">
                                                     <button id="dash-topic-rename" onClick={async (e) => {e.stopPropagation(); openRenameModal(topic.topic_id) }}>
-                                                        rename
+                                                      <BiSolidEdit /> Rename
                                                     </button>
                                                     <button id="dash-topic-delete" onClick={async (e) => {e.stopPropagation(); await archiveTopic(topic.topic_id) }}>
-                                                        delete
+                                                       <MdDelete /> Delete
                                                     </button>
                                                 </div>
                                             </div>
@@ -163,7 +165,7 @@ function DashboardPage() {
                         </div>
                         <div id="dash-createnew-wrapper">
                             <button id="dash-createnew" onClick={()=>{setShowTopicModal(true)}}>
-                                Create new
+                                <MdOutlineAddCircle /> Create new
                             </button>
                         </div>
                     </div>

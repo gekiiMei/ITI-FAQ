@@ -99,7 +99,7 @@ function CategoryModal( {setShowCategModal}:props ) {
                 <div id="categoryclose-wrapper">
                     <p onClick={()=>{setShowCategModal(false)}}> <RiCloseCircleLine size={25}/> </p>
                 </div>
-                <div id="category-createnew-wrapper">
+                <div id="category-createnew-wrapper1">
                     <button id="categ-createnew" onClick={()=>{setShowNameModal(true)}}>
                         New Category
                     </button>
