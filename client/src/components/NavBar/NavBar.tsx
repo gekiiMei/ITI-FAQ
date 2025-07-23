@@ -42,12 +42,14 @@ function NavBar() {
         console.log(`Navigating to topic: ${topicId}`)
          console.log(`Navigating to topic: ${topicId}`)
         navigate(`/viewer?topic_id=${topicId}`)
+        window.location.reload()
     }
 
     const handlePageClick = (pageId: number, parentTopicId: number) => {
         console.log(`Navigating to page: ${pageId} in topic: ${parentTopicId}`)
         console.log(`Navigating to page: ${pageId} in topic: ${parentTopicId}`)
         navigate(`/viewer?topic_id=${parentTopicId}&page=${pageId}`)
+        window.location.reload()
     }
 
     //note to selvin: use useNavigate() for navigating between pages bc window.open opens it in a new tab -Harley
