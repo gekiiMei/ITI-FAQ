@@ -6,9 +6,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import ThumbnailUploadModal from "../../components/ThumbnailUploadModal/ThumbnailUploadModal";
 import RenamePrompt from "../../components/RenamePrompt/RenamePrompt";
-import { MdDelete, MdOutlineAddCircle } from "react-icons/md";
+import { MdDelete, MdModeEditOutline, MdOutlineAddCircle } from "react-icons/md";
 import { BiSolidEdit } from "react-icons/bi";
 import { CiLogout } from "react-icons/ci";
+import { HiOutlineViewGridAdd } from "react-icons/hi";
 
 interface Topic {
     topic_id: number,
@@ -120,7 +121,7 @@ function DashboardPage() {
                     </div>
                     <div id="logout">
                         <button id="logout-button" onClick={() => { handleLogout() }}>
-                            <CiLogout /> Logout
+                            <CiLogout strokeWidth={2} /> Logout
                         </button>
                     </div>
                 </div>
@@ -129,7 +130,7 @@ function DashboardPage() {
                         <div id="dash-content-labels">
                             <h1 id="your-topics"> Your topics:</h1>
                             <div id="dash-categbutton-wrapper">
-                                <button id="categ-button" onClick={()=>{setShowCategModal(true)}}>Manage Categories</button>
+                                <button id="categ-button" onClick={()=>{setShowCategModal(true)}}> <HiOutlineViewGridAdd /> Manage Categories</button>
                             </div>
                         </div>
                         <div id="dash-content-list">
@@ -137,9 +138,12 @@ function DashboardPage() {
                                 topicList.map((topic, i) => {
                                     return (
                                         <div className="dash-topic-item" key={i} onClick={()=>{ navigate("/editor?topic_id=" + topic.topic_id) }}>
-                                            <button className="thumbbutton" onClick={() => {openThumbModal(topic.topic_id, topic.thumbnail_path)}}> Edit Thumbnail</button>
+                                            
                                             <div className="dash-topicitem-left" >
-                                                <img className="dash-topic-thumbnail" src={topic.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+topic.thumbnail_path} alt="thumbnail" />
+                                                <div id="images-button-wrapper"> 
+                                                    <button className="thumbbutton" onClick={() => {openThumbModal(topic.topic_id, topic.thumbnail_path)}}> <MdModeEditOutline />Edit</button>
+                                                    <img className="dash-topic-thumbnail" src={topic.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+topic.thumbnail_path} alt="thumbnail" />
+                                                </div>
                                                 <div className="dash-topicitem-title-wrapper">
                                                     <p>{topic.title}</p>
                                                 </div>
