@@ -44,8 +44,6 @@ exports.create_topic = async (req,res) => {
             parent_category: parent_category,
             author_id: author_id,
             is_active: true,
-            total_rating: 0,
-            rating_count: 0
         }
     })
 
@@ -98,7 +96,9 @@ exports.create_page = async (req, res) => {
             parent_topic: parent_topic,
             parent_subject: parent_subject,
             content: "",
-            is_active: true
+            is_active: true,
+            total_rating: 0,
+            rating_count: 0
         }
     })
 

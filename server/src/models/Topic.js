@@ -1,3 +1,4 @@
+require('dotenv').config();
 const sequelize = require("../config/database")
 const { DataTypes } = require('sequelize')
 const User = require('./User')
@@ -39,14 +40,7 @@ const Topic = sequelize.define('Topic', {
         type:DataTypes.BOOLEAN,
         allowNull:false
     },
-    total_rating: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    rating_count: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
+
     is_featured:{
         type: DataTypes.BOOLEAN,
         allowNull: false,
@@ -54,7 +48,7 @@ const Topic = sequelize.define('Topic', {
     }
 }, {
     tableName: 'Topic',
-    schema: 'iti-faq'
+    schema: process.env.DB_SCHEMA
 })
 
 Topic.belongsTo(User, {

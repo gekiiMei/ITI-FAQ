@@ -1,3 +1,4 @@
+require('dotenv').config();
 const sequelize = require("../config/database")
 const { DataTypes } = require('sequelize')
 
@@ -28,7 +29,7 @@ const Category = sequelize.define('Category', {
     }
 }, {
     tableName: 'Category',
-    schema:'iti-faq'
+    schema:process.env.DB_SCHEMA
 })
 
 Category.hasMany(Category, {

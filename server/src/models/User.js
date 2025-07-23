@@ -1,3 +1,4 @@
+require('dotenv').config();
 const sequelize = require("../config/database")
 const { DataTypes } = require('sequelize')
 
@@ -18,7 +19,7 @@ const User = sequelize.define('User', {
     },
 }, {
     tableName: 'User',
-    schema:'iti-faq'
+    schema:process.env.DB_SCHEMA
 })
 
 module.exports = User;

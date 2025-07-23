@@ -5,6 +5,7 @@ import AccountButton from "../../components/AccountButton/AccountButton";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns"
 import HRDotNetLogo from "../../../public/HRDOTNET Logo.png"
+import { IoSearchOutline } from "react-icons/io5";
 
 interface Topic {
     topic_id: number;
@@ -40,6 +41,9 @@ function LandingPage() {
     
     const handleSearchSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        if (searchQuery == "") {
+            return;
+        }
         console.log(`search?q=${searchQuery}&sort=date`)
         navigate(`/search?q=${searchQuery}&sort=date`)
     }
@@ -97,7 +101,7 @@ function LandingPage() {
         <>
         <div className="landing-main">
             <div id="top-bar">
-                <AccountButton />
+                {/* <AccountButton /> */}
             </div>
             <div id="upper-container">
                 <div id="logo">
@@ -107,7 +111,7 @@ function LandingPage() {
                     <form id="search-form" onSubmit={(e) => {handleSearchSubmit(e)}}>
                         <input type="text" placeholder="What would you like to learn today?" value={searchQuery} onChange={(e) => {setSearchQuery(e.target.value)}} ref={search_ref} onFocus={() => {setSearchFocused(true)}} onBlur={() => {setSearchFocused(false)}} />
                         <button id="search-butt">
-                            search
+                            <IoSearchOutline size={24} />
                         </button>
                     </form>
                     <div id='suggestions-container'>

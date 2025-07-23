@@ -9,7 +9,10 @@ import { FaRegStar } from "react-icons/fa";
 import { BlockTypeSelect, InsertThematicBreak, ListsToggle, MDXEditor, UndoRedo, BoldItalicUnderlineToggles, InsertImage, InsertTable} from "@mdxeditor/editor";
 import '@mdxeditor/editor/style.css'
 import { headingsPlugin, quotePlugin, thematicBreakPlugin, toolbarPlugin, listsPlugin, linkPlugin, imagePlugin, tablePlugin, markdownShortcutPlugin } from "@mdxeditor/editor";
-import { FaZ } from "react-icons/fa6";
+
+import { IoArrowBackCircleSharp } from "react-icons/io5";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { IoMdFolderOpen } from "react-icons/io";
 
 interface Subject {
     subject_id:number,
@@ -74,7 +77,7 @@ function EditorPage() {
         })
         .then((resp) => {
             setSubList(resp.data.subjects)
-            setParentSub(resp.data.curr_subject.parentSubject?resp.data.curr_subject.parentSubject.name:null)
+            setParentSub(resp.data.curr_subject.parentSubject??null)
             setCurrSubName(resp.data.curr_subject.name)
             console.log("get subject results: ", resp.data)
         })
@@ -343,7 +346,7 @@ function EditorPage() {
         <div className="editorpage-main">
             <div id="back-dashboard-wrapper">
                 <button id="back-dash" onClick={() => {navigate("/dashboard")}}>
-                    back to dashboard
+                    <IoArrowBackCircleSharp size={18}/> Back to dashboard
                 </button>
             </div>
             <div id="editor-container">
@@ -368,7 +371,7 @@ function EditorPage() {
                     <div id="editornav-body">
                         {currentSub != null && 
                             <div id="cat-back-button" onClick={async () => {await backSubject()}}>
-                                {parentSub?`../${parentSub.name}`:''}../{currSubName}
+                                ..{parentSub?`/${parentSub.name}`:''}/{currSubName}
                             </div>
                         }
                         {
@@ -376,7 +379,7 @@ function EditorPage() {
                                 return(
                                     <div className="subjectItem" key={sub.subject_id}>
                                         <div className="subjectItem-left" onClick={async () => {await openSubject(sub.subject_id)}}>
-                                            <p>(subject) {sub.name}</p>
+                                            <p><IoMdFolderOpen /> {sub.name}</p>
                                         </div>
                                         <div className="subjectItem-right">
                                             <button onClick={async () => {await archiveSub(sub.subject_id)}}>delete</button>
@@ -390,7 +393,7 @@ function EditorPage() {
                                 return(
                                     <div className="pageItem" key={page.page_id}>
                                         <div className="pageItem-left" onClick={async () => {await openPage(page.page_id)}}>
-                                            <p>(page) {page.title}</p>
+                                            <p><span><IoDocumentTextOutline /></span> {page.title}</p>
                                         </div>
                                         <div className="pageItem-right">
                                             <button onClick={async () => {await archivePage(page.page_id)}}>delete</button>

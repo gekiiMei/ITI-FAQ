@@ -18,8 +18,8 @@ interface Category {
 interface Topic {
     title:string
     thumbnail_path:string
-    total_rating:number
-    rating_count:number
+    // total_rating:number
+    // rating_count:number
     updatedAt:string
     topic_id: number
 }
@@ -140,8 +140,8 @@ function CategoryViewer() {
                                         </div>
                                     </div>  
                                     <div className="cat-topicItem-right">
-                                        <p><BiStar style={{color: '#ffb400', marginRight: '0.2em', fontSize: '1.1em', verticalAlign: 'middle'}} />{((top.total_rating/top.rating_count)==0 || top.rating_count == 0) ? "0.0" : (top.total_rating/top.rating_count).toFixed(1)}</p>
-                                        <p>({top.rating_count})</p>
+                                        {/* <p><BiStar style={{color: '#ffb400', marginRight: '0.2em', fontSize: '1.1em', verticalAlign: 'middle'}} />{((top.total_rating/top.rating_count)==0 || top.rating_count == 0) ? "0.0" : (top.total_rating/top.rating_count).toFixed(1)}</p>
+                                        <p>({top.rating_count})</p> */}
                                     </div>
                                 </div>
                             )

@@ -99,8 +99,9 @@ function CreateTopicModal( {setShowTopicModal, getTopics}:props ) {
                     <p onClick={()=>{setShowTopicModal(false)}}>x</p>
                 </div>
                 <div id="category-createnew-wrapper">
+                    Choose Category:
                     <button id="categ-createnew" onClick={()=>{setShowNameModal(true)}}>
-                        Create new
+                        Create
                     </button>
                 </div>
                 <div id="category-list">

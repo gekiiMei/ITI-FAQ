@@ -5,6 +5,13 @@ import { format } from "date-fns"
 import NavBar from "../../components/NavBar/NavBar";
 import axios from "axios";
 
+import { GoTriangleDown } from "react-icons/go";
+import { GoTriangleRight } from "react-icons/go";
+import { TbArrowsSort } from "react-icons/tb";
+import { FaStar } from "react-icons/fa";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { FaBook } from "react-icons/fa6";
+
 interface ResultItem {
     title:string
     parentTopic:{title:string}
@@ -32,6 +39,10 @@ function SearchResultsPage() {
     const [featuredTopics, setFeaturedTopics] = useState<ResultItem[]>([])
 
     const [showSortModal, setShowSortModal] = useState<boolean>(false)
+
+    const [showTopics, setShowTopics] = useState<boolean>(true)
+    const [showPages, setShowPages] = useState<boolean>(true)
+    
 
     console.log("search results page mounted")
     const getResults = async () => {
@@ -69,6 +80,11 @@ function SearchResultsPage() {
     }, [searchParams])
 
     useEffect(() => {
+        setShowTopics(resultTopics.length>0)
+        setShowPages(resultPages.length>0)
+    }, [resultTopics, resultPages])
+
+    useEffect(() => {
         const asyncGetFeatured = async () => {
             await axios.get(base_url+"/api/userfetch/fetch-featured")
             .then((resp) => {
@@ -98,19 +114,17 @@ function SearchResultsPage() {
                     {/* this is so stupid but i dont know how else to get the padding right with the bg aghgh im sorry -harley */}
                     <div id="leftfeat-wrapper">
                         <div id="featcont-head">
-                            <p>Featured</p>
+                            <p>Featured Topics</p>
+                            <hr/>
                         </div>
                         <div id="featcont-feats">
                             {
                                 featuredTopics.map((res, i) => {
                                     return (
-                                        <div className="featuredTopic" onClick={() => {handleTopicClick(res.topic_id)}}>
-                                            <div className="featuredTopic-left">
-                                                <div className="topic-titledate-wrapper">
-                                                    <p>{res.title}</p>
-                                                    <p>Last updated: <span>{format(new Date(res.updatedAt), "MM/dd/yyyy")}</span></p>
-                                                </div>
-                                            </div>  
+                                        <div className="search-featuredTopic" onClick={() => {handleTopicClick(res.topic_id)}}>
+                                            <FaBook />
+                                            <p>{res.title}</p>
+                                            {/* <p>Last updated: <span>{format(new Date(res.updatedAt), "MM/dd/yyyy")}</span></p> */}
                                         </div>
                                     )
                                 })
@@ -124,52 +138,82 @@ function SearchResultsPage() {
                             <p>Search Results: "{searchQuery}"</p>
                         </div>
                         <div id="sort-cont">
-                            <button onClick={() => {setShowSortModal(!showSortModal)}}>sort</button>
+                            <button onClick={() => {setShowSortModal(!showSortModal)}}><span><TbArrowsSort /></span> Sort</button>
                             {showSortModal && 
                             <div id="sort-modal">
-                                <p onClick={()=>{navigate(`/search?q=${searchQuery}&sort=date`); setShowSortModal(false)}}>date updated</p>
-                                <p onClick={()=>{navigate(`/search?q=${searchQuery}&sort=rating`); setShowSortModal(false)}}>rating</p>
+                                <p onClick={()=>{navigate(`/search?q=${searchQuery}&sort=date`); setShowSortModal(false)}}>Date updated</p>
+                                <p onClick={()=>{navigate(`/search?q=${searchQuery}&sort=rating`); setShowSortModal(false)}}>Rating</p>
                             </div>
                             }
                         </div>
                     </div>
+                    {
+                    (resultPages.length<=0 && resultTopics.length<=0) ?
                     <div id="rightres-container">
-                        <p>Topics</p>
+                        <p>No results found</p>
+                    </div>
+                    :
+                    <div id="rightres-container">
+                        <p onClick={() => {if(resultTopics.length<=0){return}setShowTopics(!showTopics)}} className={resultTopics.length>0?"clickable-res-header":"disabled-res-header"}>
+                            <span>
+                                {resultTopics.length>0?showTopics?<GoTriangleDown />:<GoTriangleRight />:null}
+                            </span>
+                            Topics <span>({resultTopics.length})</span>
+                        </p>
                         {
                             resultTopics.map((res, i) => {
-                                return (
-                                    <div className="resultTopic" onClick={() => {handleTopicClick(res.topic_id)}}>
-                                        <div className="resultTopic-left">
-                                            <img className="topic-thumbnail" src={res.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+res.thumbnail_path} alt="" />
-                                            <div className="topic-titledate-wrapper">
-                                                <p>{res.title}</p>
-                                                <p>Last updated: <span>{format(new Date(res.updatedAt), "MM/dd/yyyy")}</span></p>
+                                if (showTopics) {
+                                    return (
+                                        <div className="resultTopic" onClick={() => {handleTopicClick(res.topic_id)}}>
+                                            <div className="resultTopic-left">
+                                                <img className="res-topic-thumbnail" src={res.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+res.thumbnail_path} alt="" />
+                                                <div className="topic-titledate-wrapper">
+                                                    <p>{res.title}</p>
+                                                    <p className="res-datelabel">Last updated: <span>{format(new Date(res.updatedAt), "MM/dd/yyyy")}</span></p>
+                                                </div>
+                                            </div>  
+                                            <div className="resultTopic-right">
+                                                {/* <div className="topicres-star-wrapper">
+                                                    <FaStar color="gold"/>
+                                                </div>
+                                                <p>{((res.total_rating/res.rating_count)==0 || res.rating_count == 0) ? "0.0" : (res.total_rating/res.rating_count).toFixed(1)} <span>({res.rating_count})</span></p> */}
                                             </div>
-                                        </div>  
-                                        <div className="resultTopic-right">
-                                            <p>{((res.total_rating/res.rating_count)==0 || res.rating_count == 0) ? "0.0" : (res.total_rating/res.rating_count).toFixed(1)}</p>
-                                            <p>({res.rating_count})</p>
                                         </div>
-                                    </div>
-                                )
+                                    )
+                                }
                             })
                         }
-                        <p>Pages</p>
+                        <p onClick={() => {if(resultPages.length<=0){return}setShowPages(!showPages)}} className={resultPages.length>0?"clickable-res-header":"disabled-res-header"}>
+                            <span>
+                                {resultPages.length>0?showPages?<GoTriangleDown />:<GoTriangleRight />:null}
+                            </span>
+                            Pages <span>({resultPages.length})</span>
+                        </p>
                         {
                             resultPages.map((res, i) => {
-                                return (
-                                    <div className="resultPage" onClick={() => {handlePageClick(res.page_id, res.parent_topic)}}>
-                                        <div className="pagetitle-wrapper">
-                                            <p>{res.title}</p>
+                                if (showPages) {
+                                    return (    
+                                        <div className="resultPage" onClick={() => {handlePageClick(res.page_id, res.parent_topic)}}>
+                                            <div className="resultPage-left">
+                                                <IoDocumentTextOutline size={48}/>
+                                                <div className="res-pagetopic-wrapper">
+                                                    <p>{res.title}</p>
+                                                    <p className="res-parentlabel">{res.parentTopic.title}</p>
+                                                </div>  
+                                            </div>
+                                            <div className="resultPage-right">
+                                                <div className="topicres-star-wrapper">
+                                                    <FaStar color="gold"/>
+                                                </div>
+                                                <p>{((res.total_rating/res.rating_count)==0 || res.rating_count == 0) ? "0.0" : (res.total_rating/res.rating_count).toFixed(1)} <span>({res.rating_count})</span></p>
+                                            </div>
                                         </div>
-                                        <div className="pagetopic-wrapper">
-                                            <p>{res.parentTopic.title}</p>
-                                        </div>  
-                                    </div>
-                                )
+                                    )
+                                }
                             })
                         }
                     </div>
+                    }
                 </div>
             </div>
         </div>

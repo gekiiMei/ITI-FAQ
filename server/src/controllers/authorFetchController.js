@@ -92,8 +92,9 @@ exports.get_subjects = async (req, res) => {
     console.log('subject: ' + curr_subject);
     try {
         const subjects = await Subject.findAll({
-            where: (curr_subject == null && curr_topic != null) ? {
+            where: (curr_subject == null) ? {
                 parent_topic: curr_topic,
+                parent_subject: null,
                 is_active: true
             } : {
                 parent_subject: curr_subject,
@@ -144,9 +145,7 @@ exports.get_page_details = async (req, res) => {
     const page_id = req.body.page_id
     console.log('getting the details of page id: ' + page_id)
     try {
-        const details = await Page.findByPk(page_id, {
-            attributes: ['title', 'content'],
-        })
+        const details = await Page.findByPk(page_id)
         console.log('result: ' + details)
         return res.status(200).json({msg:'Successfully fetched details', details: details})
     } catch (e) {

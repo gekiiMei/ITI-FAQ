@@ -11,8 +11,8 @@ interface Topic {
     title: string,
     parent_category: number,
     author_id: number,
-    total_rating: number,
-    rating_count: number,
+    // total_rating: number,
+    // rating_count: number,
     thumbnail_path: string
     updatedAt:string,
 }
@@ -121,8 +121,8 @@ function DashboardPage() {
                                             </div>
                                             <div className="dash-topicitem-right">
                                                 <div className="dash-topicitem-ratings">
-                                                    <p>{((topic.total_rating/topic.rating_count)==0 || topic.rating_count == 0) ? "0.0" : (topic.total_rating/topic.rating_count).toFixed(1)}</p>
-                                                    <p>({topic.rating_count})</p>
+                                                    {/* <p>{((topic.total_rating/topic.rating_count)==0 || topic.rating_count == 0) ? "0.0" : (topic.total_rating/topic.rating_count).toFixed(1)}</p>
+                                                    <p>({topic.rating_count})</p> */}
                                                 </div>
                                                 <div className="dash-topicitem-deletewrapper">
                                                     <button id="dash-topic-delete" onClick={async () => { await archiveTopic(topic.topic_id) }}>
@@ -137,7 +137,7 @@ function DashboardPage() {
                         </div>
                         <div id="dash-createnew-wrapper">
                             <button id="dash-createnew" onClick={()=>{setShowTopicModal(true)}}>
-                                Create new
+                                New Topic
                             </button>
                         </div>
                     </div>

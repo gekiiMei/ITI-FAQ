@@ -61,21 +61,20 @@ exports.search = async (req, res) => {
     console.log('sorting method: ' + sortMethod)
     try {
         const results_topics = await Topic.findAll({
-            attributes: {
-                include:[
-                    [Sequelize.literal("CASE WHEN rating_count = 0 THEN 0 ELSE CAST(total_rating AS FLOAT) / rating_count END", 'ASC'), 'avg_rating']
-                ]
-            },
             where: {
                 title: {
                     [Sequelize.Op.iLike]: `%${currentQuery}%` //<-- NOTE!!!: iLike is for postgres only. need other case insensitivity solution for other DBs -Harley
                 }
             },
-            order: sortMethod=="date"?
-            [['updatedAt', 'DESC'], ['avg_rating', 'DESC']]:
-            [['avg_rating', 'DESC'], ['updatedAt', 'DESC']]
+            order: sortMethod=="date"
+            [['updatedAt', 'DESC']]
         })
         const results_pages = await Page.findAll({
+            attributes: {
+                include:[
+                    [Sequelize.literal("CASE WHEN rating_count = 0 THEN 0 ELSE CAST(total_rating AS FLOAT) / rating_count END", 'ASC'), 'avg_rating']
+                ]
+            },
             include: [
                 {
                     model: Topic,
@@ -89,7 +88,9 @@ exports.search = async (req, res) => {
                 },
                 is_active: true
             },
-            order:[['updatedAt', 'DESC']]
+            order: sortMethod=="date"?
+            [['updatedAt', 'DESC'], ['avg_rating', 'DESC']]:
+            [['avg_rating', 'DESC'], ['updatedAt', 'DESC']]
         });
         console.log(results_topics)
         console.log(results_pages)

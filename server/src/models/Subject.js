@@ -1,3 +1,4 @@
+require('dotenv').config();
 const sequelize = require("../config/database")
 const { DataTypes } = require('sequelize')
 const Topic = require("./Topic")
@@ -39,7 +40,7 @@ const Subject = sequelize.define('Subject', {
     }
 }, {
     tableName: 'Subject',
-    schema:'iti-faq'
+    schema:process.env.DB_SCHEMA
 })
 
 Subject.belongsTo(Topic, {

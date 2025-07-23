@@ -1,3 +1,4 @@
+require('dotenv').config();
 const sequelize = require("../config/database")
 const { DataTypes } = require('sequelize')
 const Topic = require("./Topic")
@@ -41,10 +42,18 @@ const Page = sequelize.define('Page', {
         },
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE'
-    }
+    },
+    total_rating: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    rating_count: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
 }, {
     tableName: 'Page',
-    schema:'iti-faq'
+    schema:process.env.DB_SCHEMA
 })
 
 Page.belongsTo(Topic, {

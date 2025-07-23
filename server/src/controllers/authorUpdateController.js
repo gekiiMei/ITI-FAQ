@@ -137,3 +137,27 @@ exports.updateThumbnail = async (req, res) => {
         }
     })
 }
+
+exports.updateRatings = async (req, res) => {
+    const page_id = req.body.page_id
+    const new_rating = req.body.new_rating
+    
+    try {
+        const page = await Page.findByPk(page_id)
+        const old_total_rating = page.total_rating
+        const old_rating_count = page.rating_count
+        
+        const new_total_rating = old_total_rating + new_rating
+        const new_rating_count = old_rating_count + 1
+
+        page.total_rating = new_total_rating
+        page.rating_count = new_rating_count
+
+        await page.save()
+
+        return res.status(200).json({msg:'Rating updated'})
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json({msg:'Unexpected error'})
+    }
+}

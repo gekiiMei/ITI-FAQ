@@ -98,7 +98,7 @@ function CategoryModal( {setShowCategModal}:props ) {
                 </div>
                 <div id="category-createnew-wrapper">
                     <button id="categ-createnew" onClick={()=>{setShowNameModal(true)}}>
-                        Create new
+                        New Category
                     </button>
                 </div>
                 <div id="category-list">

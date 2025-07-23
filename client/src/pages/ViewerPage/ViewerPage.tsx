@@ -8,6 +8,14 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import { defaultSchema } from 'hast-util-sanitize';
+
+import { FaAngleRight, FaStar } from "react-icons/fa";
+import { RiArrowGoBackFill } from "react-icons/ri";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { IoMdFolderOpen } from "react-icons/io";
+
+import { Rating } from "react-simple-star-rating"
+
 const extendedSchema = {
   ...defaultSchema,
   tagNames: [
@@ -59,8 +67,12 @@ function ViewerPage()  {
 
     const [activePageTitle, setActivePageTitle] = useState<string|null>(null);
     const [activePageContent, setActivePageContent] = useState<string>("")
+    const [activePageAvgRating, setActivePageAvgRating] = useState<string>("0.0")
+    const [activePageRatingCount, setActivePageRatingCount] = useState<number>(0)
 
     const [topicTitle, setTopicTitle] = useState<string>("")
+
+    const [chosenRating, setChosenRating] = useState<number>(0)
 
     const setParam = (key:string, val:string|null) => {
         const params = new URLSearchParams(searchParams);
@@ -84,7 +96,7 @@ function ViewerPage()  {
         })
         .then((resp) => {
             setSubList(resp.data.subjects)
-            setParentSub(resp.data.curr_subject.parentSubject?resp.data.curr_subject.parentSubject.name:null)
+            setParentSub(resp.data.curr_subject.parentSubject??null)
             setCurrSubName(resp.data.curr_subject.name)
             console.log("get subject results: ", resp.data)
         })
@@ -113,6 +125,9 @@ function ViewerPage()  {
         })
         .then((resp) => {
             console.log(resp.data.details)
+            const avg_rating = ((resp.data.details.total_rating/resp.data.details.rating_count)==0 || resp.data.details.rating_count == 0) ? "0.0" : (resp.data.details.total_rating/resp.data.details.rating_count).toFixed(1)
+            setActivePageAvgRating(avg_rating)
+            setActivePageRatingCount(resp.data.details.rating_count)
             setActivePageTitle(resp.data.details.title)
             setActivePageContent(resp.data.details.content)
         })
@@ -153,6 +168,26 @@ function ViewerPage()  {
         //     setCurrTopic(parseInt(searchParams.get("topic_id")??""))
         // }
     }
+
+    const handleRating = (rating:number) => {
+        setChosenRating(rating)
+    }
+
+    const handleSubmitRating = async () => {
+        await axios.post(base_url+"/api/authorupdate/update-rating", {
+            page_id: currPage,
+            new_rating: chosenRating
+        })
+        .then( async (resp)=>{
+            //succ
+            alert("Rating submitted")
+            await getPageDetails()
+        })
+        .catch((e)=>{
+
+        })
+    }
+
     useEffect(() => {
         const asyncLoadSubs = async () => {
             console.log('getting subjects')
@@ -176,6 +211,9 @@ function ViewerPage()  {
     }, [currPage])
 
     useEffect(() => {
+        if (!searchParams.get("topic_id")) {
+            navigate("/")
+        }
         setCurrTopic(searchParams.get("topic_id")?parseInt(searchParams.get("topic_id")??""):null);
         setCurrSub(searchParams.get("subject")?parseInt(searchParams.get("subject")??""):null);
         setCurrPage(searchParams.get("page")?parseInt(searchParams.get("page")??""):null) 
@@ -216,46 +254,79 @@ function ViewerPage()  {
             <NavBar />
             <div id="viewer-body">
                 <div id="viewer-nav">
-                    <div id="viewernav-label">
-                        <p onClick={()=>{navigate(`/category?category=${parentCat?.category_id}`)}}>{parentCat?.name}</p> <p>{topicTitle}</p>
-                    </div>
-                    <div id="viewernav-body">
-                        {currentSub != null && 
-                            <div id="cat-back-button" onClick={async () => {await backSubject()}}>
-                                {parentSub?`../${parentSub.name}`:''}../{currSubName}
+                    <div id="viewernav-labelbody">
+                        <div id="viewernav-label">
+                            <p id="view-parentcat-label" onClick={()=>{navigate(`/category?category=${parentCat?.category_id}`)}}>{parentCat?.name}</p>
+                            <div id="cat-topic-arrow-wrapper">
+                                <FaAngleRight />
                             </div>
-                        }
-                        {
-                            subList.map((sub, i) => {
-                                return(
-                                    <div className="subjectItem" key={sub.subject_id}>
-                                        <div className="subjectItem-left" onClick={async () => {await openSubject(sub.subject_id)}}>
-                                            <p>(subject) {sub.name}</p>
+                            <p>{topicTitle}</p>
+                        </div>
+                        <div id="viewernav-body">
+                            {currentSub != null && 
+                                <div id="cat-back-button" onClick={async () => {await backSubject()}}>
+                                    <RiArrowGoBackFill />{parentSub?`../${parentSub.name}`:''}../{currSubName}
+                                </div>
+                            }
+                            {
+                                subList.map((sub, i) => {
+                                    return(
+                                        <div className="subjectItem" key={sub.subject_id} onClick={async () => {await openSubject(sub.subject_id)}}>
+                                            <div className="subjectItem-left" >
+                                                <IoMdFolderOpen /> <p> {sub.name}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                )
-                            })
-                        }
-                        {
-                            pageList.map((page, i) => {
-                                return(
-                                    <div className="pageItem" key={page.page_id}>
-                                        <div className="pageItem-left" onClick={async () => {await openPage(page.page_id)}}>
-                                            <p>(page) {page.title}</p>
+                                    )
+                                })
+                            }
+                            {
+                                pageList.map((page, i) => {
+                                    return(
+                                        <div className="pageItem" key={page.page_id} onClick={async () => {await openPage(page.page_id)}}>
+                                            <div className="pageItem-left" >
+                                            <IoDocumentTextOutline /> <p> {page.title}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                )
-                            })
-                        }
+                                    )
+                                })
+                            }
+                        </div>
                     </div>
                 </div>
                 <div id="viewer-page">
+                    {currPage &&
                     <div id="viewer-header">
                         <h1>{activePageTitle}</h1>
-                    </div>
+                        <div id="viewer-header-rating">
+                            <FaStar color={'gold'} size={24}/>
+                            <h2>{activePageAvgRating} <span>({activePageRatingCount})</span></h2>
+                        </div>
+                    </div>}
                     <div id="viewer-content">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, [rehypeSanitize, extendedSchema]]}>{activePageContent}</ReactMarkdown>
+                        {
+                            currPage?
+                            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, [rehypeSanitize, extendedSchema]]}>{activePageContent}</ReactMarkdown>
+                            :
+                            <div id="no-page-loaded">
+                                <p id="no-page-loaded-header">
+                                    No page loaded.
+                                </p>
+                                <p id="no-page-loaded-desc">
+                                    Select a page to view its content.
+                                </p>
+                            </div>
+                            
+                        }   
+                        {
+                            currPage&&
+                            <div id="viewernav-rating">
+                                How useful is this information?
+                                <Rating onClick={handleRating} />
+                                <button onClick={async () => {await handleSubmitRating()}}>Submit</button>
+                            </div>
+                        }
                     </div>
+                    
                 </div>
             </div>
         </div>

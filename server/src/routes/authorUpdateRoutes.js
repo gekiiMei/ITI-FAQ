@@ -6,5 +6,6 @@ router.post('/save-page', authorUpdateController.updatePage);
 router.post('/save-image', authorUpdateController.saveImage)
 router.post('/update-thumbnail', authorUpdateController.updateThumbnail)
 router.post('/toggle-feat', authorUpdateController.toggleTopicFeat)
+router.post('/update-rating', authorUpdateController.updateRatings)
 
 module.exports = router;

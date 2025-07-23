@@ -50,8 +50,12 @@ function NavBar() {
         navigate(`/viewer?topic_id=${parentTopicId}&page=${pageId}`)
     }
 
+    //note to selvin: use useNavigate() for navigating between pages bc window.open opens it in a new tab -Harley
+    // const handleFAQClick = () => {
+    //     window.open('/faq', '_blank');
+    // }
     const handleSupportClick = () => {
-        window.open('/support', '_blank');
+        navigate("/support");
     }
     const handleLogoClick = () => {
         navigate('/')
@@ -120,11 +124,12 @@ function NavBar() {
                 </div>
             </form>
             <div className="navbar-links">
+                {/* <span className="navbar-link" onClick={handleFAQClick}>FAQ</span> */}
                 <span className="navbar-link" onClick={handleSupportClick}>SUPPORT LINK</span>
             </div>
-            <div id="accountbutt-wrapper">
+            {/* <div id="accountbutt-wrapper">
                 <AccountButton />
-            </div>
+            </div> */}
         </div>
     )
 }
