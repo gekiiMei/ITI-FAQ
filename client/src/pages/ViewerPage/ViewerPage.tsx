@@ -260,7 +260,7 @@ function ViewerPage()  {
                             <div id="cat-topic-arrow-wrapper">
                                 <FaAngleRight />
                             </div>
-                            <p>{topicTitle}</p>
+                            <p id ="viewer-title">{topicTitle}</p>
                         </div>
                         <div id="viewernav-body">
                             {currentSub != null && 

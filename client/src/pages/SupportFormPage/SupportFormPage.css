@@ -1,13 +1,15 @@
 .supportpage-main {
+    overflow-y: scroll;
     height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #F4F4F4;
-    border: 1px solid red;
+   
 }
 #supportpage-body {
+    overflow-y: scroll;
     flex-grow: 1;
     max-height: 90%;
     width: 100%;
@@ -16,7 +18,7 @@
     align-items: center;
     padding-block: 1rem;
     padding-inline: 15rem;
-    border: 1px solid green;
+    /* border: 1px solid green; */
 }
 
 #support-form {
