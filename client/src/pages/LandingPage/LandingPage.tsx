@@ -140,7 +140,7 @@ function LandingPage() {
             </div>
             <div id="lower-container">
                 <div id="featuredlabel-wrapper">
-                    <p>Featured topics:</p>
+                    <p> <h1> Featured topics:</h1> </p>
                 </div>
                 <div id="featured-cont">
                     {
@@ -149,11 +149,12 @@ function LandingPage() {
                                 <div className="featuredTopic" onClick={() => {handleTopicClick(res.topic_id)}}>
                                     <div className="featuredTopic-left">
                                         <img className="featured-topic-thumbnail" src={res.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+res.thumbnail_path} alt="" />
+                                    </div> 
                                         <div className="featured-topic-titledate-wrapper">
-                                            <p>{res.title}</p>
+                                            <p>{res.title}</p> 
                                             <p>Last updated: <span>{format(new Date(res.updatedAt), "MM/dd/yyyy")}</span></p>
                                         </div>
-                                    </div>  
+                                     
                                     {/* <div className="featuredTopic-right">
                                         <p>{((res.total_rating/res.rating_count)==0 || res.rating_count == 0) ? "0.0" : (res.total_rating/res.rating_count).toFixed(1)}</p>
                                         <p>({res.rating_count})</p>

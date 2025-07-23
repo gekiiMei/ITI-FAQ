@@ -111,9 +111,9 @@ function DashboardPage() {
                             {
                                 topicList.map((topic, i) => {
                                     return (
-                                        <div className="dash-topic-item" key={i}>
+                                        <div className="dash-topic-item" onClick={()=>{ navigate("/editor?topic_id=" + topic.topic_id) }}>
                                             <button className="thumbbutton" onClick={() => {openThumbModal(topic.topic_id, topic.thumbnail_path)}}>edit thumbnail</button>
-                                            <div className="dash-topicitem-left" onClick={()=>{ navigate("/editor?topic_id=" + topic.topic_id) }}>
+                                            <div className="dash-topicitem-left" >
                                                 <img className="dash-topic-thumbnail" src={topic.thumbnail_path=="placeholder"?image_url+"/topic-thumbnails/placeholder.png":base_url+topic.thumbnail_path} alt="thumbnail" />
                                                 <div className="dash-topicitem-title-wrapper">
                                                     <p>{topic.title}</p>

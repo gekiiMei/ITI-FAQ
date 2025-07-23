@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AccountButton from "../AccountButton/AccountButton";
 import "./NavBar.css"
 import axios from "axios";
@@ -27,8 +27,11 @@ function NavBar() {
     const [searchQuery, setSearchQuery] = useState<string>("")
     const [debouncedQuery, setDebouncedQuery] = useState<string>("")
     const [suggestions, setSuggestions] = useState<Suggestions>({ topics: [], pages: [] })
+    const [searchFocused, setSearchFocused] = useState<boolean>(false)
     const base_url = import.meta.env.VITE_backend_base_url;
 
+    const search_ref = useRef<HTMLInputElement>(null)
+    
     const handleSearchSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         console.log(`search?q=${searchQuery}`)
@@ -47,9 +50,6 @@ function NavBar() {
         navigate(`/viewer?topic_id=${parentTopicId}&page=${pageId}`)
     }
 
-    const handleFAQClick = () => {
-        window.open('/faq', '_blank');
-    }
     const handleSupportClick = () => {
         window.open('/support', '_blank');
     }
@@ -90,36 +90,36 @@ function NavBar() {
             </div>
             <form id="searchbar" onSubmit={handleSearchSubmit}>
                 <div id="bar-wrapper">
-                    <input type="text" placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+                    <input type="text" placeholder="Search..." value={searchQuery} onChange={(e) => {setSearchQuery(e.target.value)}} ref={search_ref} onFocus={() => {setSearchFocused(true)}} onBlur={() => {setSearchFocused(false)}} />
                     <button type="submit"><IoSearchOutline size={24} /></button>
                 </div>
+                <div id="navbar-suggestions-container">
+                    {suggestions.topics && searchFocused && suggestions.topics.map((topic, index) => {
+                        return(
+                            <div 
+                                key={`topic-${topic.topic_id}`} 
+                                className="suggestion-item topic-suggestion"
+                                onClick={() => handleTopicClick(topic.topic_id)}
+                            >
+                                <span className="suggestion-icon">📚</span> {topic.title}
+                            </div>
+                        )
+                    })}
 
-                {suggestions.topics && suggestions.topics.map((topic, index) => {
-                    return(
-                        <div 
-                            key={`topic-${topic.topic_id}`} 
-                            className="suggestion-item topic-suggestion"
-                            onClick={() => handleTopicClick(topic.topic_id)}
-                        >
-                            <span className="suggestion-icon">📚</span> {topic.title}
-                        </div>
-                    )
-                })}
-
-                {suggestions.pages && suggestions.pages.map((page, index) => {
-                    return(
-                        <div 
-                            key={`page-${page.page_id}`} 
-                            className="suggestion-item page-suggestion"
-                            onClick={() => handlePageClick(page.page_id, page.parent_topic)}
-                        >
-                            <span className="suggestion-icon">📄</span> {page.title}
-                        </div>
-                    )
-                })}
+                    {suggestions.pages && searchFocused && suggestions.pages.map((page, index) => {
+                        return(
+                            <div 
+                                key={`page-${page.page_id}`} 
+                                className="suggestion-item page-suggestion"
+                                onClick={() => handlePageClick(page.page_id, page.parent_topic)}
+                            >
+                                <span className="suggestion-icon">📄</span> {page.title}
+                            </div>
+                        )
+                    })}
+                </div>
             </form>
             <div className="navbar-links">
-                <span className="navbar-link" onClick={handleFAQClick}>FAQ</span>
                 <span className="navbar-link" onClick={handleSupportClick}>SUPPORT LINK</span>
             </div>
             <div id="accountbutt-wrapper">
