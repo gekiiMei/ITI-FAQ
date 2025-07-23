@@ -144,8 +144,8 @@ function DashboardPage() {
                                             </div>
                                             <div className="dash-topicitem-right">
                                                 <div className="dash-topicitem-ratings">
-                                                    <p>{((topic.total_rating/topic.rating_count)==0 || topic.rating_count == 0) ? "0.0" : (topic.total_rating/topic.rating_count).toFixed(1)}</p>
-                                                    <p>({topic.rating_count})</p>
+                                                    {/* <p>{((topic.total_rating/topic.rating_count)==0 || topic.rating_count == 0) ? "0.0" : (topic.total_rating/topic.rating_count).toFixed(1)}</p>
+                                                    <p>({topic.rating_count})</p> */}
                                                 </div>
                                                 <div className="dash-topicitem-deletewrapper">
                                                     <button id="dash-topic-rename" onClick={async (e) => {e.stopPropagation(); openRenameModal(topic.topic_id) }}>
