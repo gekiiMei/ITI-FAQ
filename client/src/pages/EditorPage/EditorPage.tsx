@@ -520,9 +520,11 @@ function EditorPage() {
                                             
                                         -Harley
                                     */}
-                                    <button id="editor-savebutt" onClick={() => {savePage()}}>
-                                       <FaSave /> Save
-                                    </button>
+                                    <div id="editor-savebutt-wrapper">
+                                        <button id="editor-savebutt" onClick={() => {savePage()}}>
+                                            <FaSave /> Save
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

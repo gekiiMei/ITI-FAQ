@@ -135,6 +135,7 @@
     justify-content: space-between;
     position: relative;
     background-color: white;
+    cursor: pointer;
 }
 
 .dash-topic-item:hover{
@@ -144,8 +145,10 @@ background-color: #f2f2f2;
 
 .dash-topicitem-left {
     display: flex;
+    justify-content: start;
     height: 100%;
     gap: 0.5rem;
+    /* border: 1px solid red;  */
 }
 
 .dash-topicitem-right {
@@ -166,14 +169,22 @@ background-color: #f2f2f2;
 }
 
 .thumbbutton {
+    background: rgb(234, 234, 234);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+    align-items: center;
     position: absolute;
-    right: 0;
+    right: 0;   
+    z-index: 10;
 }
 
 
 #images-button-wrapper{
     position: relative;
-
+    width: 7.5rem;
+    height: 100%;
+    /* border: 1px solid blue; */
 }
 
 .dash-topicitem-deletewrapper{

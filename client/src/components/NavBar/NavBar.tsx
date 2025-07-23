@@ -46,7 +46,7 @@ function NavBar() {
 
     const handlePageClick = (pageId: number, parentTopicId: number) => {
         console.log(`Navigating to page: ${pageId} in topic: ${parentTopicId}`)
-         console.log(`Navigating to page: ${pageId} in topic: ${parentTopicId}`)
+        console.log(`Navigating to page: ${pageId} in topic: ${parentTopicId}`)
         navigate(`/viewer?topic_id=${parentTopicId}&page=${pageId}`)
     }
 
@@ -103,7 +103,7 @@ function NavBar() {
                             <div 
                                 key={`topic-${topic.topic_id}`} 
                                 className="suggestion-item topic-suggestion"
-                                onClick={() => handleTopicClick(topic.topic_id)}
+                                onMouseDown={() => handleTopicClick(topic.topic_id)}
                             >
                                 <span className="suggestion-icon">📚</span> {topic.title}
                             </div>
@@ -115,7 +115,7 @@ function NavBar() {
                             <div 
                                 key={`page-${page.page_id}`} 
                                 className="suggestion-item page-suggestion"
-                                onClick={() => handlePageClick(page.page_id, page.parent_topic)}
+                                onMouseDown={() => handlePageClick(page.page_id, page.parent_topic)}
                             >
                                 <span className="suggestion-icon">📄</span> {page.title}
                             </div>

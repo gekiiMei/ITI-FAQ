@@ -212,8 +212,28 @@
 
 }
 
+#editor-savebutt-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
 #editor-savebutt {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: #4ea700;
+    padding: 0.5rem;
+    width: 7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    gap: 0.2rem;
+    cursor: pointer;
+}
+
+#editor-savebutt:hover {
     background-color: #459201;
-    padding: 0.2rem;
-    
 }
