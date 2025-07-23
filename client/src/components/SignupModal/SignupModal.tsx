@@ -29,6 +29,7 @@ function SignupModal({ setShowModal }:props) {
         .then((resp) => {
             console.log(resp.data)
             alert("created user successfully")
+            setShowModal(false)
         })
         .catch((err) => {
             console.log(err.data)
