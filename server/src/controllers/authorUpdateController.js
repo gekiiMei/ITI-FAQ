@@ -4,9 +4,6 @@ const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
 const sharp = require('sharp')
-const { finalization } = require("process")
-const { where } = require("sequelize")
-
 
 
 exports.updatePage = async (req, res) => {
@@ -157,6 +154,28 @@ exports.updateRatings = async (req, res) => {
 
         return res.status(200).json({msg:'Rating updated'})
     } catch (e) {
+        console.log(e)
+        return res.status(500).json({msg:'Unexpected error'})
+    }
+}
+
+exports.renameTopic = async (req, res) => {
+    const topic_id = req.body.topic_id
+    const new_title = req.body.new_title
+    console.log('renaming: ')
+    console.log('id: ' + topic_id)
+    console.log('new_title ' + new_title)
+    try {
+        chosen_topic = await Topic.findByPk(topic_id)
+        if ((await Topic.findAll({where:{title: new_title, parent_category: chosen_topic.parent_category}})).length>0) {
+            return res.status(409).json({msg: 'Title exists'})
+        }
+        chosen_topic.title = new_title
+        await chosen_topic.save();
+        console.log("rename succ")
+        return res.status(200).json({msg: 'Title updated'})
+    } catch(e) {
+        console.log('rename err')
         console.log(e)
         return res.status(500).json({msg:'Unexpected error'})
     }
