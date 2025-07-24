@@ -1,0 +1,246 @@
+.landing-main {
+    min-height: 100%;
+    width: 100%;
+    background: #FFCAB1;
+    background: linear-gradient(157deg,rgba(255, 202, 177, 1) 0%, rgba(181, 234, 255, 1) 100%);
+    overflow-y:scroll; 
+}
+
+#top-bar {
+    display: flex;
+    flex-direction: row-reverse;
+    height: 10%;
+    width: 100%;
+    padding-inline: 2.5rem;
+    padding-block: 1.5rem;
+
+}
+
+#upper-container {
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.search-container {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+#search-sugg-cont {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#search-form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#search-form input {
+    border: none;
+    padding: 1rem;
+    width: 50%;
+    border-radius: 0.5em 0 0 0.5rem;
+    font-size: 1rem;
+}
+
+#search-form input:focus {
+    box-shadow: none !important;
+    border: none !important;
+    outline: none !important;
+}
+
+#search-form button {
+    border-radius: 0 0.5rem 0.5rem 0;
+    border: none;
+    width: 10%;
+    background-color: #03acef;
+    color: white;
+    padding: 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#search-form button:hover {
+    background-color: #0288cc;
+}
+
+#suggestions-container {
+    position: absolute;
+    background-color: white;
+    width: 62.5%;
+    top: 100%;
+    border-radius: 0.5em 0.5rem;
+    box-shadow: 0 0.5rem 0.375rem rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 12.5rem;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    border-bottom: 0.0625rem solid #f0f0f0;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.suggestion-item:hover {
+    background-color: #f8f9fa;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:first-child {
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.topic-suggestion {
+    font-weight: 500;
+}
+
+.page-suggestion {
+    font-weight: 400;
+}
+
+.suggestion-icon {
+    color: #1a0dab;
+    margin-right: 0.5rem;
+}
+
+.topic-suggestion .suggestion-icon {
+    font-weight: bold;
+}
+
+#lower-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 2rem 0;
+}
+
+#featuredlabel-wrapper {
+    display: flex;
+    width: 60%;
+    margin-bottom: 1.5rem;
+    
+}
+
+#featuredlabel-wrapper p {
+    margin: 0;
+}
+
+#featured-cont {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1rem;
+    width: 60%;
+    overflow: visible;
+    justify-items: center;
+    align-items: stretch;
+}
+
+.featuredTopic {
+    background-color: white;
+    width: 90%;
+    min-width: 0;
+    min-height: 18rem;
+    max-width: 25rem; 
+    height: 18rem;
+    margin-bottom: 0;
+    box-sizing: border-box;
+    padding: 2rem 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+    cursor: pointer;
+}
+
+.featuredTopic p {
+    margin: 0;
+}
+
+.featuredTopic:hover {
+    transform: translateY(-0.125rem);
+    box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.featuredTopic-left {
+    height: 65%; /*eto aadjust*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex:1;
+}
+
+.featured-topic-thumbnail {
+    height: 100%;
+    aspect-ratio: 2/2;
+    object-fit: cover;
+    align-items: center;
+    border-radius: 0.5rem;
+}
+
+.featured-topic-titledate-wrapper {
+    height: 80%;
+
+}
+
+.featured-topic-titledate-wrapper p:first-child {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.featured-topic-titledate-wrapper p:last-child {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
+.featured-topic-titledate-wrapper span {
+    font-weight: 500;
+   justify-content: center;
+}
+
+.featuredTopic-right {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 80%;
+    gap: 0.25rem;
+}
+
+.featuredTopic-right p:first-child {
+    margin: 0;
+}
+
+.featuredTopic-right p:last-child {
+    margin: 0;
+}

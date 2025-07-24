@@ -1,0 +1,15 @@
+.thumbmodal-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 4;
+}
+
+#thumbmodal-body {
+    background-color: white;
+}

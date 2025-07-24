@@ -1,0 +1,90 @@
+.supportpage-main {
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #F4F4F4;
+   
+}
+#supportpage-body {
+    overflow-y: scroll;
+    flex-grow: 1;
+    max-height: 90%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-block: 1rem;
+    padding-inline: 15rem;
+    /* border: 1px solid green; */
+}
+
+#support-form {
+    background-color: white;
+    padding: 4rem;
+    width: 100%;
+    max-height: 100%;
+    border-radius: 15px;
+}
+
+#supportform-namedeets {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    /* border: 1px solid blue; */
+}
+
+#firstname-container, #lastname-container {
+    width: 45%;
+    height: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;;
+    /* border: 1px solid green; */
+}
+
+#supportform-body input {
+    width: 100%;
+    flex-grow: 1;
+}
+
+#supportform-email {
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#supportform-concern {
+    width: 100%;
+    height: 20rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#supportform-concern textarea {
+    width: 100%;
+    height: 80%;
+    resize: none;
+}
+
+#supportform-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 2rem;
+    gap: 1rem;
+}
+
+#supportform-button button {
+    padding-inline: 2.5rem;
+    padding-block: 0.75rem; 
+    border: none;
+    background-color: #FFC583;
+    border-radius: 10px;
+}

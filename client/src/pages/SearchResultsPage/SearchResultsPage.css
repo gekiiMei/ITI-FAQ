@@ -1,0 +1,243 @@
+.searchpage-main {
+    width: 100%;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    background-color: #F4F4F4;
+}
+
+#searchpage-body {
+    width: 100%;
+    min-height: 0;
+    flex-grow: 1;
+    padding: 1rem;
+    gap: 1rem;
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+}
+
+.res-topic-thumbnail {
+    height: 90%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+#searchres-header {
+    height: 10%;
+    width: 100%;
+    /* border: 1px solid orange; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FFFFFF;
+    padding: 1rem;
+    /* border-radius: 15px 15px 0px 0px; */
+    border-radius: 5px;
+}
+
+#searchres-container {
+    width: 75%;
+    height: 100%;
+    display: flex;
+    padding: 1rem;
+    /* background-color: #FFFFFF; */
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+#leftfeat-container {
+    width: 25%;
+    height: 100%;
+    /* background-color: #FFFFFF; */
+    padding-block: 1rem;
+}
+
+#leftfeat-wrapper {
+    background-color: #FFFFFF;
+    width: 100%;
+    height:100%;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+#rightres-container {
+    width: 100%;
+    height: 100%;
+    background-color: #FFFFFF;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    /* border-radius: 0px 0px 15px 15px; */
+    border-radius: 5px;
+    overflow-y: scroll;
+    gap: 0.5rem;
+}
+
+.resultTopic {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 7.5rem;
+    /* border: 1px solid blue; */
+    background-color: #F9F9F9;
+    cursor: pointer;
+    padding-inline: 0.5rem;
+}
+
+.resultTopic:hover {
+    background-color: #f2f2f2;
+}
+
+.resultTopic-left {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 1rem;
+}
+
+.topic-titledate-wrapper {
+    /* border: 1px solid red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.res-datelabel {
+    font-size: 0.8rem;
+    color: gray;
+}
+
+.resultTopic-right {
+    display: flex;
+    /* justify-content: space-between; */
+    gap: 0.5rem;
+    /* border: 1px solid red; */
+    /* width: 9%; */
+}
+
+.resultTopic-right p {
+    font-size: 0.95rem;
+}
+
+
+.topicres-star-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.resultPage {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* gap: 0.5rem; */
+    width: 100%;
+    position: relative;
+    padding: 1rem;
+    background-color: #F9F9F9;
+    cursor: pointer;
+}
+
+.resultPage p {
+    padding: 0;
+    margin: 0;
+
+}
+
+.resultPage:hover {
+    background-color: #f2f2f2;
+}
+
+.resultPage-left {
+    display: flex;
+    align-items: center;
+    position: relative;
+    gap:1rem;
+}
+
+.resultPage-right {
+    display: flex;
+    gap: 1rem;
+}
+
+.resultPage-right span {
+    font-size: 0.8rem;
+    color: gray;
+}
+
+.res-parentlabel {
+    color: gray;
+}
+
+.clickable-res-header {
+    cursor: pointer;
+    user-select: none;
+}
+
+.clickable-res-header:hover {
+    color: orange;
+}
+
+.disabled-res-header {
+    user-select: none;
+    color: gray;
+}
+
+#sort-cont {
+    position: relative;
+}
+
+#sort-cont button {
+    cursor: pointer;
+    padding-inline: 1.25rem;
+    padding-block: 0.5rem;
+    border-radius: 15px;
+    border: none;
+}
+
+#sort-modal {
+    background-color: white;
+    position: absolute;
+    box-shadow: 1px 6px 10px 1px rgba(0,0,0,0.25);
+    padding: 0.15rem;
+    width: 10rem;
+    right: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0
+}
+
+#sort-modal p {
+    /* border: 1px solid red; */
+    padding: 0.5rem;
+    cursor: pointer;
+    margin: 0;
+}
+
+#sort-modal p:hover {
+    background-color: #f2f2f2;
+}
+
+#featcont-feats {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-featuredTopic {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+}
+
+.search-featuredTopic:hover {
+    background-color: #f2f2f2
+}

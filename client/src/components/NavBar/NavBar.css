@@ -1,0 +1,125 @@
+.navbar-main {
+    width: 100%;
+    height: 5.625rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 2.5rem;
+    padding-block: 1.5rem;
+    position: relative;
+    background: linear-gradient(90deg, #b5eaff 0%, #ffc9b1 100%);
+    z-index: 3;
+}
+
+#navbar-suggestions-container{
+    position: absolute;
+    background-color: white;
+    width: 38%;
+    top: 79%;
+    border-radius: 0.5em 0.5rem;
+    box-shadow: 0 0.5rem 0.375rem rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 12.5rem;
+    overflow-y: auto;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#navbarlogo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: static;
+}
+
+.logo-alert-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+    transition: color 0.2s;
+}
+.logo-alert-btn:hover {
+    color: #ff9800;
+}
+
+#searchbar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    margin: 0.2rem;
+}
+
+#bar-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#bar-wrapper input {
+    width: 90%;
+    border: none;
+    padding: 1rem;
+}
+
+#bar-wrapper button {
+    height: 3rem;
+    width: 10%;
+    border-radius: 0;
+    border: none;
+    background: #e0e0e0;
+    color: #333;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: none;
+}
+#bar-wrapper button:hover {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.navbar-link {
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    position: relative;
+    padding: 0.25rem 0.5rem;
+    transition: color 0.2s;
+}
+.navbar-link:hover {
+    color: #ff9800;
+}
+.navbar-link::after {
+    content: '';
+    display: block;
+    width: 0;
+    height:  -0.125rem;
+    background: #03acef;
+    transition: width 0.2s;
+    position: absolute;
+    left: 0;
+    bottom: -0.125rem;
+}
+.navbar-link:hover::after {
+    width: 100%;
+}
+
+#accountbutt-wrapper {
+    position: static;
+    margin-left: 2rem;
+}

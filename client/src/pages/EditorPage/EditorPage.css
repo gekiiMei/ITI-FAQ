@@ -1,0 +1,239 @@
+.editorpage-main {
+    background: #FFCAB1;
+    background: linear-gradient(135deg, rgba(255, 202, 177, 1) 0%, rgba(181, 234, 255, 1) 100%);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#editor-container {
+    /* border: 1px solid red; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90%;
+    width: 100%;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+#editor-navigator {
+    height: 100%;
+    /* border: 1px solid blue; */
+    width: 40%;
+    background-color: white;
+    border-radius: 5px;
+    padding: 1rem;
+}
+
+#editornav-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+    gap: 2rem;
+}
+
+#title-featurebutt {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+
+
+#title-featurebutt p {
+    font-weight: bold;
+}
+
+#feature-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+#feature-button p {
+    color: gray;
+}
+
+#feature-button:hover p {
+    color: orange;
+}
+
+#editornav-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.subjectItem, .pageItem {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    cursor: pointer;
+    /* border: 1px solid red; */
+}
+
+.subjectItem-left, .pageItem-left {
+    width: 100%;
+}
+
+.subjectItem-right button, .pageItem-right button {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    background-color: #ED5353;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 5px;
+    color: white
+}
+
+.subjectItem-right button:hover, .pageItem-right button:hover {
+    background-color: #bb4242;
+}
+
+#editor-workbench {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    overflow-y: scroll;
+    background-color: white;
+}
+
+#editorworkbench-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 5px;
+    gap: 2rem;
+}
+
+#editor-buttons {
+    border: 1px solid blue
+}
+
+.blockItem {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.blockItem-left {
+    width: 70%;
+}
+
+#back-dashboard-wrapper {
+    display: flex;
+    width: 100%;
+    padding-left: 1rem;
+}
+
+#back-dashboard-wrapper button {
+    padding-block: 0.5rem;
+    padding-inline: 1rem;
+    border: 1px solid gray;
+    border-radius: 5px;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    cursor: pointer;
+}
+
+#sub-create-wrapper {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#sub-createnew, #page-createnew { 
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding-block: 0.25rem;
+    padding-inline: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #FFC583;
+    cursor: pointer;
+}
+
+#sub-createnew:hover, #page-createnew:hover {
+    background-color:#c19564
+}
+
+#editor-header {
+    border-bottom: 1px solid black;
+}
+
+#editortitle-left {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+#editortitle-left button {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    height: 2rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    color: gray;
+}
+
+#editortitle-left button:hover {
+    color: orange;
+}
+
+#editortitle-left input {
+    height: 4rem;
+    width: 100%;
+    font-size: 2rem;
+}
+
+.prose {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    border-left: 1px solid rgba(0, 0, 0, 0.25);
+    border-right: 1px solid rgba(0, 0, 0, 0.25);
+    cursor: auto;
+
+}
+
+#editor-savebutt-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+#editor-savebutt {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: #4ea700;
+    padding: 0.5rem;
+    width: 7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    gap: 0.2rem;
+    cursor: pointer;
+}
+
+#editor-savebutt:hover {
+    background-color: #459201;
+}

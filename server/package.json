@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gekiiMei/ITI-FAQ.git"
@@ -14,5 +13,17 @@
   "bugs": {
     "url": "https://github.com/gekiiMei/ITI-FAQ/issues"
   },
-  "homepage": "https://github.com/gekiiMei/ITI-FAQ#readme"
+  "homepage": "https://github.com/gekiiMei/ITI-FAQ#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.16.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.7",
+    "sqlite3": "^5.1.7"
+  }
 }

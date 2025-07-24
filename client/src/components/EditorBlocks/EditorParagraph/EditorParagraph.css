@@ -1,0 +1,8 @@
+#editorparagraph-main {
+    border: 1px solid red;
+}
+
+#editorparagraph-main textarea {
+    width: 50%;
+    height: 5rem;
+}
